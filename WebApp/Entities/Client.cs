@@ -10,8 +10,8 @@ namespace WebApp.Entities
     /// </summary>
     public enum Gender
     {
-        Мужчина,
-        Женщина
+        Male,
+        Female
     }
 
     public class Client
