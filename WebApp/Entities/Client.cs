@@ -54,8 +54,8 @@ namespace WebApp.Entities
         /// </summary>
         public string Resource { get; set; }
 
-        public int AreaId { get; set; }
+        public int DistrictId { get; set; }
 
-        public virtual Area Area { get; set; }
+        public virtual District District { get; set; }
     }
 }

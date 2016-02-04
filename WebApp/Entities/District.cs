@@ -1,10 +1,10 @@
 ﻿namespace WebApp.Entities
 {
-    public class Area
+    public class District
     {
         public int Id { get; set; }
 
-        public string NameOfDistrict { get; set; }
+        public string Name { get; set; }
 
         public int CityId { get; set; }
 
