@@ -7,5 +7,9 @@
         public string  Name  { get; set; }
 
         public virtual District  Districts { get; set; }
+
+        public int ClientId { get; set; }
+
+        public virtual Client Clients { get; set; }
     }
 }

@@ -75,5 +75,35 @@ namespace WebApp.Entities
         /// 
         /// </summary>
         public int ContractSum { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int ReheshSum { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime  DateIn { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime DateClosed { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime  DateContract { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual User Users { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsSite { get; set; }
+
+        public List<City>Cities { get; set; }
+
+        public int BlacklistId { get; set; }
+
+        public virtual Blacklist Blacklists { get; set; }
     }
 }
