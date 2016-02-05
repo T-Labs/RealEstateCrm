@@ -10,8 +10,8 @@ namespace WebApp.Entities
     /// </summary>
     public enum Gender
     {
-        Мужчина,
-        Женщина
+        Male,
+        Female
     }
 
     public class Client
@@ -53,9 +53,9 @@ namespace WebApp.Entities
         /// 
         /// </summary>
         public string Resource { get; set; }
-
-        public int AreaId { get; set; }
-
-        public virtual Area Area { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<DistrictСustomer> DistrictsСustomers { get; set; }
     }
 }
