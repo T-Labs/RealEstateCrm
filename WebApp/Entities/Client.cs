@@ -57,5 +57,23 @@ namespace WebApp.Entities
         public int DistrictId { get; set; }
 
         public virtual District District { get; set; }
+
+        public int Status { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int MinSum { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int MaxSum { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime DateMeeting { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int ContractSum { get; set; }
     }
 }
