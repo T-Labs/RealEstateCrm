@@ -57,5 +57,25 @@ namespace WebApp.Entities
         /// 
         /// </summary>
         public List<DistrictСustomer> DistrictsСustomers { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Status { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int MinSum { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int  MaxSum { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime DateMeeting { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int ContractSum { get; set; }
     }
 }
