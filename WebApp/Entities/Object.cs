@@ -53,8 +53,6 @@ namespace WebApp.Entities
 
         public DateTime  EndDate { get; set; }
 
-        public User Users { get; set; }
-
         public DateTime  RevisionDate { get; set; }
     }
 }

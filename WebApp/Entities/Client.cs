@@ -54,10 +54,6 @@ namespace WebApp.Entities
         /// </summary>
         public string Resource { get; set; }
 
-        public int DistrictId { get; set; }
-
-        public virtual District District { get; set; }
-
         public int Status { get; set; }
         /// <summary>
         /// 
@@ -91,19 +87,15 @@ namespace WebApp.Entities
         /// 
         /// </summary>
         public DateTime  DateContract { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public virtual User Users { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
+       
         public bool IsSite { get; set; }
 
-        public List<City>Cities { get; set; }
+        public int CityId { get; set; }
 
-        public int BlacklistId { get; set; }
+        public virtual City Cities { get; set; }
 
-        public virtual Blacklist Blacklists { get; set; }
+        public List<DistrictСustomer> DistrictСustomers { get; set; }
+
+        public List<Blacklist> Blacklists { get; set; }
     }
 }

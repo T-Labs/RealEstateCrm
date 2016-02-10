@@ -8,8 +8,10 @@ namespace WebApp.Entities
     public class Blacklist
     {
         public int Id { get; set; }
-       
-        public List<Client>Clients { get; set; }
+
+        public int ClientId { get; set; }
+
+        public virtual Client Clients { get; set; }
 
         public string  Description { get; set; }
 

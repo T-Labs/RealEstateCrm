@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
@@ -16,7 +13,7 @@ namespace WebApp.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-beta8")
+                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRole", b =>
@@ -49,7 +46,8 @@ namespace WebApp.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("RoleId");
+                    b.Property<string>("RoleId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -65,7 +63,8 @@ namespace WebApp.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -80,7 +79,8 @@ namespace WebApp.Migrations
 
                     b.Property<string>("ProviderDisplayName");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -96,6 +96,95 @@ namespace WebApp.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.HasAnnotation("Relational:TableName", "AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("WebApp.Entities.Blacklist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ClientId");
+
+                    b.Property<DateTime>("DateAdd");
+
+                    b.Property<string>("Description");
+
+                    b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("WebApp.Entities.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("WebApp.Entities.Client", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CityId");
+
+                    b.Property<int>("ContractSum");
+
+                    b.Property<DateTime>("DateClosed");
+
+                    b.Property<DateTime>("DateContract");
+
+                    b.Property<DateTime>("DateIn");
+
+                    b.Property<DateTime>("DateMeeting");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<int?>("Gender");
+
+                    b.Property<bool>("IsSite");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<int>("MaxSum");
+
+                    b.Property<string>("MidleName");
+
+                    b.Property<int>("MinSum");
+
+                    b.Property<string>("PhoneNumber1");
+
+                    b.Property<string>("PhoneNumber2");
+
+                    b.Property<string>("PhoneNumber3");
+
+                    b.Property<int>("ReheshSum");
+
+                    b.Property<string>("Resource");
+
+                    b.Property<int>("Status");
+
+                    b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("WebApp.Entities.District", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("WebApp.Entities.DistrictСustomer", b =>
+                {
+                    b.Property<int>("ClientId");
+
+                    b.Property<int>("DistrictId");
+
+                    b.HasKey("ClientId", "DistrictId");
                 });
 
             modelBuilder.Entity("WebApp.Models.ApplicationUser", b =>
@@ -176,6 +265,31 @@ namespace WebApp.Migrations
                     b.HasOne("WebApp.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("WebApp.Entities.Blacklist", b =>
+                {
+                    b.HasOne("WebApp.Entities.Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("WebApp.Entities.Client", b =>
+                {
+                    b.HasOne("WebApp.Entities.City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
+                });
+
+            modelBuilder.Entity("WebApp.Entities.DistrictСustomer", b =>
+                {
+                    b.HasOne("WebApp.Entities.Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
+
+                    b.HasOne("WebApp.Entities.District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId");
                 });
         }
     }
