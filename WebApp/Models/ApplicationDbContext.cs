@@ -37,18 +37,27 @@ namespace WebApp.Models
 
             builder.Entity<DistrictToСlient>()
                 .HasOne(pt => pt.Clients)
-                .WithMany(p => p.DistrictСustomers)
+                .WithMany(p => p.DistrictToСlients)
+                .OnDelete(DeleteBehavior.Restrict)
                 .HasForeignKey(p => p.ClientId);
 
             builder.Entity<DistrictToСlient>()
                 .HasOne(pt => pt.Districts)
-                .WithMany(p => p.DistrictСustomers)
+                .WithMany(p => p.DistrictToСlients)
+                .OnDelete(DeleteBehavior.Restrict)
                 .HasForeignKey(p => p.DistrictId);
 
             builder.Entity<District>()
                 .HasOne(p => p.City)
                 .WithMany(b => b.Districts)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Street>()
+                .HasOne(p => p.District)
+                .WithMany(b => b.Streets)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
 
         }
     }

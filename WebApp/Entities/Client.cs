@@ -15,7 +15,7 @@ namespace WebApp.Entities
         Female
     }
 
-    public class Client:IEntityBase
+    public class Client 
     {
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace WebApp.Entities
         /// <summary>
         /// 
         /// </summary>
-        public string  MidleName { get; set; }
+        public string MidleName { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -79,7 +79,7 @@ namespace WebApp.Entities
         /// <summary>
         /// 
         /// </summary>
-        public DateTime  DateIn { get; set; }
+        public DateTime DateIn { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -87,15 +87,15 @@ namespace WebApp.Entities
         /// <summary>
         /// 
         /// </summary>
-        public DateTime  DateContract { get; set; }
-       
+        public DateTime DateContract { get; set; }
+
         public bool IsSite { get; set; }
 
         public int CityId { get; set; }
 
         public virtual City Cities { get; set; }
 
-        public List<DistrictToСlient> DistrictСustomers { get; set; }
+        public List<DistrictToСlient> DistrictToСlients { get; set; }
 
         public string ApplicationUserId { get; set; }
         public ApplicationUser User { get; set; }

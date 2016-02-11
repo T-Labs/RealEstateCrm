@@ -23,6 +23,20 @@ namespace WebApp.Migrations
                     table.PrimaryKey("PK_IdentityRole", x => x.Id);
                 });
             migrationBuilder.CreateTable(
+                name: "Blacklist",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DateAdd = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blacklist", x => x.Id);
+                });
+            migrationBuilder.CreateTable(
                 name: "Call",
                 columns: table => new
                 {
@@ -34,18 +48,6 @@ namespace WebApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Call", x => x.Id);
-                });
-            migrationBuilder.CreateTable(
-                name: "City",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_City", x => x.Id);
                 });
             migrationBuilder.CreateTable(
                 name: "TypesHousing",
@@ -207,6 +209,25 @@ namespace WebApp.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
             migrationBuilder.CreateTable(
+                name: "City",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    BuildingId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_City", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_City_Building_BuildingId",
+                        column: x => x.BuildingId,
+                        principalTable: "Building",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+            migrationBuilder.CreateTable(
                 name: "Client",
                 columns: table => new
                 {
@@ -276,27 +297,6 @@ namespace WebApp.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
             migrationBuilder.CreateTable(
-                name: "Blacklist",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ClientId = table.Column<int>(nullable: true),
-                    DateAdd = table.Column<DateTime>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Blacklist", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Blacklist_Client_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Client",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-            migrationBuilder.CreateTable(
                 name: "DistrictToСlient",
                 columns: table => new
                 {
@@ -311,13 +311,13 @@ namespace WebApp.Migrations
                         column: x => x.ClientId,
                         principalTable: "Client",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DistrictToСlient_District_DistrictId",
                         column: x => x.DistrictId,
                         principalTable: "District",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
             migrationBuilder.CreateTable(
                 name: "Street",
@@ -343,7 +343,7 @@ namespace WebApp.Migrations
                         column: x => x.DistrictId,
                         principalTable: "District",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -372,8 +372,8 @@ namespace WebApp.Migrations
             migrationBuilder.DropTable("AspNetRoles");
             migrationBuilder.DropTable("Client");
             migrationBuilder.DropTable("District");
-            migrationBuilder.DropTable("Building");
             migrationBuilder.DropTable("City");
+            migrationBuilder.DropTable("Building");
             migrationBuilder.DropTable("AspNetUsers");
             migrationBuilder.DropTable("TypesHousing");
         }

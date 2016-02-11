@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.Entities
 {
-    public class Blacklist:IEntityBase
+    public class Blacklist
     {
         public int Id { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace WebApp.Entities
 {
-    public class District:IEntityBase
+    public class District
     {
         public int Id { get; set; }
 
@@ -18,7 +18,7 @@ namespace WebApp.Entities
 
         public virtual Building Building { get; set; }
 
-        public List<DistrictToСlient> DistrictСustomers { get; set; }
+        public List<DistrictToСlient> DistrictToСlients { get; set; }
 
     }
 }

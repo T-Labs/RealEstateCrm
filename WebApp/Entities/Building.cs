@@ -6,7 +6,7 @@ using WebApp.Models;
 
 namespace WebApp.Entities
 {
-    public class Building:IEntityBase 
+    public class Building
     {
         public int Id { get; set; }
 
@@ -16,9 +16,11 @@ namespace WebApp.Entities
 
         public string Phone3 { get; set; }
 
-        public virtual District District { get; set; }
+        public List<City> Cities { get; set; }
 
-        public virtual Street  Street { get; set; }
+        public List<District> Districts { get; set; }
+
+        public List<Street> Streets { get; set; }
 
         public string House { get; set; }
 
@@ -48,9 +50,9 @@ namespace WebApp.Entities
 
         public DateTime InDate { get; set; }
 
-        public DateTime  EndDate { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public DateTime  RevisionDate { get; set; }
+        public DateTime RevisionDate { get; set; }
 
         public string ApplicationUserId { get; set; }
         public ApplicationUser User { get; set; }
@@ -58,4 +60,3 @@ namespace WebApp.Entities
 }
 
 
-    
