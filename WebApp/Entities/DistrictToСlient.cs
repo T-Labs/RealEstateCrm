@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.Entities
 {
-    public class DistrictСustomer
+    public class DistrictToСlient
     {
         public int ClientId { get; set; }
 

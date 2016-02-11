@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
+using Microsoft.Data.Entity.Metadata;
 using WebApp.Entities;
 
 namespace WebApp.Models
@@ -12,7 +13,9 @@ namespace WebApp.Models
     {
         public DbSet<Blacklist> BlackLists { get; set; }
 
-        //public DbSet<Call> Calls { get; set; }
+        public DbSet<Call> Calls { get; set; }
+
+        public DbSet<Street> Streets { get; set; }
 
         public DbSet<City> Cities { get; set; }
 
@@ -20,27 +23,32 @@ namespace WebApp.Models
 
         public DbSet<District> Districts { get; set; }
 
-        //public DbSet<Entities.Object> Objects { get; set; }
+        public DbSet<Building> Objects { get; set; }
 
-        //public DbSet<TypesHousing> TypesHousing { get; set; }
+        public DbSet<TypesHousing> TypesHousing { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<DistrictСustomer>()
+            //Fluent Api
+            builder.Entity<DistrictToСlient>()
                 .HasKey(t => new {t.ClientId, t.DistrictId});
 
-            builder.Entity<DistrictСustomer>()
+            builder.Entity<DistrictToСlient>()
                 .HasOne(pt => pt.Clients)
                 .WithMany(p => p.DistrictСustomers)
                 .HasForeignKey(p => p.ClientId);
 
-            builder.Entity<DistrictСustomer>()
+            builder.Entity<DistrictToСlient>()
                 .HasOne(pt => pt.Districts)
                 .WithMany(p => p.DistrictСustomers)
                 .HasForeignKey(p => p.DistrictId);
 
+            builder.Entity<District>()
+                .HasOne(p => p.City)
+                .WithMany(b => b.Districts)
+                .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

@@ -6,7 +6,7 @@ using WebApp.Models;
 
 namespace WebApp.Entities
 {
-    public class Object
+    public class Building:IEntityBase 
     {
         public int Id { get; set; }
 
@@ -16,13 +16,9 @@ namespace WebApp.Entities
 
         public string Phone3 { get; set; }
 
-        /// <summary>
-        /// Raion todo
-        /// </summary>
+        public virtual District District { get; set; }
 
-        /// <summary>
-        /// Street todo
-        /// </summary>
+        public virtual Street  Street { get; set; }
 
         public string House { get; set; }
 

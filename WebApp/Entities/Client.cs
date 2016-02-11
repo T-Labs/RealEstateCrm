@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApp.Models;
 
 namespace WebApp.Entities
 {
@@ -14,7 +15,7 @@ namespace WebApp.Entities
         Female
     }
 
-    public class Client
+    public class Client:IEntityBase
     {
 
         /// <summary>
@@ -94,8 +95,9 @@ namespace WebApp.Entities
 
         public virtual City Cities { get; set; }
 
-        public List<DistrictСustomer> DistrictСustomers { get; set; }
+        public List<DistrictToСlient> DistrictСustomers { get; set; }
 
-        public List<Blacklist> Blacklists { get; set; }
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.Data.Entity.Metadata;
 
 namespace WebApp.Migrations
 {
-    public partial class MySecondMigration : Migration
+    public partial class MyFirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,6 +23,19 @@ namespace WebApp.Migrations
                     table.PrimaryKey("PK_IdentityRole", x => x.Id);
                 });
             migrationBuilder.CreateTable(
+                name: "Call",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Call", x => x.Id);
+                });
+            migrationBuilder.CreateTable(
                 name: "City",
                 columns: table => new
                 {
@@ -35,7 +48,7 @@ namespace WebApp.Migrations
                     table.PrimaryKey("PK_City", x => x.Id);
                 });
             migrationBuilder.CreateTable(
-                name: "District",
+                name: "TypesHousing",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -44,7 +57,7 @@ namespace WebApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_District", x => x.Id);
+                    table.PrimaryKey("PK_TypesHousing", x => x.Id);
                 });
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
@@ -87,42 +100,6 @@ namespace WebApp.Migrations
                         name: "FK_IdentityRoleClaim<string>_IdentityRole_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-            migrationBuilder.CreateTable(
-                name: "Client",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CityId = table.Column<int>(nullable: false),
-                    ContractSum = table.Column<int>(nullable: false),
-                    DateClosed = table.Column<DateTime>(nullable: false),
-                    DateContract = table.Column<DateTime>(nullable: false),
-                    DateIn = table.Column<DateTime>(nullable: false),
-                    DateMeeting = table.Column<DateTime>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    Gender = table.Column<int>(nullable: true),
-                    IsSite = table.Column<bool>(nullable: false),
-                    LastName = table.Column<string>(nullable: true),
-                    MaxSum = table.Column<int>(nullable: false),
-                    MidleName = table.Column<string>(nullable: true),
-                    MinSum = table.Column<int>(nullable: false),
-                    PhoneNumber1 = table.Column<string>(nullable: true),
-                    PhoneNumber2 = table.Column<string>(nullable: true),
-                    PhoneNumber3 = table.Column<string>(nullable: true),
-                    ReheshSum = table.Column<int>(nullable: false),
-                    Resource = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Client", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Client_City_CityId",
-                        column: x => x.CityId,
-                        principalTable: "City",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -189,14 +166,125 @@ namespace WebApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
             migrationBuilder.CreateTable(
+                name: "Building",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Apartment = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    Comment = table.Column<string>(nullable: true),
+                    Currency = table.Column<string>(nullable: true),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    House = table.Column<string>(nullable: true),
+                    Housing = table.Column<string>(nullable: true),
+                    InDate = table.Column<DateTime>(nullable: false),
+                    LastName = table.Column<string>(nullable: true),
+                    MidleName = table.Column<string>(nullable: true),
+                    PartherShip = table.Column<int>(nullable: false),
+                    Phone1 = table.Column<string>(nullable: true),
+                    Phone2 = table.Column<string>(nullable: true),
+                    Phone3 = table.Column<string>(nullable: true),
+                    RevisionDate = table.Column<DateTime>(nullable: false),
+                    Sum = table.Column<double>(nullable: false),
+                    TypesHousingId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Building", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Building_ApplicationUser_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Building_TypesHousing_TypesHousingId",
+                        column: x => x.TypesHousingId,
+                        principalTable: "TypesHousing",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+            migrationBuilder.CreateTable(
+                name: "Client",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    CityId = table.Column<int>(nullable: false),
+                    ContractSum = table.Column<int>(nullable: false),
+                    DateClosed = table.Column<DateTime>(nullable: false),
+                    DateContract = table.Column<DateTime>(nullable: false),
+                    DateIn = table.Column<DateTime>(nullable: false),
+                    DateMeeting = table.Column<DateTime>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    Gender = table.Column<int>(nullable: true),
+                    IsSite = table.Column<bool>(nullable: false),
+                    LastName = table.Column<string>(nullable: true),
+                    MaxSum = table.Column<int>(nullable: false),
+                    MidleName = table.Column<string>(nullable: true),
+                    MinSum = table.Column<int>(nullable: false),
+                    PhoneNumber1 = table.Column<string>(nullable: true),
+                    PhoneNumber2 = table.Column<string>(nullable: true),
+                    PhoneNumber3 = table.Column<string>(nullable: true),
+                    ReheshSum = table.Column<int>(nullable: false),
+                    Resource = table.Column<string>(nullable: true),
+                    Status = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Client", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Client_ApplicationUser_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Client_City_CityId",
+                        column: x => x.CityId,
+                        principalTable: "City",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+            migrationBuilder.CreateTable(
+                name: "District",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    BuildingId = table.Column<int>(nullable: false),
+                    CityId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_District", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_District_Building_BuildingId",
+                        column: x => x.BuildingId,
+                        principalTable: "Building",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_District_City_CityId",
+                        column: x => x.CityId,
+                        principalTable: "City",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+            migrationBuilder.CreateTable(
                 name: "Blacklist",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ClientId = table.Column<int>(nullable: false),
+                    ClientId = table.Column<int>(nullable: true),
                     DateAdd = table.Column<DateTime>(nullable: false),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -206,10 +294,10 @@ namespace WebApp.Migrations
                         column: x => x.ClientId,
                         principalTable: "Client",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
             migrationBuilder.CreateTable(
-                name: "DistrictСustomer",
+                name: "DistrictToСlient",
                 columns: table => new
                 {
                     ClientId = table.Column<int>(nullable: false),
@@ -217,15 +305,41 @@ namespace WebApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DistrictСustomer", x => new { x.ClientId, x.DistrictId });
+                    table.PrimaryKey("PK_DistrictToСlient", x => new { x.ClientId, x.DistrictId });
                     table.ForeignKey(
-                        name: "FK_DistrictСustomer_Client_ClientId",
+                        name: "FK_DistrictToСlient_Client_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Client",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DistrictСustomer_District_DistrictId",
+                        name: "FK_DistrictToСlient_District_DistrictId",
+                        column: x => x.DistrictId,
+                        principalTable: "District",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+            migrationBuilder.CreateTable(
+                name: "Street",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    BuildingId = table.Column<int>(nullable: false),
+                    DistrictId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Street", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Street_Building_BuildingId",
+                        column: x => x.BuildingId,
+                        principalTable: "Building",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Street_District_DistrictId",
                         column: x => x.DistrictId,
                         principalTable: "District",
                         principalColumn: "Id",
@@ -252,12 +366,16 @@ namespace WebApp.Migrations
             migrationBuilder.DropTable("AspNetUserLogins");
             migrationBuilder.DropTable("AspNetUserRoles");
             migrationBuilder.DropTable("Blacklist");
-            migrationBuilder.DropTable("DistrictСustomer");
+            migrationBuilder.DropTable("Call");
+            migrationBuilder.DropTable("DistrictToСlient");
+            migrationBuilder.DropTable("Street");
             migrationBuilder.DropTable("AspNetRoles");
-            migrationBuilder.DropTable("AspNetUsers");
             migrationBuilder.DropTable("Client");
             migrationBuilder.DropTable("District");
+            migrationBuilder.DropTable("Building");
             migrationBuilder.DropTable("City");
+            migrationBuilder.DropTable("AspNetUsers");
+            migrationBuilder.DropTable("TypesHousing");
         }
     }
 }

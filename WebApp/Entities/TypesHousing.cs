@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.Entities
 {
-    public class TypesHousing
+    public class TypesHousing:IEntityBase
     {
         public int Id { get; set; }
 
