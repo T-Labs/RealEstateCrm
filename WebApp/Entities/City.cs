@@ -12,9 +12,7 @@ namespace WebApp.Entities
 
         public List<Client> Clients { get; set; }
 
-        public int BuildingId { get; set; }
-
-        public virtual Building Building { get; set; }
+        public List<Building> Buildings { get; set; }
 
 
     }

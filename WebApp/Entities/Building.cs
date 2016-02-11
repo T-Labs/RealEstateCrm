@@ -16,11 +16,17 @@ namespace WebApp.Entities
 
         public string Phone3 { get; set; }
 
-        public List<City> Cities { get; set; }
+        public int CityId { get; set; }
 
-        public List<District> Districts { get; set; }
+        public virtual City City { get; set; }
 
-        public List<Street> Streets { get; set; }
+        public int DistrictId { get; set; }
+
+        public virtual District District { get; set; }
+
+        public int StreetId { get; set; }
+
+        public virtual Street Street { get; set; }
 
         public string House { get; set; }
 

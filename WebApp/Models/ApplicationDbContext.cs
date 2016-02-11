@@ -25,6 +25,8 @@ namespace WebApp.Models
 
         public DbSet<Building> Objects { get; set; }
 
+        public DbSet<Sms> Smses { get; set; }
+
         public DbSet<TypesHousing> TypesHousing { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

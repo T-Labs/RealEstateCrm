@@ -95,6 +95,10 @@ namespace WebApp.Entities
 
         public virtual City Cities { get; set; }
 
+        public int SmsId { get; set; }
+
+        public virtual Sms Smses { get; set; }
+
         public List<DistrictToСlient> DistrictToСlients { get; set; }
 
         public string ApplicationUserId { get; set; }

@@ -14,9 +14,7 @@ namespace WebApp.Entities
 
         public List<Street> Streets { get; set; }
 
-        public int BuildingId { get; set; }
-
-        public virtual Building Building { get; set; }
+        public List<Building> Buildings { get; set; }
 
         public List<DistrictToСlient> DistrictToСlients { get; set; }
 

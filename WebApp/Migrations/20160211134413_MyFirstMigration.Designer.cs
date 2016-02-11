@@ -8,7 +8,7 @@ using WebApp.Models;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20160211132626_MyFirstMigration")]
+    [Migration("20160211134413_MyFirstMigration")]
     partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,9 +122,13 @@ namespace WebApp.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
+                    b.Property<int>("CityId");
+
                     b.Property<string>("Comment");
 
                     b.Property<string>("Currency");
+
+                    b.Property<int>("DistrictId");
 
                     b.Property<DateTime>("EndDate");
 
@@ -150,6 +154,8 @@ namespace WebApp.Migrations
 
                     b.Property<DateTime>("RevisionDate");
 
+                    b.Property<int>("StreetId");
+
                     b.Property<double>("Sum");
 
                     b.Property<int?>("TypesHousingId");
@@ -173,8 +179,6 @@ namespace WebApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("BuildingId");
 
                     b.Property<string>("Name");
 
@@ -234,8 +238,6 @@ namespace WebApp.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("BuildingId");
-
                     b.Property<int>("CityId");
 
                     b.Property<string>("Name");
@@ -256,8 +258,6 @@ namespace WebApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("BuildingId");
 
                     b.Property<int>("DistrictId");
 
@@ -362,16 +362,21 @@ namespace WebApp.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
+                    b.HasOne("WebApp.Entities.City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
+
+                    b.HasOne("WebApp.Entities.District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId");
+
+                    b.HasOne("WebApp.Entities.Street")
+                        .WithMany()
+                        .HasForeignKey("StreetId");
+
                     b.HasOne("WebApp.Entities.TypesHousing")
                         .WithMany()
                         .HasForeignKey("TypesHousingId");
-                });
-
-            modelBuilder.Entity("WebApp.Entities.City", b =>
-                {
-                    b.HasOne("WebApp.Entities.Building")
-                        .WithMany()
-                        .HasForeignKey("BuildingId");
                 });
 
             modelBuilder.Entity("WebApp.Entities.Client", b =>
@@ -387,10 +392,6 @@ namespace WebApp.Migrations
 
             modelBuilder.Entity("WebApp.Entities.District", b =>
                 {
-                    b.HasOne("WebApp.Entities.Building")
-                        .WithMany()
-                        .HasForeignKey("BuildingId");
-
                     b.HasOne("WebApp.Entities.City")
                         .WithMany()
                         .HasForeignKey("CityId");
@@ -409,10 +410,6 @@ namespace WebApp.Migrations
 
             modelBuilder.Entity("WebApp.Entities.Street", b =>
                 {
-                    b.HasOne("WebApp.Entities.Building")
-                        .WithMany()
-                        .HasForeignKey("BuildingId");
-
                     b.HasOne("WebApp.Entities.District")
                         .WithMany()
                         .HasForeignKey("DistrictId");
