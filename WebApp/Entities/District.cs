@@ -8,9 +8,9 @@ namespace WebApp.Entities
 
         public string Name { get; set; }
 
-        //public int CityId { get; set; }
+        public int CityId { get; set; }
 
-        //public virtual City Cities { get; set; }
+        public virtual City City { get; set; }
 
         public List<DistrictСustomer> DistrictСustomers { get; set; }
 

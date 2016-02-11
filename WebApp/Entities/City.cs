@@ -8,7 +8,7 @@ namespace WebApp.Entities
 
         public string  Name  { get; set; }
 
-        //public virtual District  Districts { get; set; }
+        public virtual List<District> Districts { get; set; }
 
         public List<Client> Clients { get; set; }
     }
