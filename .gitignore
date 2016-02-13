@@ -234,3 +234,8 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+#
+WebApp/wwwroot/controllers/
+WebApp/wwwroot/App.js
+WebApp/wwwroot/**/*.js.map
