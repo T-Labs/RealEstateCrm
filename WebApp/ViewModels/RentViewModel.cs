@@ -10,6 +10,7 @@ namespace WebApp.ViewModels
         public int RentId { get; private set; }
 
         public string HouseType { get; private set; }
+        public int HouseTypeId { get; private set; }
 
         public int Price { get; private set; }
 
@@ -19,6 +20,8 @@ namespace WebApp.ViewModels
 
         public string Description { get; private set; }
 
+        public string Phone { get; private set; }
+
         private RentViewModel()
         {
         }
@@ -26,14 +29,17 @@ namespace WebApp.ViewModels
         public static RentViewModel Create()
         {
             var random = new Random();
+            var houseType = MockData.GetRandomHouseType();
             var model = new RentViewModel()
             {
                 RentId = random.Next(1000, 100000),
                 Description = MockData.GetRandomDescription(),
                 District = MockData.GetRandomDistrict(),
-                HouseType = MockData.GetRandomHouseType(),
+                HouseType = houseType.Name,
+                HouseTypeId = houseType.Id,
                 Price = random.Next(5000, 30000),
-                Street = MockData.GetRandomStreet()
+                Street = MockData.GetRandomStreet(),
+                Phone = "+123456789"
             };
 
             return model;

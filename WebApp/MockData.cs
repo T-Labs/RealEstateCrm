@@ -1,4 +1,5 @@
 ﻿using System;
+using WebApp.Entities;
 
 namespace WebApp
 {
@@ -6,14 +7,24 @@ namespace WebApp
     {
         private static readonly Random Random = new Random();
         public static string GetRandomStreet() => Streets[Random.Next(0, Streets.Length)];
-        public static string GetRandomHouseType() => HouseTypes[Random.Next(0, HouseTypes.Length)];
+
+        public static TypesHousing GetRandomHouseType()
+        {
+            return   HouseTypes[Random.Next(0, HouseTypes.Length)];
+        }
+
         public static string GetRandomDistrict() => Districs[Random.Next(0, Districs.Length)];
         public static string GetRandomDescription() => Descriptions[Random.Next(0, Descriptions.Length)];
 
-        private static readonly string[] HouseTypes = new string[]
+        public static readonly TypesHousing[] HouseTypes = new TypesHousing[]
         {
-            "1-к квартира", "2-к квартира", "3-к квартира", "4-к квартира", "5-к квартира",
-            "комната", "коммуналка"
+            new TypesHousing { Id=1, Name = "1-к квартира" },
+            new TypesHousing { Id=2, Name = "2-к квартира"},
+            new TypesHousing { Id=3, Name = "3-к квартира"},
+            new TypesHousing { Id=4, Name = "4-к квартира"},
+            new TypesHousing { Id=5, Name = "5-к квартира"},
+            new TypesHousing { Id=6, Name = "комната"},
+            new TypesHousing { Id=7, Name = "коммуналка"}
 
         };
 

@@ -8,6 +8,7 @@
     "jquery-validation-unobtrusive": "3.2.4",
     "angular": "1.4.6",
     "angular-ui-bootstrap": "0.13.4",
-    "ui-router": "~0.2.18"
+    "ui-router": "~0.2.18",
+    "semantic-ui": "~2.1.8"
   }
 }
