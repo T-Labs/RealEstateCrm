@@ -4,45 +4,72 @@
 }
 
 <div class="ui container" ng-controller="HomeController as ctrl">
-    <div class="ui center aligned">
-        <select name="city" class="ui fluid normal dropdown" ng-model="ctrl.city" ng-change="ctrl.changeFilters()">
-            <option value="">Выберите город</option>
-            <option value="1">Рязань</option>
-            <option value="2">Тверь</option>
-        </select>
-        <select multiple="" name="skills" class="ui fluid normal dropdown" ng-model="ctrl.selectedHouseType" ng-change="ctrl.changeFilters()">
-            <option value="">Тип жилья</option>
+    <h2 class="ui center aligned icon header">
+        <i class="circular users icon"></i>
+        Your logo here
+    </h2>
 
-            <option value="{{item.Value}}" ng-repeat="item in ctrl.houseTypes">{{item.Text}}</option>
-        </select>
-    </div>
-    <div class="ui container">
-        Filters
-    </div>
-    <div class="ui container">
-        <div class="ui divided items">
-            <div class="item" ng-repeat="item in ctrl.rentData | limitTo: 10">
-                <div class="image">
-                    <img src="~/lib/semantic-ui/examples/assets/images/wireframe/image.png">
+    <div class="ui grid">
+        <div class="row">
+            <div class="three wide column">
+                <div class="ui center aligned">
+                    <select name="city" class="ui fluid normal dropdown" ng-model="ctrl.city" ng-change="ctrl.changeFilters()">
+                        <option value="">Выберите город</option>
+                        <option value="{{item.Value}}" ng-repeat="item in ctrl.cityList">{{item.Text}}</option>
+                    </select>
+                    <select name="disctict" class="ui fluid normal dropdown" ng-model="ctrl.disctrict" ng-change="ctrl.changeFilters()">
+                        <option value="">Выберите район</option>
+                        <option value="{{item.Value}}" ng-repeat="item in ctrl.districtList | orderBy:'Text'">{{item.Text}}</option>
+                    </select>
+                    <select multiple="" name="houseTypes" class="ui fluid normal dropdown" ng-model="ctrl.selectedHouseType" ng-change="ctrl.changeFilters()">
+                        <option value="">Тип жилья</option>
+                        <option value="{{item.Value}}" ng-repeat="item in ctrl.houseTypes">{{item.Text}}</option>
+                    </select>
+                    <div class="ui input">
+                        <input type="text" placeholder="от" ng-change="ctrl.changeFilters()" ng-model="ctrl.priceFrom"  ng-model-options="{debounce: 500}">
+                    </div>
+                    <div class="ui input">
+                        <input type="text" placeholder="до"  ng-change="ctrl.changeFilters()" ng-model="ctrl.priceTo" ng-model-options="{debounce: 500}">
+                    </div>
                 </div>
-                <div class="content">
-                    <i class="home icon"></i><a class="header">{{item.HouseType}}</a>
-                    <div class="meta">
-                        <i class="write icon"></i> <span>{{item.Description}}</span>
+            </div>
+            <div class="thirteen wide column">
+                <div class="ui container">
+                    <div class="ui segment" ng-if="ctrl.loadingdata">
+                        <p></p>
+                        <div class="ui active inverted dimmer">
+                            <div class="ui loader"></div>
+                        </div>
                     </div>
-                    <div class="description">
-                        <p>
-                            <i class="ruble icon"></i>{{item.Price}}
-                        </p>
-                        <p>
-                            <i class="phone icon"></i>{{item.Phone}}
-                        </p>
-                    </div>
-                    <div class="extra">
-                        <i class="marker icon"></i> {{item.District}} {{item.Street}}
+
+                    <div class="ui divided items">
+                        <div class="item" ng-repeat="item in ctrl.rentData | limitTo: 10">
+                            <div class="image">
+                                <img src="~/lib/semantic-ui/examples/assets/images/wireframe/image.png">
+                            </div>
+                            <div class="content">
+                                <i class="home icon"></i><a class="header">{{item.HouseType}}</a>
+                                <div class="meta">
+                                    <i class="write icon"></i> <span>{{item.Description}}</span>
+                                </div>
+                                <div class="description">
+                                    <p>
+                                        <i class="ruble icon"></i>{{item.Price}}
+                                    </p>
+                                    <p>
+                                        <i class="phone icon"></i>{{item.Phone}}
+                                    </p>
+                                </div>
+                                <div class="extra">
+                                    <i class="marker icon"></i> {{item.CityName}} {{item.District}} {{item.Street}}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 </div>

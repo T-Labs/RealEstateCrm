@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using WebApp.Entities;
 
 namespace WebApp
@@ -6,15 +8,16 @@ namespace WebApp
     public static class MockData
     {
         private static readonly Random Random = new Random();
-        public static string GetRandomStreet() => Streets[Random.Next(0, Streets.Length)];
 
-        public static TypesHousing GetRandomHouseType()
-        {
-            return   HouseTypes[Random.Next(0, HouseTypes.Length)];
-        }
+        public static Street GetRandomStreet() => GetStreetsObject()[Random.Next(0, Streets.Length)];
 
-        public static string GetRandomDistrict() => Districs[Random.Next(0, Districs.Length)];
+        public static TypesHousing GetRandomHouseType() => HouseTypes[Random.Next(0, HouseTypes.Length)];
+
+        public static District GetRandomDistrict() => Districs[Random.Next(0, Districs.Length)];
+
         public static string GetRandomDescription() => Descriptions[Random.Next(0, Descriptions.Length)];
+
+        public static City GetRandomCity() => CityList[Random.Next(0, CityList.Length)];
 
         public static readonly TypesHousing[] HouseTypes = new TypesHousing[]
         {
@@ -25,34 +28,49 @@ namespace WebApp
             new TypesHousing { Id=5, Name = "5-к квартира"},
             new TypesHousing { Id=6, Name = "комната"},
             new TypesHousing { Id=7, Name = "коммуналка"}
-
         };
 
-        private static readonly string[] Districs = new string[]
+        public static readonly City[] CityList = new City[]
         {
-            "Дашково Песочня",
-            "Дягилево",
-            "Кальное",
-            "Канищево",
-            "Михайловское шоссе",
-            "Московский",
-            "Недостоево",
-            "Приокский",
-            "Роща",
-            "Рыбное",
-            "Рязанский р-н",
-            "Соколовка",
-            "Солотча",
-            "Центр",
-            "Шлаковый",
-            "Южный",
-            "Центральный р-н",
-            "Советский р-н",
-            "Привокзальный р-н",
-            "Зареченский р-н",
-            "Пролетарский р-н",
-            "Тульская обл"
+            new City() { Id = 1, Name = "Рязань"},
+            new City() { Id = 2, Name = "Тула"},
         };
+
+        public static readonly District[] Districs = new District[]
+        {
+            new District { Name = "Дашково Песочня", CityId = 1, Id = 1},
+             new District { Name = "Дягилево", CityId = 1, Id = 2},
+             new District { Name = "Кальное", CityId = 1, Id = 3},
+             new District { Name = "Канищево", CityId = 1, Id = 4},
+            new District { Name =  "Михайловское шоссе", CityId = 1, Id = 5},
+            new District { Name =  "Московский", CityId = 1, Id = 6},
+             new District { Name = "Недостоево", CityId = 1, Id = 7},
+             new District { Name = "Приокский", CityId = 1, Id = 8},
+            new District { Name =  "Роща", CityId = 1, Id = 9},
+            new District { Name =  "Рыбное", CityId = 1, Id = 10},
+            new District { Name =  "Рязанский р-н", CityId = 1, Id = 11},
+            new District { Name =  "Соколовка", CityId = 1, Id = 12},
+            new District { Name =  "Солотча", CityId = 2, Id = 13},
+            new District { Name =  "Центр", CityId = 2, Id = 14},
+            new District { Name =  "Шлаковый", CityId = 2, Id = 15},
+             new District { Name = "Южный", CityId = 2, Id = 16},
+             new District { Name = "Центральный р-н", CityId = 2, Id = 17},
+             new District { Name = "Советский р-н", CityId = 2, Id = 18},
+             new District { Name = "Привокзальный р-н", CityId = 2, Id = 19},
+             new District { Name = "Зареченский р-н", CityId = 2, Id = 20},
+            new District { Name =  "Пролетарский р-н", CityId = 2, Id = 21},
+            new District { Name =  "Тульская обл", CityId = 2, Id = 22}
+        };
+
+        public static Street[] GetStreetsObject()
+        {
+            var list = new List<Street>();
+            for (int i = 0; i < Streets.Length; i++)
+            {
+                list.Add(new Street() { Id = i +1, Name = Streets[i]});
+            }
+            return list.ToArray();
+        }
 
         private static readonly string[] Streets = new string[]
         {

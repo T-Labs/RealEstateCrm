@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
+using WebApp.DAL;
 using WebApp.ViewModels;
-using WebApp.ViewModels.Home;
-
-// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.WebApi
 {
@@ -17,14 +14,10 @@ namespace WebApp.WebApi
         // GET: api/values
         [Route("api/rent")]
         [HttpGet]
-        public IEnumerable<RentViewModel> Get(int[] houseTypeId)
+        public IEnumerable<BuildingViewModel> Get([FromServices] BuildingRepository repo, int? page, int[] houseTypeId, int? cityId)
         {
-            var model = new HomePageViewModel();
-            if (houseTypeId.Length > 0)
-            {
-                return model.Rents.Where(x => houseTypeId.Contains(x.HouseTypeId));
-            }
-            return model.Rents;
+            var items = repo.GetBuildings(page, houseTypeId, cityId);
+            return items.Select(BuildingViewModel.Create);
         }
 
         [Route("api/rent/houseTypes")]
@@ -34,6 +27,28 @@ namespace WebApp.WebApi
             return MockData.HouseTypes.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
         }
 
+        [Route("api/rent/cityList")]
+        [HttpGet]
+        public IEnumerable<SelectListItem> GetCityList()
+        {
+            var city = MockData.CityList.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
+            return city;
+        }
+
+        [Route("api/rent/districtByCity")]
+        [HttpGet]
+        public IEnumerable<SelectListItem> GetDistrictByCity(int? cityId)
+        {
+            var districts = MockData.Districs;
+
+            if (cityId.HasValue)
+            {
+                districts = districts.Where(x => x.CityId == cityId.Value).ToArray();
+            }
+
+            return districts.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
+        }
+        
         // GET api/values/5
         /*  [HttpGet("{id}")]
           public string Get(int id)
