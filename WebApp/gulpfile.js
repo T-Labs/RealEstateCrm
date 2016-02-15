@@ -68,5 +68,5 @@ var typescript = require('gulp-tsc');
 gulp.task('compile', function(){
   gulp.src(['typings/**/*.ts','App/**/*.ts'])
     .pipe(typescript())
-    .pipe(gulp.dest('dest/'))
+    .pipe(gulp.dest('wwwroot/'))
 });
