@@ -54,13 +54,6 @@ namespace WebApp.Models
                 .WithMany(b => b.Districts)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Street>()
-                .HasOne(p => p.District)
-                .WithMany(b => b.Streets)
-                .OnDelete(DeleteBehavior.Restrict);
-
-
-
         }
     }
 }
