@@ -239,3 +239,4 @@ _Pvt_Extensions
 WebApp/wwwroot/controllers/
 WebApp/wwwroot/App.js
 WebApp/wwwroot/**/*.js.map
+/.project
