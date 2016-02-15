@@ -14,8 +14,7 @@ namespace WebApp.Entities
         public int DistrictId { get; set; }
 
         public virtual District District { get; set; }
-
-        public List<Building> Buildings { get; set; }
+        public List<Housing> Buildings { get; set; }
 
     }
 }

@@ -59,7 +59,7 @@ namespace WebApp.ViewModels
             return model;
         }
 
-        public static BuildingViewModel Create(Building building)
+        public static BuildingViewModel Create(Housing building)
         {
             var model = new BuildingViewModel()
             {
@@ -67,7 +67,7 @@ namespace WebApp.ViewModels
                 District = building.District.Name,
                 DistrictId = building.DistrictId,
                 CityId = building.CityId,
-                Phone = building.Phone1,
+                Phone = building.Phones[0].Number,
                 HouseTypeId = building.TypesHousing.Id,
                 HouseType = building.TypesHousing.Name,
                 Price = (int)building.Sum,

@@ -12,7 +12,7 @@ namespace WebApp.Entities
 
         public List<Client> Clients { get; set; }
 
-        public List<Building> Buildings { get; set; }
+        public List<Housing> Buildings { get; set; }
 
 
     }
