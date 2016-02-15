@@ -19,7 +19,7 @@ namespace WebApp.Models
 
         public DbSet<City> Cities { get; set; }
 
-        public DbSet<Client>Clients { get; set; }
+        public DbSet<Customer>Clients { get; set; }
 
         public DbSet<District> Districts { get; set; }
 

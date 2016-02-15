@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApp.Models;
@@ -12,7 +13,7 @@ namespace WebApp.Entities
         Female
     }
 
-    public class Client 
+    public class Customer 
     {
         public int Id { get; set; }
 
@@ -24,11 +25,7 @@ namespace WebApp.Entities
 
         public Gender? Gender { get; set; }
 
-        public string PhoneNumber1 { get; set; }
-
-        public string PhoneNumber2 { get; set; }
-
-        public string PhoneNumber3 { get; set; }
+        public List<CustomerPhone> Phones { get; set; }
 
         public string Resource { get; set; }
 
@@ -64,6 +61,12 @@ namespace WebApp.Entities
 
         public string ApplicationUserId { get; set; }
 
+        [ForeignKey("ApplicationUserId")]
         public ApplicationUser User { get; set; }
+
+        public string CustomerUserId { get; set; }
+
+        [ForeignKey("CustomerUserId")]
+        public ApplicationUser CustomerAccount { get; set; }
     }
 }
