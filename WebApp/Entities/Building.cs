@@ -41,13 +41,9 @@ namespace WebApp.Entities
         public string Currency { get; set; }
 
         public string FirstName { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
+
         public string LastName { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
+
         public string MidleName { get; set; }
 
         public int PartherShip { get; set; }
@@ -61,6 +57,7 @@ namespace WebApp.Entities
         public DateTime RevisionDate { get; set; }
 
         public string ApplicationUserId { get; set; }
+
         public ApplicationUser User { get; set; }
     }
 }
