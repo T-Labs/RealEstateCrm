@@ -7,6 +7,17 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify");
 
+var wrench = require('wrench');
+/**
+ *  This will load all js or coffee files in the gulp directory
+ *  in order to load all gulp tasks
+ */
+wrench.readdirSyncRecursive('./gulp').filter(function(file) {
+  return (/\.(js|coffee)$/i).test(file);
+}).map(function(file) {
+  require('./gulp/' + file);
+});
+
 var paths = {
     webroot: "./wwwroot/"
 };
@@ -43,3 +54,19 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", ["min:js", "min:css"]);
+
+/**
+ *  Default task clean temporaries directories and launch the
+ *  main optimization build task
+ */
+gulp.task('default', ['clean'], function () {
+  gulp.start('build');
+});
+
+var typescript = require('gulp-tsc');
+ 
+gulp.task('compile', function(){
+  gulp.src(['typings/**/*.ts','App/**/*.ts'])
+    .pipe(typescript())
+    .pipe(gulp.dest('dest/'))
+});
