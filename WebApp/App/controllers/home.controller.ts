@@ -11,33 +11,41 @@ class HomeController {
     public priceFrom;
     public priceTo;
 
+
+    public citySelected = [{}];
+
+
     loadingdata = true;
     /* @ngInject */
-    constructor(private $http, private $state, private $stateParams) {
-        
+    constructor(private $http, private $location: ng.ILocationService) {
+
+        var urlParams = $location.search();
+        this.city = $location.search().city;
+        if (this.city) {
+            this.citySelected[this.city] = { selected: true };
+        }
+        this.changeFilters();
+        /*
         $http.get('/api/rent').then((res) => {
             this.rentData = res.data;
             this.loadingdata = false;
-        });
+        });*/
 
         $http.get('/api/rent/houseTypes').then((res) => {
             this.houseTypes = res.data;
-            this.selectedHouseType = $stateParams['houseType'];
         });
 
         $http.get('/api/rent/cityList').then((res) => {
             this.cityList = res.data;
-            this.city = $stateParams['city'];
         });
 
         $http.get('/api/rent/districtByCity').then((res) => {
             this.districtList = res.data;
-            this.disctrict = $stateParams['district'];
         });
 
 
-        this.priceFrom = $stateParams['priceFrom'];
-        this.priceTo = $stateParams['priceTo'];
+        this.priceFrom = urlParams['priceFrom'];
+        this.priceTo = urlParams['priceTo'];
     }
 
     public changeFilters() {
@@ -48,6 +56,7 @@ class HomeController {
         }
 
         if (this.city) {
+           
             url.push('cityId=' + this.city);
             this.disctrict = undefined;
             this.districtList = [];
@@ -60,6 +69,14 @@ class HomeController {
             url.push('district=' + this.disctrict);
         }
 
+        if (this.priceFrom) {
+            url.push('priceFrom=' + this.priceFrom);
+        }
+
+        if (this.priceTo) {
+            url.push('priceTo=' + this.priceTo);
+        }
+
         if (url.length > 0) {
             this.loadingdata = true;
             this.rentData = [];
@@ -67,9 +84,14 @@ class HomeController {
                 this.rentData = res.data;
                 this.loadingdata = false;
             });
+        } else {
+            this.$http.get('/api/rent').then((res) => {
+                this.rentData = res.data;
+                this.loadingdata = false;
+            });
         }
 
-        this.$state.go('home', { city: this.city, district: this.disctrict, houseType: this.selectedHouseType, priceFrom: this.priceFrom, priceTo: this.priceTo }, { notify: false });
+        this.$location.search({ city: this.city, district: this.disctrict, houseType: this.selectedHouseType, priceFrom: this.priceFrom, priceTo: this.priceTo });
     }
 }
 

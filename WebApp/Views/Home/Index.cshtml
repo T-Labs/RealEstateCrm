@@ -15,7 +15,7 @@
                 <div class="ui center aligned">
                     <select name="city" class="ui fluid normal dropdown" ng-model="ctrl.city" ng-change="ctrl.changeFilters()">
                         <option value="">Выберите город</option>
-                        <option value="{{item.Value}}" ng-repeat="item in ctrl.cityList">{{item.Text}}</option>
+                        <option value="{{item.Value}}" ng-selected="ctrl.citySelected[item.CityId].selected" ng-repeat="item in ctrl.cityList">{{item.Text}}</option>
                     </select>
                     <select name="disctict" class="ui fluid normal dropdown" ng-model="ctrl.disctrict" ng-change="ctrl.changeFilters()">
                         <option value="">Выберите район</option>
@@ -44,13 +44,13 @@
 
                     <div class="ui divided items">
                         <div class="item" ng-repeat="item in ctrl.rentData | limitTo: 10">
-                            <div class="image">
-                                <img src="~/lib/semantic-ui/examples/assets/images/wireframe/image.png">
-                            </div>
+                         
                             <div class="content">
                                 <i class="home icon"></i><a class="header">{{item.HouseType}}</a>
+                                <br/>
+                                <i class="write icon"></i> <span>{{item.Description}}</span>
                                 <div class="meta">
-                                    <i class="write icon"></i> <span>{{item.Description}}</span>
+                                    
                                 </div>
                                 <div class="description">
                                     <p>

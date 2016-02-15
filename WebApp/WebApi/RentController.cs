@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using WebApp.DAL;
@@ -14,9 +15,10 @@ namespace WebApp.WebApi
         // GET: api/values
         [Route("api/rent")]
         [HttpGet]
-        public IEnumerable<BuildingViewModel> Get([FromServices] BuildingRepository repo, int? page, int[] houseTypeId, int? cityId)
+        public IEnumerable<BuildingViewModel> Get([FromServices] BuildingRepository repo, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
         {
-            var items = repo.GetBuildings(page, houseTypeId, cityId);
+            var items = repo.GetBuildings(page, houseTypeId, cityId, priceFrom, priceTo);
+            //Thread.Sleep(2000);
             return items.Select(BuildingViewModel.Create);
         }
 

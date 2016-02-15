@@ -1,13 +1,16 @@
-﻿///<reference path="../typings/angularjs/angular.d.ts"/>
+﻿///<reference path="./typings/angularjs/angular.d.ts"/>
 
 var app = angular.module('RealEstateMVCApp', ['ui.router']);
 
 /** @ngInject */
-function routerConfig($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider) {
+function routerConfig($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider,
+    $locationProvider: any) {
+ //   $locationProvider.html5Mode(true);
     $stateProvider
         .state('home', {
             url: '/?city&district&houseType&priceFrom&priceTo&page',
-            controller: 'HomeController'
+         
+            reloadOnSearch: false
         });
 }
 
