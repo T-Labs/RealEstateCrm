@@ -11,10 +11,8 @@ class HomeController {
     public priceFrom;
     public priceTo;
 
-
     public citySelected = [{}];
-
-
+    public isEdit = false;
     loadingdata = true;
     /* @ngInject */
     constructor(private $http, private $location: ng.ILocationService) {

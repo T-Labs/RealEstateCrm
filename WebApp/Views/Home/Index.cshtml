@@ -42,6 +42,31 @@
                         </div>
                     </div>
 
+                    <div class="ui three column stackable grid segment" ng-repeat="item in ctrl.rentData | limitTo: 10">
+                        <div class="four wide column">
+                            <div class="ui">
+                                <h3><i class="home icon"></i>{{item.HouseType}}</h3>
+                            </div>
+                        </div>
+                        <div class="four wide column">
+                            <div class="ui "> 
+                                <h3><i class="ruble icon"></i>{{item.Price}}</h3>
+                             </div>
+                        </div>
+                        <div class="eight wide column">
+                            <div class="ui right aligned">
+                               <i class="marker icon"></i> {{item.CityName}} {{item.District}} {{item.Street}}
+                            </div>
+                        </div>
+                        <div class="ten wide column">
+                            <div class="ui"><i class="write icon"></i> <span>{{item.Description}}</span></div>
+                        </div>
+                        <div class="six wide column">
+                            <div class="ui"><i class="phone icon"></i>{{item.Phone}}
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="ui divided items">
                         <div class="item" ng-repeat="item in ctrl.rentData | limitTo: 10">
                          
@@ -54,7 +79,10 @@
                                 </div>
                                 <div class="description">
                                     <p>
-                                        <i class="ruble icon"></i>{{item.Price}}
+                                        <i class="ruble icon"></i>
+                                        <input type="text" ng-if="ctrl.isEdit" ng-model="item.Price"/>
+                                        <span ng-if="!ctrl.isEdit">{{item.Price}}</span>
+                                        <input type="button" ng-click="ctrl.isEdit = !ctrl.isEdit" value="edit">
                                     </p>
                                     <p>
                                         <i class="phone icon"></i>{{item.Phone}}
