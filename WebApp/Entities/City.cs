@@ -10,9 +10,9 @@ namespace WebApp.Entities
 
         public List<District> Districts { get; set; }
 
-        public List<Client> Clients { get; set; }
+        public List<Customer> Clients { get; set; }
 
-        public List<Building> Buildings { get; set; }
+        public List<Housing> Buildings { get; set; }
 
 
     }

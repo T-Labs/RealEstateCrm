@@ -15,6 +15,7 @@ namespace WebApp.Entities
 
         public string Phone { get; set; }
 
-        public List<Client> Clients { get; set; }
+        public int ClientId { get; set; }
+        public virtual Customer Client { get; set; }
     }
 }

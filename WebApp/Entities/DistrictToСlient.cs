@@ -9,7 +9,7 @@ namespace WebApp.Entities
     {
         public int ClientId { get; set; }
 
-        public Client Clients { get; set; }
+        public Customer Clients { get; set; }
 
         public int DistrictId { get; set; }
 

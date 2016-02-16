@@ -6,15 +6,11 @@ using WebApp.Models;
 
 namespace WebApp.Entities
 {
-    public class Building
+    public class Housing
     {
         public int Id { get; set; }
 
-        public string Phone1 { get; set; }
-
-        public string Phone2 { get; set; }
-
-        public string Phone3 { get; set; }
+        public List<HousingPhone> Phones { get; set; }
 
         public int CityId { get; set; }
 
@@ -30,9 +26,9 @@ namespace WebApp.Entities
 
         public string House { get; set; }
 
-        public string Housing { get; set; }
+        public string Building { get; set; }
 
-        public string Apartment { get; set; }
+        public string Room { get; set; }
 
         public virtual TypesHousing TypesHousing { get; set; }
 
@@ -41,13 +37,9 @@ namespace WebApp.Entities
         public string Currency { get; set; }
 
         public string FirstName { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
+
         public string LastName { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
+
         public string MidleName { get; set; }
 
         public int PartherShip { get; set; }
@@ -61,6 +53,7 @@ namespace WebApp.Entities
         public DateTime RevisionDate { get; set; }
 
         public string ApplicationUserId { get; set; }
+
         public ApplicationUser User { get; set; }
     }
 }

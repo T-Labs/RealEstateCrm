@@ -19,11 +19,11 @@ namespace WebApp.Models
 
         public DbSet<City> Cities { get; set; }
 
-        public DbSet<Client>Clients { get; set; }
+        public DbSet<Customer>Clients { get; set; }
 
         public DbSet<District> Districts { get; set; }
 
-        public DbSet<Building> Objects { get; set; }
+        public DbSet<Housing> Objects { get; set; }
 
         public DbSet<Sms> Smses { get; set; }
 
@@ -53,13 +53,6 @@ namespace WebApp.Models
                 .HasOne(p => p.City)
                 .WithMany(b => b.Districts)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Street>()
-                .HasOne(p => p.District)
-                .WithMany(b => b.Streets)
-                .OnDelete(DeleteBehavior.Restrict);
-
-
 
         }
     }

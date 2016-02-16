@@ -8,9 +8,9 @@ namespace WebApp.DAL
 {
     public class BuildingRepository
     {
-        public List<Building> GetBuildings(int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
+        public List<Housing> GetBuildings(int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
         {
-            var list = new List<Building>();
+            var list = new List<Housing>();
             for (int i = 0; i < 50; i++)
             {
                 list.Add(CreateRadnom());
@@ -52,7 +52,7 @@ namespace WebApp.DAL
         }
 
         static Random random = new Random();
-        private Building CreateRadnom()
+        private Housing CreateRadnom()
         {
             
            
@@ -62,7 +62,7 @@ namespace WebApp.DAL
             var street = MockData.GetRandomStreet();
 
             var sum = random.Next(5, 30) * 1000;
-            Building item = new Building()
+            Housing item = new Housing()
             {
                 Id = random.Next(10000),
                 CityId = city.Id,
@@ -74,7 +74,7 @@ namespace WebApp.DAL
                 TypesHousing = houseType,
                 Comment = MockData.GetRandomDescription(),
                 Sum = sum,
-                Phone1 = "+123456789"
+                Phones = new List<HousingPhone> { new HousingPhone { Number = "+123456789" } }
             };
             return item;
         }
