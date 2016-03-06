@@ -1,0 +1,67 @@
+@model WebApp.ViewModels.HousingEditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit" class="ui form">
+    <div class="form-horizontal">
+        <h4>Housing</h4>
+        <hr />
+        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id"/>
+        
+        @Html.EditorFor(x => x.FirstName)
+        @Html.EditorFor(x => x.MidleName)
+        @Html.EditorFor(x => x.LastName)
+        @Html.EditorFor(x => x.Comment, "textarea")
+        @Html.EditorFor(x => x.Cost)
+        @Html.EditorFor(x => x.Address, "City")
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(function() {
+            $('#Address_CityId').change(function(e) {
+                var cityId = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url: "/api/rent/districtByCity?cityId=" + cityId,
+                    data: {},
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(msg) {
+                        var options = $("#Address_DistrictId").get(0).options;
+                        options.length = 0;
+
+                        $.each(msg, function(index, item) {
+                            options.add(new Option(item.Text, item.Value));
+                        });
+                    },
+                    error: function() {
+                        alert("Failed to load genders");
+                    }
+                });
+            });
+        });
+    </script>
+
+}

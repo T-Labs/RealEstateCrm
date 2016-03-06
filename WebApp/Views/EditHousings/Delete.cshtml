@@ -1,0 +1,100 @@
+@model WebApp.Entities.Housing
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Housing</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Building)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Building)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Currency)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Currency)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.House)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.House)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.InDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.InDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MidleName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MidleName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PartherShip)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PartherShip)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RevisionDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RevisionDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Room)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Room)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Sum)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Sum)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

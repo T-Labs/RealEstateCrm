@@ -1,0 +1,145 @@
+@model WebApp.Entities.Housing
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Housing</h4>
+        <hr />
+        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ApplicationUserId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="ApplicationUserId" class ="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Building" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Building" class="form-control" />
+                <span asp-validation-for="Building" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CityId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="CityId" class ="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Comment" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Comment" class="form-control" />
+                <span asp-validation-for="Comment" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Currency" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Currency" class="form-control" />
+                <span asp-validation-for="Currency" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DistrictId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="DistrictId" class ="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EndDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FirstName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="House" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="House" class="form-control" />
+                <span asp-validation-for="House" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="InDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="InDate" class="form-control" />
+                <span asp-validation-for="InDate" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MidleName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MidleName" class="form-control" />
+                <span asp-validation-for="MidleName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PartherShip" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PartherShip" class="form-control" />
+                <span asp-validation-for="PartherShip" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="RevisionDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="RevisionDate" class="form-control" />
+                <span asp-validation-for="RevisionDate" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Room" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Room" class="form-control" />
+                <span asp-validation-for="Room" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="StreetId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="StreetId" class ="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Sum" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Sum" class="form-control" />
+                <span asp-validation-for="Sum" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

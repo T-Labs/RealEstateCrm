@@ -62,38 +62,17 @@
                             <div class="ui"><i class="write icon"></i> <span>{{item.Description}}</span></div>
                         </div>
                         <div class="six wide column">
-                            <div class="ui"><i class="phone icon"></i>{{item.Phone}}
-                            </div>
-                        </div>
-                    </div>
+                            <div class="ui"><i class="phone icon"></i>
+                                @if(User.Identity.IsAuthenticated) {
+                                    <span>{{item.Phone}}</span>
+                                } else {
+                                    <span>Номер телефона виден только зарегистрированному пользователю</span>
+                                }
 
-                    <div class="ui divided items">
-                        <div class="item" ng-repeat="item in ctrl.rentData | limitTo: 10">
-                         
-                            <div class="content">
-                                <i class="home icon"></i><a class="header">{{item.HouseType}}</a>
-                                <br/>
-                                <i class="write icon"></i> <span>{{item.Description}}</span>
-                                <div class="meta">
-                                    
-                                </div>
-                                <div class="description">
-                                    <p>
-                                        <i class="ruble icon"></i>
-                                        <input type="text" ng-if="ctrl.isEdit" ng-model="item.Price"/>
-                                        <span ng-if="!ctrl.isEdit">{{item.Price}}</span>
-                                        <input type="button" ng-click="ctrl.isEdit = !ctrl.isEdit" value="edit">
-                                    </p>
-                                    <p>
-                                        <i class="phone icon"></i>{{item.Phone}}
-                                    </p>
-                                </div>
-                                <div class="extra">
-                                    <i class="marker icon"></i> {{item.CityName}} {{item.District}} {{item.Street}}
-                                </div>
                             </div>
                         </div>
                     </div>
+             
                     <div class="ui circular labels">
                         <a class="ui label">Первая</a>
                         <a class="ui blue label">1</a>

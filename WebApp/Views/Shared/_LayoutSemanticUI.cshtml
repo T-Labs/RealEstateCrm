@@ -54,6 +54,7 @@
                         <a class="item" href="#">Link Item</a>
                     </div>
                 </div>
+                @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>
         <!-- Page Contents -->
@@ -82,5 +83,6 @@
             </environment>
 
             @RenderSection("scripts", required: false)
+            @RenderSection("editscripts", required: false)
 </body>
 </html>

@@ -49,7 +49,7 @@ namespace WebApp.WebApi
             {
                 districts = districts.Where(x => x.CityId == cityId.Value);
             }
-            return districts.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
+            return districts.OrderBy(x => x.Name).Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
         }
         
     }
