@@ -79,34 +79,33 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
 
+            
             Housing housing = _context.Objects.Single(m => m.Id == id);
             if (housing == null)
             {
                 return HttpNotFound();
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "City", housing.CityId);
-            ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "District", housing.DistrictId);
-            ViewData["StreetId"] = new SelectList(_context.Streets, "Id", "Street", housing.StreetId);
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "User", housing.ApplicationUserId);
-            _context.Cities.Include(x => x.Districts);
-            return View(HousingEditModel.Create(housing, _context.Cities.ToList()));
+            
+            var allCities = _context.Cities.Include(x => x.Districts).ToList();
+            var allStreets = _context.Streets.ToList();
+            var typesHousings = _context.TypesHousing.ToList();
+            var model = HousingEditModel.Create(housing, allCities, allStreets, typesHousings);
+            return View(model);
         }
 
         // POST: EditHousings/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(HousingEditModel housing)
+        public IActionResult Edit(HousingEditModel housing, int editId)
         {
             if (ModelState.IsValid)
             {
-           //     _context.Update(housing);
-             //   _context.SaveChanges();
+                var dbItem = _context.Objects.Single(x => x.Id == editId);
+                housing.UpdateEntity(dbItem);
+                _context.Update(dbItem);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-         //   ViewData["CityId"] = new SelectList(_context.Cities, "Id", "City", housing.CityId);
-         //   ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "District", housing.DistrictId);
-         //   ViewData["StreetId"] = new SelectList(_context.Streets, "Id", "Street", housing.StreetId);
-         //   ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "User", housing.ApplicationUserId);
             return View(housing);
         }
 

@@ -11,45 +11,53 @@
         <h4>Housing</h4>
         <hr />
         <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="Id"/>
+        <input type="hidden" asp-for="@Model.EditId"/>
         
-        @Html.EditorFor(x => x.FirstName)
-        @Html.EditorFor(x => x.MidleName)
-        @Html.EditorFor(x => x.LastName)
+        <div class="three fields">
+            @Html.EditorFor(x => x.FirstName)
+            @Html.EditorFor(x => x.MidleName)
+            @Html.EditorFor(x => x.LastName)
+        </div>
         @Html.EditorFor(x => x.Comment, "textarea")
+        @Html.EditorFor(x => x.HouseType, "dropdown")
         @Html.EditorFor(x => x.Cost)
-        @Html.EditorFor(x => x.Address, "City")
+        <div class="three fields">
+            @Html.EditorFor(x => x.Address.City, "dropdown")
+            @Html.EditorFor(x => x.Address.District, "dropdown")
+            @Html.EditorFor(x => x.Address.Street, "dropdown")
+        </div>
+
+        <div class="fields">
+            @Html.EditorFor(x => x.Address.HouseNumber)
+            @Html.EditorFor(x => x.Address.HouseBuilding)
+            @Html.EditorFor(x => x.Address.Room)
+        </div>
         
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="ui primary button" /> <a asp-action="Index" class="ui button">Back to List</a>
             </div>
         </div>
     </div>
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-
-
+    
     <script type="text/javascript">
         $(function() {
-            $('#Address_CityId').change(function(e) {
+            $('#Address_City_Id').change(function(e) {
                 var cityId = $(this).val();
+                
                 $.ajax({
                     type: "GET",
                     url: "/api/rent/districtByCity?cityId=" + cityId,
                     data: {},
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    success: function(msg) {
-                        var options = $("#Address_DistrictId").get(0).options;
+                    success: function (msg) {
+                        var district = $("#Address_District_Id");
+                        district.dropdown('clear');
+                        var options = district.get(0).options;
                         options.length = 0;
 
                         $.each(msg, function(index, item) {

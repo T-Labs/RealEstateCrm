@@ -1,0 +1,16 @@
+﻿@model WebApp.ViewModels.DropDownViewModel
+@{
+    var items = Model.Items;
+}
+
+    <div class="field">
+        <label>
+            <label>@Html.LabelFor(x => x)
+                @if (ViewData.ModelMetadata.IsRequired)
+                {
+                    <text><span style="color: Red; font-weight: bold;">*</span></text>
+                }
+            </label>
+        </label>
+        @Html.DropDownListFor(x => x.Id, items , new {@class = "ui fluid dropdown"})
+    </div>

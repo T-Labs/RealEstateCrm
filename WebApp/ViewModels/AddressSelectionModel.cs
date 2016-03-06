@@ -10,27 +10,47 @@ namespace WebApp.ViewModels
 {
     public class AddressSelectionModel
     {
-        public IEnumerable<SelectListItem> AllCities { get; set; }
-        public IEnumerable<SelectListItem> Districts { get; set; }
-
-        [Display(Name = "Город")]
-        public int CityId { get; set; }
+        [Display(Name="Город")]
+        public DropDownViewModel City { get; set; }
 
         [Display(Name = "Район")]
-        public int DistrictId{get; set; }
+        public DropDownViewModel District { get; set; }
 
-        [Display(Name="Улица")]
-        public int StreetId { get; set; }
-        
+        [Display(Name = "Улица")]
+        public DropDownViewModel Street { get; set; }
+       
+        [Display(Name = "Номер дома")]
+        public string HouseNumber { get; set; }
+
+        [Display(Name="Строение")]
+        public string HouseBuilding { get; set; }
+
+        [Display(Name = "Номер квартиры")]
+        public string Room { get; set; }
+
+
         public AddressSelectionModel()
         {
         }
 
-        public AddressSelectionModel(List<City> allCities, City selectedCity)
+        public AddressSelectionModel(List<City> allCities, List<Street> allStreets, Housing housing)
         {
-            AllCities = allCities.Select(x => new SelectListItem{ Value = x.Id.ToString(), Text = x.Name });
-            Districts = selectedCity.Districts?.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name });
-            CityId = selectedCity.Id;
+            City = new DropDownViewModel()
+            {
+                Id = housing.CityId,
+                Items = allCities.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name })
+            };
+            District = new DropDownViewModel()
+            {
+                Id = housing.DistrictId,
+                Items = housing.City.Districts?.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name })
+            };
+
+            Street = new DropDownViewModel()
+            {
+                Id = housing.StreetId,
+                Items = allStreets.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name })
+            };
         }
     }
 }

@@ -30,6 +30,7 @@ namespace WebApp.Entities
 
         public string Room { get; set; }
 
+        public int TypesHousingId { get; set; }
         public virtual TypesHousing TypesHousing { get; set; }
 
         public double Sum { get; set; }
