@@ -54,6 +54,9 @@ namespace WebApp.Models
                 .WithMany(b => b.Districts)
                 .OnDelete(DeleteBehavior.Restrict);
 
+
+            builder.Entity<Housing>().HasOne(x => x.City);
+
         }
     }
 }

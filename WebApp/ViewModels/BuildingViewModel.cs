@@ -33,32 +33,6 @@ namespace WebApp.ViewModels
         {
         }
 
-        public static BuildingViewModel Create()
-        {
-            var random = new Random();
-            var houseType = MockData.GetRandomHouseType();
-            var city = MockData.GetRandomCity();
-
-            var district = MockData.GetRandomDistrict();
-            var street = MockData.GetRandomStreet();
-            var model = new BuildingViewModel()
-            {
-                RentId = random.Next(1000, 100000),
-                Description = MockData.GetRandomDescription(),
-                District = district.Name,
-                DistrictId = district.Id,
-                HouseType = houseType.Name,
-                HouseTypeId = houseType.Id,
-                Price = random.Next(5000, 30000),
-                Street = street.Name,
-                Phone = "+123456789",
-                CityId = city.Id,
-                CityName = city.Name
-            };
-
-            return model;
-        }
-
         public static BuildingViewModel Create(Housing building)
         {
             var model = new BuildingViewModel()

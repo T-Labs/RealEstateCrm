@@ -5,6 +5,8 @@ using System.Threading;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using WebApp.DAL;
+using WebApp.Entities;
+using WebApp.Models;
 using WebApp.ViewModels;
 
 namespace WebApp.WebApi
@@ -24,56 +26,31 @@ namespace WebApp.WebApi
 
         [Route("api/rent/houseTypes")]
         [HttpGet]
-        public IEnumerable<SelectListItem> GetHouseTypes()
+        public IEnumerable<SelectListItem> GetHouseTypes([FromServices] ApplicationDbContext repo)
         {
-            return MockData.HouseTypes.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
+            return repo.TypesHousing.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
         }
 
         [Route("api/rent/cityList")]
         [HttpGet]
-        public IEnumerable<SelectListItem> GetCityList()
+        public IEnumerable<SelectListItem> GetCityList([FromServices] ApplicationDbContext repo)
         {
-            var city = MockData.CityList.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
+            var city = repo.Cities.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
             return city;
         }
 
         [Route("api/rent/districtByCity")]
         [HttpGet]
-        public IEnumerable<SelectListItem> GetDistrictByCity(int? cityId)
+        public IEnumerable<SelectListItem> GetDistrictByCity([FromServices] ApplicationDbContext repo, int? cityId)
         {
-            var districts = MockData.Districs;
+            IQueryable<District> districts = repo.Districts;
 
             if (cityId.HasValue)
             {
-                districts = districts.Where(x => x.CityId == cityId.Value).ToArray();
+                districts = districts.Where(x => x.CityId == cityId.Value);
             }
-
             return districts.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
         }
         
-        // GET api/values/5
-        /*  [HttpGet("{id}")]
-          public string Get(int id)
-          {
-              return "value";
-          }
-
-          // POST api/values
-          [HttpPost]
-          public void Post([FromBody]string value)
-          {
-          }
-
-          // PUT api/values/5
-          [HttpPut("{id}")]
-          public void Put(int id, [FromBody]string value)
-          {
-          }
-
-          // DELETE api/values/5
-          [HttpDelete("{id}")]
-          public void Delete(int id)
-          {
-          }*/
     }
 }
