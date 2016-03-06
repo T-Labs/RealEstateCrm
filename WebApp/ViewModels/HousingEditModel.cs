@@ -51,7 +51,12 @@ namespace WebApp.ViewModels
                 LastName = housing.LastName,
                 MidleName = housing.MidleName,
                 Cost = housing.Sum,
-                Address = new AddressSelectionModel(allCities, allStreets, housing),
+                Address = new AddressSelectionModel(allCities, allStreets, housing)
+                {
+                    HouseNumber = housing.House,
+                    HouseBuilding = housing.Building,
+                    Room = housing.Room
+                },
                 HouseType = new DropDownViewModel
                 {
                     Id = housing.TypesHousingId,
