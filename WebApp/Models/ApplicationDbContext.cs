@@ -23,7 +23,7 @@ namespace WebApp.Models
 
         public DbSet<District> Districts { get; set; }
 
-        public DbSet<Housing> Objects { get; set; }
+        public DbSet<Housing> Housing { get; set; }
 
         public DbSet<Sms> Smses { get; set; }
 

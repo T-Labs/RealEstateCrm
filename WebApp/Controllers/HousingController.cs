@@ -9,12 +9,12 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
-    [Authorize]
-    public class EditHousingsController : Controller
+    [Authorize(Roles = RoleNames.Admin)]
+    public class HousingController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public EditHousingsController(ApplicationDbContext context)
+        public HousingController(ApplicationDbContext context)
         {
             _context = context;    
         }
@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         // GET: EditHousings
         public IActionResult Index()
         {
-            var applicationDbContext = _context.Objects.Include(h => h.City).Include(h => h.District).Include(h => h.Street).Include(h => h.User);
+            var applicationDbContext = _context.Housing.Include(h => h.City).Include(h => h.District).Include(h => h.Street).Include(h => h.User);
             return View(applicationDbContext.ToList());
         }
 
@@ -34,7 +34,7 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
 
-            Housing housing = _context.Objects.Single(m => m.Id == id);
+            Housing housing = _context.Housing.Single(m => m.Id == id);
             if (housing == null)
             {
                 return HttpNotFound();
@@ -46,29 +46,24 @@ namespace WebApp.Controllers
         // GET: EditHousings/Create
         public IActionResult Create()
         {
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "City");
-            ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "District");
-            ViewData["StreetId"] = new SelectList(_context.Streets, "Id", "Street");
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "User");
-            return View();
+            var model = HousingEditModel.Create(_context, new Housing());
+            return View("Save", model);
         }
 
         // POST: EditHousings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Housing housing)
+        public IActionResult Create(HousingEditModel housing)
         {
             if (ModelState.IsValid)
             {
-                _context.Objects.Add(housing);
+                var newHousingItem = new Housing();
+                housing.UpdateEntity(newHousingItem);
+                _context.Housing.Add(newHousingItem);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "City", housing.CityId);
-            ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "District", housing.DistrictId);
-            ViewData["StreetId"] = new SelectList(_context.Streets, "Id", "Street", housing.StreetId);
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "User", housing.ApplicationUserId);
-            return View(housing);
+            return View("Save", housing);
         }
 
         // GET: EditHousings/Edit/5
@@ -78,19 +73,15 @@ namespace WebApp.Controllers
             {
                 return HttpNotFound();
             }
-
             
-            Housing housing = _context.Objects.Single(m => m.Id == id);
+            Housing housing = _context.Housing.GetById(id.Value);
             if (housing == null)
             {
                 return HttpNotFound();
-            }
+            }   
             
-            var allCities = _context.Cities.Include(x => x.Districts).ToList();
-            var allStreets = _context.Streets.ToList();
-            var typesHousings = _context.TypesHousing.ToList();
-            var model = HousingEditModel.Create(housing, allCities, allStreets, typesHousings);
-            return View(model);
+            var model = HousingEditModel.Create(_context, housing);
+            return View("Save", model);
         }
 
         // POST: EditHousings/Edit/5
@@ -100,13 +91,13 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dbItem = _context.Objects.Single(x => x.Id == editId);
+                var dbItem = _context.Housing.Single(x => x.Id == editId);
                 housing.UpdateEntity(dbItem);
                 _context.Update(dbItem);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(housing);
+            return View("Save", housing);
         }
 
         // GET: EditHousings/Delete/5
@@ -118,7 +109,7 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
 
-            Housing housing = _context.Objects.Single(m => m.Id == id);
+            Housing housing = _context.Housing.Single(m => m.Id == id);
             if (housing == null)
             {
                 return HttpNotFound();
@@ -132,8 +123,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            Housing housing = _context.Objects.Single(m => m.Id == id);
-            _context.Objects.Remove(housing);
+            Housing housing = _context.Housing.Single(m => m.Id == id);
+            _context.Housing.Remove(housing);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -6,21 +6,28 @@
 
 <h2>Edit</h2>
 
-<form asp-action="Edit" class="ui form">
+<form asp-action='@Model.EditId > 0 ? "Edit" : "Create"' class="ui form">
     <div class="form-horizontal">
         <h4>Housing</h4>
         <hr />
         <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="@Model.EditId"/>
-        
+
         <div class="three fields">
             @Html.EditorFor(x => x.FirstName)
             @Html.EditorFor(x => x.MidleName)
             @Html.EditorFor(x => x.LastName)
         </div>
+         <div class="three fields">
+            @Html.EditorFor(x => x.Phone1)
+            @Html.EditorFor(x => x.Phone2)
+            @Html.EditorFor(x => x.Phone3)
+        </div>
         @Html.EditorFor(x => x.Comment, "textarea")
-        @Html.EditorFor(x => x.HouseType, "dropdown")
-        @Html.EditorFor(x => x.Cost)
+        <div class="two fields">
+             @Html.EditorFor(x => x.HouseType, "dropdown")
+             @Html.EditorFor(x => x.Cost) 
+        </div>
         <div class="three fields">
             @Html.EditorFor(x => x.Address.City, "dropdown")
             @Html.EditorFor(x => x.Address.District, "dropdown")

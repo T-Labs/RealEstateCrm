@@ -7,18 +7,17 @@ using WebApp.Entities;
 using WebApp.Models;
 using Microsoft.Data.Entity;
 
-namespace WebApp.DAL
+namespace WebApp
 {
-    public class BuildingRepository : BaseRepository
+    public static class HousingExtensions
     {
-
-        public BuildingRepository([FromServices] ApplicationDbContext dbContext) : base(dbContext)
+        public static Housing GetById(this DbSet<Housing> housings, int id)
         {
+            return housings.Include(x => x.Phones).Single(m => m.Id == id);
         }
 
-        public List<Housing> GetBuildings(int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
+        public static List<Housing> GetBuildings(this DbSet<Housing> housings, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
         {
-            var housings = DbContext.Objects;
             IQueryable<Housing> query = housings;
             
             if (houseTypeId.Length > 0)

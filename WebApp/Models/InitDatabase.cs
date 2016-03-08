@@ -8,7 +8,7 @@ using WebApp.Models;
 
 namespace WebApp.DAL
 {
-    public abstract class BaseRepository
+    public class InitDatabase
     {
         protected ApplicationDbContext DbContext { get; }
 
@@ -16,7 +16,7 @@ namespace WebApp.DAL
         private static bool DatabaseInit = false;
 #endif
 
-        protected BaseRepository(ApplicationDbContext dbContext)
+        public InitDatabase(ApplicationDbContext dbContext)
         {
             DbContext = dbContext;
 #if DEBUG
@@ -363,11 +363,11 @@ namespace WebApp.DAL
                 DbContext.SaveChanges();
             }
 
-            if (!DbContext.Objects.Any())
+            if (!DbContext.Housing.Any())
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    DbContext.Objects.Add(CreateHousingRadnom());
+                    DbContext.Housing.Add(CreateHousingRadnom());
                     DbContext.SaveChanges();
                 }
             }

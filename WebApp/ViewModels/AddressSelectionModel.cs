@@ -10,15 +10,19 @@ namespace WebApp.ViewModels
 {
     public class AddressSelectionModel
     {
+        [Required]
         [Display(Name="Город")]
         public DropDownViewModel City { get; set; }
 
+        [Required]
         [Display(Name = "Район")]
         public DropDownViewModel District { get; set; }
 
+        [Required]
         [Display(Name = "Улица")]
         public DropDownViewModel Street { get; set; }
-       
+
+        [Required]
         [Display(Name = "Номер дома")]
         public string HouseNumber { get; set; }
 
@@ -40,10 +44,11 @@ namespace WebApp.ViewModels
                 Id = housing.CityId,
                 Items = allCities.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name })
             };
+
             District = new DropDownViewModel()
             {
                 Id = housing.DistrictId,
-                Items = housing.City.Districts?.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name })
+                Items = housing.City?.Districts?.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }) ?? new List<SelectListItem>()
             };
 
             Street = new DropDownViewModel()
