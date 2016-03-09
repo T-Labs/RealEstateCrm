@@ -3,14 +3,14 @@
     var items = Model.Items;
 }
 
-    <div class="field">
-        <label>
-            <label>@Html.LabelFor(x => x)
-                @if (ViewData.ModelMetadata.IsRequired)
-                {
-                    <text><span style="color: Red; font-weight: bold;">*</span></text>
-                }
-            </label>
+<div class="field">
+    <label>
+        <label>@Html.LabelFor(x => x)
+            @if (ViewData.ModelMetadata.IsRequired)
+            {
+                <text><span style="color: Red; font-weight: bold;">*</span></text>
+            }
         </label>
-        @Html.DropDownListFor(x => x.Id, items , new {@class = "ui fluid dropdown"})
-    </div>
+    </label>
+    @Html.DropDownListFor(x => x.Id, items , new {@class = "ui fluid dropdown"})
+</div>

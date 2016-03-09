@@ -10,6 +10,62 @@
     <a asp-action="Create" class="ui button blue">Добавить новый объект</a>
 </p>
 
+
+<form class="ui form segment">
+    <div class="three fields">
+        <div class="field">
+            <label>Вид жилья</label>
+            <input type="text"/>
+        </div>
+        <div class="field">
+            <label>Район</label>
+            <input type="text"/>
+        </div>
+        <div class="field">
+            <label>ID объекта</label>
+            <input type="text"/>
+        </div>
+    </div>
+
+    <div class="three fields">
+        <div class="field">
+            <label>Цена от</label>
+            <input type="text"/>
+        </div>
+        <div class="field">
+            <label>Цена до</label>
+            <input type="text"/>
+        </div>
+    </div>
+    <input type="submit" value="Применить фильтр" class="ui primary button"/>
+</form>
+
+<h4 class="ui horizontal divider header">
+  
+</h4>
+
+<div class="ui three column grid segment">
+        <div class="row">
+            <div class="column">
+                
+            </div>
+            <div class="column">
+                <label>Район</label>
+            </div>
+            <div class="column">
+                <label>ID объекта</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <label>Цена от</label>
+            </div>
+            <div class="column">
+                <label>Цена до</label>
+            </div>
+        </div>
+    </div>
+
 @foreach (var item in Model)
 {
     <div class="ui stackable two column grid segment">
@@ -28,18 +84,38 @@
                     @Html.DisplayFor(x => item.Phone1)&nbsp;&nbsp;&nbsp;@Html.DisplayFor(x => item.Phone2)&nbsp;&nbsp;&nbsp;@Html.DisplayFor(x => item.Phone3)
                 </div>
                 <div class="ten wide column">
-            <i class="write icon"></i> <span>@Html.DisplayFor(x => item.Comment)</span>
-        </div>
+                    <i class="write icon"></i> <span>@Html.DisplayFor(x => item.Comment)</span>
+                </div>
             </div>
         </div>
         <div class="two wide column right aligned">
             <div class="row column two">
                 <a asp-action="Edit" asp-route-id="1" class="ui button blue tiny">Редактировать</a>
-                <a asp-action="Details" asp-route-id="1" class="ui button tiny">Подробности</a>
+                <a onclick='@($"$('#item{item.EditId}').modal('show');return false;")' class="ui button tiny">Подробности</a>
                 <a asp-action="Delete" asp-route-id="1" class="ui button red tiny" onclick="return confirm('Вы уверены что хотите удалить запись?');">Удалить</a>
             </div>
         </div>
     </div>
+    <div class="ui modal" id='@($"item{item.EditId}")'>
+          <i class="close icon"></i>
+          <div class="header">
+            @Html.DisplayFor(x => item.HouseType)
+          </div>
+          <div class="content">
+            <div class="description">
+             @Html.DisplayFor(x => item.Comment)
+            </div>
+          </div>
+          <div class="actions">
+            <div class="ui black deny button">
+              Закрыть
+            </div>
+            <div class="ui positive right labeled icon button">
+              Yep, that's me
+              <i class="checkmark icon"></i>
+            </div>
+          </div>
+        </div>
 }
 
 <div class="ui circular labels">
