@@ -1,0 +1,23 @@
+﻿@model DateTime?
+@{
+    string val = "";
+    if ( Model.HasValue )
+    {
+        val = Model.Value.ToShortDateString();
+    }
+
+    //var id = ViewData.ModelMetadata.ContainerType.FullName + "." + ViewData.ModelMetadata.PropertyName;
+    //id = id.Replace(".", "_");
+}
+<div class="field">
+    <label>
+        @Html.LabelFor(x => x)
+        @if (ViewData.ModelMetadata.IsRequired){
+            <span style="color: Red; font-weight: bold;">*</span>
+        }
+        @Html.TextBox("", val, new { @class = "selectDateInput"})
+        @Html.ValidationMessageFor(x => x)
+    </label>
+    
+ 
+</div>

@@ -56,6 +56,10 @@ namespace WebApp.ViewModels
                 Id = housing.StreetId,
                 Items = allStreets.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name })
             };
+
+            HouseNumber = housing.House;
+            HouseBuilding = housing.Building;
+            Room = housing.Room;
         }
     }
 }

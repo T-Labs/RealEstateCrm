@@ -1,53 +1,52 @@
-@model IEnumerable<WebApp.ViewModels.HousingEditModel>
+﻿@model IEnumerable<WebApp.ViewModels.HousingEditModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Список объектов</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="ui button blue">Добавить новый объект</a>
 </p>
 
 @foreach (var item in Model)
 {
-    <div class="ui three column stackable grid segment">
-        <div class="four wide column">
-            <div class="ui">
-                <h3><i class="home icon"></i>@item.HouseType
-                </h3>
+    <div class="ui stackable two column grid segment">
+        <div class="thirteen wide column">
+            <div class="ui grid">
+                <div class="four wide column">
+                    <h3><i class="home icon"></i>@Html.DisplayFor(x => item.HouseType)</h3>
+                </div>
+                <div class="four wide column">
+                    <h3><i class="ruble icon"></i>@Html.DisplayFor(x => item.Cost)</h3>
+                </div>
+                <div class="four wide column">
+                    <i class="marker icon"></i> @Html.DisplayFor(x => item.FullAddress)
+                </div>
+                <div class="four wide column">
+                    @Html.DisplayFor(x => item.Phone1)&nbsp;&nbsp;&nbsp;@Html.DisplayFor(x => item.Phone2)&nbsp;&nbsp;&nbsp;@Html.DisplayFor(x => item.Phone3)
+                </div>
+                <div class="ten wide column">
+            <i class="write icon"></i> <span>@Html.DisplayFor(x => item.Comment)</span>
+        </div>
             </div>
         </div>
-        <div class="four wide column">
-            <div class="ui ">
-                <h3><i class="ruble icon"></i>@item.Cost
-                </h3>
-            </div>
-        </div>
-        <div class="eight wide column">
-            <div class="ui right aligned">
-                <i class="marker icon"></i> @item.FullAddress
-            </div>
-        </div>
-        <div class="ten wide column">
-            <div class="ui"><i class="write icon"></i> <span>@item.Comment</span></div>
-        </div>
-        <div class="six wide column">
-            <div class="ui"><i class="phone icon"></i>
-                    <span>@item.Phone1</span> <span>@item.Phone2</span> <span>@item.Phone3</span>
+        <div class="two wide column right aligned">
+            <div class="row column two">
+                <a asp-action="Edit" asp-route-id="1" class="ui button blue tiny">Редактировать</a>
+                <a asp-action="Details" asp-route-id="1" class="ui button tiny">Подробности</a>
+                <a asp-action="Delete" asp-route-id="1" class="ui button red tiny" onclick="return confirm('Вы уверены что хотите удалить запись?');">Удалить</a>
             </div>
         </div>
     </div>
 }
 
 <div class="ui circular labels">
-    <a class="ui label">������</a>
+    <a class="ui label">Первая</a>
     <a class="ui blue label">1</a>
     <a class="ui label">2</a>
     <a class="ui label">3</a>
-    <a class="ui label">���������</a>
+    <a class="ui label">Последняя</a>
 </div>
- <a asp-action="Edit" asp-route-id="1">Edit</a> |
-            <a asp-action="Details" asp-route-id="1">Details</a> |
-            <a asp-action="Delete" asp-route-id="1">Delete</a>
+

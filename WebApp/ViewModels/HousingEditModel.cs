@@ -33,16 +33,20 @@ namespace WebApp.ViewModels
         
         public AddressSelectionModel Address { get; set; }
 
+        [UIHint("phone")]
         [Required]
         [Display(Name = "Телефон 1 для связи")]
         public string Phone1 { get; set; }
 
+        [UIHint("phone")]
         [Display(Name = "Телефон 2 для связи")]
         public string Phone2 { get; set; }
 
+        [UIHint("phone")]
         [Display(Name = "Телефон 3 для связи")]
         public string Phone3 { get; set; }
 
+        [UIHint("dropdown")]
         [Display(Name =  "Тип жилья")]
         public DropDownViewModel HouseType { get; set; }
 
@@ -68,25 +72,19 @@ namespace WebApp.ViewModels
                 LastName = housing.LastName,
                 MidleName = housing.MidleName,
                 Cost = housing.Sum,
-                Address = new AddressSelectionModel(allCities, allStreets, housing)
-                {
-                    HouseNumber = housing.House,
-                    HouseBuilding = housing.Building,
-                    Room = housing.Room
-                },
+                EndDate = housing.EndDate,
+                Phone1 = housing.Phones.SingleOrDefault(x => x.Order == 0)?.Number,
+                Phone2 = housing.Phones.SingleOrDefault(x => x.Order == 1)?.Number,
+                Phone3 = housing.Phones.SingleOrDefault(x => x.Order == 2)?.Number,
+                Address = new AddressSelectionModel(allCities, allStreets, housing),
                 HouseType = new DropDownViewModel
                 {
                     Id = housing.TypesHousingId,
                     Items = typesHousings.Select(x => new SelectListItem {Value = x.Id.ToString(), Text = x.Name })
                 }
             };
-
-            if (housing.Phones != null && housing.Phones.Any())
-            {
-                item.Phone1 = housing.Phones.FirstOrDefault(x => x.Order == 0)?.Number;
-                item.Phone2 = housing.Phones.FirstOrDefault(x => x.Order == 1)?.Number;
-                item.Phone3 = housing.Phones.FirstOrDefault(x => x.Order == 2)?.Number;
-            }
+            
+            
 
             var addressParts = new List<string>();
             if (housing.City != null)
@@ -108,7 +106,7 @@ namespace WebApp.ViewModels
             addressParts.Add(housing.Building);
             addressParts.Add(housing.Room);
             
-            item.FullAddress = addressParts.Where(x => !string.IsNullOrEmpty(x)).Aggregate("", (x, y) => x + ", " + y);
+            item.FullAddress = addressParts.Where(x => !string.IsNullOrEmpty(x)).Aggregate("", (x, y) => x + ", " + y).Trim(',');
 
             return item;
         }
@@ -128,6 +126,7 @@ namespace WebApp.ViewModels
             item.Building = Address.HouseBuilding;
             item.Room = Address.Room;
             item.TypesHousingId = HouseType.Id;
+            item.EndDate = EndDate;
 
             UpdatePhone(item, 0, Phone1);
             UpdatePhone(item, 1, Phone2);

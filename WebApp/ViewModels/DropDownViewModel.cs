@@ -9,6 +9,11 @@ namespace WebApp.ViewModels
     public class DropDownViewModel
     {
         public int Id { get; set; }
-        public IEnumerable<SelectListItem> Items { get; set; } 
+        public IEnumerable<SelectListItem> Items { get; set; }
+
+        public string SelectedText
+        {
+            get { return Items.FirstOrDefault(x => x.Value == Id.ToString())?.Text ?? string.Empty; }
+        }
     }
 }
