@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
@@ -22,8 +23,13 @@ namespace WebApp.Controllers
         // GET: EditHousings
         public IActionResult Index()
         {
-            var applicationDbContext = _context.Housing.Include(h => h.City).Include(h => h.District).Include(h => h.Street).Include(h => h.User);
-            return View(applicationDbContext.ToList());
+            var applicationDbContext = _context.Housing
+                .Include(h => h.City)
+                .Include(h => h.District)
+                .Include(h => h.Street)
+                .Include(h => h.User).ToList();
+
+            return View(applicationDbContext.Select(x => HousingEditModel.Create(_context,x)).ToList());
         }
 
         // GET: EditHousings/Details/5
@@ -46,7 +52,11 @@ namespace WebApp.Controllers
         // GET: EditHousings/Create
         public IActionResult Create()
         {
-            var model = HousingEditModel.Create(_context, new Housing());
+            var housing = new Housing()
+            {
+                City = _context.Cities.FirstOrDefault()
+            };
+            var model = HousingEditModel.Create(_context, housing);
             return View("Save", model);
         }
 
@@ -57,7 +67,10 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newHousingItem = new Housing();
+                var newHousingItem = new Housing()
+                {
+                    Phones = new List<HousingPhone>()
+                };
                 housing.UpdateEntity(newHousingItem);
                 _context.Housing.Add(newHousingItem);
                 _context.SaveChanges();
@@ -91,7 +104,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dbItem = _context.Housing.Single(x => x.Id == editId);
+                var dbItem = _context.Housing.GetById(editId);
                 housing.UpdateEntity(dbItem);
                 _context.Update(dbItem);
                 _context.SaveChanges();

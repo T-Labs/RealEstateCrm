@@ -1,45 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using WebApp.Entities;
-using WebApp.Models;
 
-namespace WebApp.DAL
+namespace WebApp.Models
 {
-    public class InitDatabase
+    public static class InitTestData
     {
-        protected ApplicationDbContext DbContext { get; }
-
 #if DEBUG
-        private static bool DatabaseInit = false;
-#endif
+        public static bool DatabaseInit = false;
 
-        public InitDatabase(ApplicationDbContext dbContext)
+        public static void DatabaseInitData(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
-            DbContext = dbContext;
-#if DEBUG
-            if (!DatabaseInit)
-            {
-                DatabaseInitData();
-                DatabaseInit = true;
-            }
-#endif
-        }
-        
-#if DEBUG
-        private void DatabaseInitData()
-        {
-            if (!DbContext.Cities.Any())
-            {
-                DbContext.Cities.Add(new City {Name = "Рязань"});
-                DbContext.Cities.Add(new City {Name = "Тула"});
 
-                DbContext.SaveChanges();
+            if (!dbContext.Roles.Any())
+            {
+                dbContext.Roles.Add(new IdentityRole { Name = RoleNames.Admin });
+                dbContext.SaveChanges();
             }
 
-            if (!DbContext.TypesHousing.Any())
+            if (!dbContext.Users.Any())
+            {
+                var user = new ApplicationUser { UserName = "admin@admin.com", Email = "admin@admin.com" };
+                var result = userManager.CreateAsync(user, "admin");
+            }
+            if (!dbContext.Cities.Any())
+            {
+                dbContext.Cities.Add(new City {Name = "Рязань"});
+                dbContext.Cities.Add(new City {Name = "Тула"});
+
+                dbContext.SaveChanges();
+            }
+
+            if (!dbContext.TypesHousing.Any())
             {
                 var houseTypes = new TypesHousing[]
                 {
@@ -54,16 +49,16 @@ namespace WebApp.DAL
 
                 foreach (var type in houseTypes)
                 {
-                    DbContext.TypesHousing.Add(type);
+                    dbContext.TypesHousing.Add(type);
                 }
 
-                DbContext.SaveChanges();
+                dbContext.SaveChanges();
             }
 
-            if (!DbContext.Districts.Any())
+            if (!dbContext.Districts.Any())
             {
-                var ryazan = DbContext.Cities.First(x => x.Id == 1);
-                var tula = DbContext.Cities.First(x => x.Id == 2);
+                var ryazan = dbContext.Cities.First(x => x.Id == 1);
+                var tula = dbContext.Cities.First(x => x.Id == 2);
                 var districs = new District[]
                     {
                         new District { Name = "Дашково Песочня", City = ryazan },
@@ -92,14 +87,14 @@ namespace WebApp.DAL
 
                 foreach (var district in districs)
                 {
-                    DbContext.Districts.Add(district);
+                    dbContext.Districts.Add(district);
                 }
 
-                DbContext.SaveChanges();
+                dbContext.SaveChanges();
             }
 
 
-            if (!DbContext.Streets.Any())
+            if (!dbContext.Streets.Any())
             {
                 #region
 
@@ -357,23 +352,23 @@ namespace WebApp.DAL
                 #endregion
                 foreach (var street in streets)
                 {
-                    DbContext.Streets.Add(street);
+                    dbContext.Streets.Add(street);
                 }
 
-                DbContext.SaveChanges();
+                dbContext.SaveChanges();
             }
 
-            if (!DbContext.Housing.Any())
+            if (!dbContext.Housing.Any())
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    DbContext.Housing.Add(CreateHousingRadnom());
-                    DbContext.SaveChanges();
+                    dbContext.Housing.Add(CreateHousingRadnom(dbContext));
+                    dbContext.SaveChanges();
                 }
             }
         }
 
-        private Housing CreateHousingRadnom()
+        private static Housing CreateHousingRadnom(ApplicationDbContext DbContext)
         {
             var houseType = DbContext.TypesHousing.ToList()[Random.Next(0, DbContext.TypesHousing.Count())];
             var city = DbContext.Cities.ToList()[Random.Next(0, DbContext.Cities.Count())]; ;

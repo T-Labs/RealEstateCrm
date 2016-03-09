@@ -6,7 +6,7 @@ using WebApp.Entities;
 
 namespace WebApp.ViewModels
 {
-    public class BuildingViewModel
+    public class HousingViewModel
     {
         public int RentId { get; private set; }
 
@@ -29,19 +29,19 @@ namespace WebApp.ViewModels
 
         public int DistrictId { get; private set; }
 
-        private BuildingViewModel()
+        private HousingViewModel()
         {
         }
 
-        public static BuildingViewModel Create(Housing building)
+        public static HousingViewModel Create(Housing building, bool isAuth)
         {
-            var model = new BuildingViewModel()
+            var model = new HousingViewModel()
             {
                 Street = building.Street.Name,
                 District = building.District.Name,
                 DistrictId = building.DistrictId,
                 CityId = building.CityId,
-                Phone = building.Phones[0].Number,
+                Phone = isAuth ? building.Phones.FirstOrDefault()?.Number ?? string.Empty : string.Empty,
                 HouseTypeId = building.TypesHousing.Id,
                 HouseType = building.TypesHousing.Name,
                 Price = (int)building.Sum,

@@ -10,7 +10,9 @@
     </h2>
 
     <div class="ui grid">
+      
         <div class="row">
+
             <div class="three wide column">
                 <div class="ui center aligned">
                     <select name="city" class="ui fluid normal dropdown" ng-model="ctrl.city" ng-change="ctrl.changeFilters()">
@@ -26,10 +28,10 @@
                         <option value="{{item.Value}}" ng-repeat="item in ctrl.houseTypes">{{item.Text}}</option>
                     </select>
                     <div class="ui input">
-                        <input type="text" placeholder="от" ng-change="ctrl.changeFilters()" ng-model="ctrl.priceFrom"  ng-model-options="{debounce: 500}">
+                        <input type="text" placeholder="от" ng-change="ctrl.changeFilters()" ng-model="ctrl.priceFrom" ng-model-options="{debounce: 500}">
                     </div>
                     <div class="ui input">
-                        <input type="text" placeholder="до"  ng-change="ctrl.changeFilters()" ng-model="ctrl.priceTo" ng-model-options="{debounce: 500}">
+                        <input type="text" placeholder="до" ng-change="ctrl.changeFilters()" ng-model="ctrl.priceTo" ng-model-options="{debounce: 500}">
                     </div>
                 </div>
             </div>
@@ -45,17 +47,19 @@
                     <div class="ui three column stackable grid segment" ng-repeat="item in ctrl.rentData | limitTo: 10">
                         <div class="four wide column">
                             <div class="ui">
-                                <h3><i class="home icon"></i>{{item.HouseType}}</h3>
+                                <h3><i class="home icon"></i>{{item.HouseType}}
+                                </h3>
                             </div>
                         </div>
                         <div class="four wide column">
-                            <div class="ui "> 
-                                <h3><i class="ruble icon"></i>{{item.Price}}</h3>
-                             </div>
+                            <div class="ui ">
+                                <h3><i class="ruble icon"></i>{{item.Price}}
+                                </h3>
+                            </div>
                         </div>
                         <div class="eight wide column">
                             <div class="ui right aligned">
-                               <i class="marker icon"></i> {{item.CityName}} {{item.District}} {{item.Street}}
+                                <i class="marker icon"></i> {{item.CityName}} {{item.District}} {{item.Street}}
                             </div>
                         </div>
                         <div class="ten wide column">
@@ -63,16 +67,19 @@
                         </div>
                         <div class="six wide column">
                             <div class="ui"><i class="phone icon"></i>
-                                @if(User.Identity.IsAuthenticated) {
+                                @if (User.Identity.IsAuthenticated)
+                                {
                                     <span>{{item.Phone}}</span>
-                                } else {
+                                }
+                                else
+                                {
                                     <span>Номер телефона виден только зарегистрированному пользователю</span>
                                 }
 
                             </div>
                         </div>
                     </div>
-             
+
                     <div class="ui circular labels">
                         <a class="ui label">Первая</a>
                         <a class="ui blue label">1</a>

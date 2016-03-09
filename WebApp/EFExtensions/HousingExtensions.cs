@@ -16,7 +16,7 @@ namespace WebApp
             return housings.Include(x => x.Phones).Single(m => m.Id == id);
         }
 
-        public static List<Housing> GetBuildings(this DbSet<Housing> housings, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
+        public static List<Housing> GetByFilters(this DbSet<Housing> housings, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
         {
             IQueryable<Housing> query = housings;
             

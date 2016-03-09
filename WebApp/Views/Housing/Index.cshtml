@@ -1,4 +1,4 @@
-@model IEnumerable<WebApp.Entities.Housing>
+@model IEnumerable<WebApp.ViewModels.HousingEditModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,96 +9,45 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Building)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Comment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Currency)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.House)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MidleName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PartherShip)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RevisionDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Room)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Sum)
-        </th>
-        <th></th>
-    </tr>
-    
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Building)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Comment)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Currency)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.House)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MidleName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PartherShip)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RevisionDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Room)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sum)
-        </td>
-        <td>
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-        </td>
-    </tr>
+
+@foreach (var item in Model)
+{
+    <div class="ui three column stackable grid segment">
+        <div class="four wide column">
+            <div class="ui">
+                <h3><i class="home icon"></i>@item.HouseType
+                </h3>
+            </div>
+        </div>
+        <div class="four wide column">
+            <div class="ui ">
+                <h3><i class="ruble icon"></i>@item.Cost
+                </h3>
+            </div>
+        </div>
+        <div class="eight wide column">
+            <div class="ui right aligned">
+                <i class="marker icon"></i> @item.FullAddress
+            </div>
+        </div>
+        <div class="ten wide column">
+            <div class="ui"><i class="write icon"></i> <span>@item.Comment</span></div>
+        </div>
+        <div class="six wide column">
+            <div class="ui"><i class="phone icon"></i>
+                    <span>@item.Phone1</span> <span>@item.Phone2</span> <span>@item.Phone3</span>
+            </div>
+        </div>
+    </div>
 }
-</table>
+
+<div class="ui circular labels">
+    <a class="ui label">Первая</a>
+    <a class="ui blue label">1</a>
+    <a class="ui label">2</a>
+    <a class="ui label">3</a>
+    <a class="ui label">Последняя</a>
+</div>
+ <a asp-action="Edit" asp-route-id="1">Edit</a> |
+            <a asp-action="Details" asp-route-id="1">Details</a> |
+            <a asp-action="Delete" asp-route-id="1">Delete</a>

@@ -16,11 +16,12 @@ namespace WebApp.WebApi
         // GET: api/values
         [Route("api/rent")]
         [HttpGet]
-        public IEnumerable<BuildingViewModel> Get([FromServices] ApplicationDbContext dbContext, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
+        public IEnumerable<HousingViewModel> Get([FromServices] ApplicationDbContext dbContext, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
         {
-            var items = dbContext.Housing.GetBuildings(page, houseTypeId, cityId, priceFrom, priceTo);
+            var items = dbContext.Housing.GetByFilters(page, houseTypeId, cityId, priceFrom, priceTo);
             //Thread.Sleep(2000);
-            return items.Select(BuildingViewModel.Create);
+            bool isAuth = User.Identity.IsAuthenticated;
+            return items.Select(x => HousingViewModel.Create(x, isAuth));
         }
 
         [Route("api/rent/houseTypes")]

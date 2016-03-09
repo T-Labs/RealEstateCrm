@@ -33,6 +33,7 @@ namespace WebApp.ViewModels
         
         public AddressSelectionModel Address { get; set; }
 
+        [Required]
         [Display(Name = "Телефон 1 для связи")]
         public string Phone1 { get; set; }
 
@@ -45,6 +46,10 @@ namespace WebApp.ViewModels
         [Display(Name =  "Тип жилья")]
         public DropDownViewModel HouseType { get; set; }
 
+        [Display(Name = "Дата освобождения объекта")]
+        public DateTime EndDate { get; set; }
+
+        public string FullAddress { get; set; }
         public HousingEditModel()
         {
         }
@@ -78,10 +83,32 @@ namespace WebApp.ViewModels
 
             if (housing.Phones != null && housing.Phones.Any())
             {
-                item.Phone1 = housing.Phones.FirstOrDefault()?.Number;
-                item.Phone2 = housing.Phones.Skip(1).FirstOrDefault()?.Number;
-                item.Phone3 = housing.Phones.Skip(2).FirstOrDefault()?.Number;
+                item.Phone1 = housing.Phones.FirstOrDefault(x => x.Order == 0)?.Number;
+                item.Phone2 = housing.Phones.FirstOrDefault(x => x.Order == 1)?.Number;
+                item.Phone3 = housing.Phones.FirstOrDefault(x => x.Order == 2)?.Number;
             }
+
+            var addressParts = new List<string>();
+            if (housing.City != null)
+            {
+                addressParts.Add(housing.City.Name);
+            }
+
+            if (housing.District != null)
+            {
+                addressParts.Add(housing.District.Name);
+            }
+
+            if (housing.Street != null)
+            {
+                addressParts.Add(housing.Street.Name);
+            }
+
+            addressParts.Add(housing.House);
+            addressParts.Add(housing.Building);
+            addressParts.Add(housing.Room);
+            
+            item.FullAddress = addressParts.Where(x => !string.IsNullOrEmpty(x)).Aggregate("", (x, y) => x + ", " + y);
 
             return item;
         }
@@ -101,7 +128,24 @@ namespace WebApp.ViewModels
             item.Building = Address.HouseBuilding;
             item.Room = Address.Room;
             item.TypesHousingId = HouseType.Id;
-            
+
+            UpdatePhone(item, 0, Phone1);
+            UpdatePhone(item, 1, Phone2);
+            UpdatePhone(item, 2, Phone3);
+        }
+
+        private static void UpdatePhone(Housing item, int order, string phone)
+        {
+            var housingPhone = item.Phones.SingleOrDefault(x => x.Order == order);
+            if (housingPhone != null)
+            {
+                housingPhone.Number = phone;
+            }
+            else if(!string.IsNullOrEmpty(phone))
+            {
+                housingPhone = new HousingPhone { Number = phone, Order = order };
+                item.Phones.Add(housingPhone);
+            }
         }
     }
 }

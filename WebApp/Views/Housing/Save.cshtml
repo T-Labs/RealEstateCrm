@@ -1,12 +1,20 @@
-@model WebApp.ViewModels.HousingEditModel
+﻿@model WebApp.ViewModels.HousingEditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактирование объекта";
+    bool isEditMode = Model.EditId > 0;
 }
 
-<h2>Edit</h2>
+@if (isEditMode)
+{
+   <h2>Редактирование</h2>
+}
+else
+{
+   <h2>Добавления</h2>
+}
 
-<form asp-action='@Model.EditId > 0 ? "Edit" : "Create"' class="ui form">
+<form asp-action='@isEditMode ? "Edit" : "Create"' class="ui form">
     <div class="form-horizontal">
         <h4>Housing</h4>
         <hr />
@@ -39,10 +47,19 @@
             @Html.EditorFor(x => x.Address.HouseBuilding)
             @Html.EditorFor(x => x.Address.Room)
         </div>
-        
+
+        @Html.EditorFor(x => x.EndDate)
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="ui primary button" /> <a asp-action="Index" class="ui button">Back to List</a>
+                @if (isEditMode) {
+                     <input type="submit" value="Сохранить" class="ui primary button"/>
+                } else {
+                     <input type="submit" value="Добавить" class="ui primary button"/>
+                }
+
+                  <a asp-action="Index" class="ui button red" onclick="return confirm('Вы уверены что хотите удалить объект?');">Удалить</a>
+                <a asp-action="Index" class="ui button">Вернуться к списку</a>
             </div>
         </div>
     </div>

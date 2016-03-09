@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApp.Models;
@@ -52,10 +53,16 @@ namespace WebApp.Entities
         public DateTime EndDate { get; set; }
 
         public DateTime RevisionDate { get; set; }
+     //   public string RevisionStatus { get; set; } //Проверено 	Не отвечает	Недоступен 	Корректировка без прозвона
+     //   public string RevisionUserId { get; set; }
+        
+     //   public ApplicationUser RevisionUser { get; set; }
 
         public string ApplicationUserId { get; set; }
-
+        
         public ApplicationUser User { get; set; }
+
+        //public bool IsArchive { get; set; }
     }
 }
 

@@ -2,14 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
+        public HomeController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        {
+            if (!InitTestData.DatabaseInit)
+            {
+                InitTestData.DatabaseInitData(dbContext, userManager);
+            }
+        }
+
         public IActionResult Index()
         {
+           
             return View();
         }
 
