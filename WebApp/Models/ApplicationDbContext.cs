@@ -55,7 +55,9 @@ namespace WebApp.Models
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-            builder.Entity<Housing>().HasOne(x => x.City);
+            builder.Entity<HousingCall>().HasBaseType<Call>().ToTable("HousingCall");
+            builder.Entity<CustomerCall>().HasBaseType<Call>().ToTable("CustomerCall");
+
 
         }
     }

@@ -38,7 +38,7 @@ namespace WebApp.ViewModels
         {
         }
 
-        public HousingIndexModel(ApplicationDbContext context, int? typesHousingId)
+        public HousingIndexModel(ApplicationDbContext context, int? typesHousingId, int? cityId, int? districtId)
         {
             var housing = context.TypesHousing.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name  }).ToList();
             housing.Insert(0, new SelectListItem { Value = "", Selected = true, Text = "Все виды жилья" });
@@ -55,7 +55,7 @@ namespace WebApp.ViewModels
             cityList.Insert(0, new SelectListItem { Value = "", Selected = true, Text = "Все города" });
             City = new DropDownViewModel
             {
-                Id = 0,
+                Id = cityId ?? 0,
                 Items = cityList
             };
 
@@ -64,7 +64,7 @@ namespace WebApp.ViewModels
 
             District = new DropDownViewModel()
             {
-                Id =  0,
+                Id =  districtId ?? 0,
                 Items = districts
             };
 

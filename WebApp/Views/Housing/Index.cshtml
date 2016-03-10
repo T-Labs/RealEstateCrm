@@ -24,11 +24,12 @@
         @Html.EditorFor(x => x.SelectedObjectId, "int")
     </div>
     <input type="submit" value="Применить фильтр" class="ui primary button"/>
+    <input type="button" value="Сброс" class="ui button"/>
 </form>
 
 <h4 class="ui horizontal divider header">
   <i class="tag icon"></i>
-  Всего объектов в базе: @ViewBag.TotalItems Найдено по фильтру: @ViewBag.FilteredItemsCount
+  Всего объектов в базе: @ViewBag.TotalItems Найдено: @ViewBag.FilteredItemsCount
 </h4>
 
 @foreach (var item in Model.Items)

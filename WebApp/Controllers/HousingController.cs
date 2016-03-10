@@ -79,7 +79,7 @@ namespace WebApp.Controllers
                 .Select(x => HousingEditModel.Create(_context, x))
                 .ToList();
 
-            var model = new HousingIndexModel(_context, houseType)
+            var model = new HousingIndexModel(_context, houseType, cityId, districtId)
             {
                 Items = items
             };
