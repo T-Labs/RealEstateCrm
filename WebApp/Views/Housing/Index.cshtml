@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebApp.ViewModels.HousingEditModel>
+﻿@model WebApp.ViewModels.HousingIndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -11,62 +11,27 @@
 </p>
 
 
-<form class="ui form segment">
+<form class="ui form segment" asp-action="Filter">
     <div class="three fields">
-        <div class="field">
-            <label>Вид жилья</label>
-            <input type="text"/>
-        </div>
-        <div class="field">
-            <label>Район</label>
-            <input type="text"/>
-        </div>
-        <div class="field">
-            <label>ID объекта</label>
-            <input type="text"/>
-        </div>
+        @Html.EditorFor(x => x.HousingTypeList)
+        @Html.EditorFor(x => x.City)
+        @Html.EditorFor(x => x.District)
     </div>
 
     <div class="three fields">
-        <div class="field">
-            <label>Цена от</label>
-            <input type="text"/>
-        </div>
-        <div class="field">
-            <label>Цена до</label>
-            <input type="text"/>
-        </div>
+        @Html.EditorFor(x => x.MinCost, "int")
+        @Html.EditorFor(x => x.MaxCost, "int")
+        @Html.EditorFor(x => x.SelectedObjectId, "int")
     </div>
     <input type="submit" value="Применить фильтр" class="ui primary button"/>
 </form>
 
 <h4 class="ui horizontal divider header">
-  
+  <i class="tag icon"></i>
+  Всего объектов в базе: @ViewBag.TotalItems Найдено по фильтру: @ViewBag.FilteredItemsCount
 </h4>
 
-<div class="ui three column grid segment">
-        <div class="row">
-            <div class="column">
-                
-            </div>
-            <div class="column">
-                <label>Район</label>
-            </div>
-            <div class="column">
-                <label>ID объекта</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="column">
-                <label>Цена от</label>
-            </div>
-            <div class="column">
-                <label>Цена до</label>
-            </div>
-        </div>
-    </div>
-
-@foreach (var item in Model)
+@foreach (var item in Model.Items)
 {
     <div class="ui stackable two column grid segment">
         <div class="thirteen wide column">

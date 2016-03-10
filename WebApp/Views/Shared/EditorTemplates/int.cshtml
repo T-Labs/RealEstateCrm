@@ -1,0 +1,12 @@
+﻿@model int
+
+ <div class="field">
+     <label>@Html.LabelFor(x => x)
+         @if (ViewData.ModelMetadata.IsRequired){
+            <text><span style="color: Red; font-weight: bold;">*</span></text>
+         }
+     </label> 
+     
+    @Html.TextBoxFor(x => x, new { @placeholder = "Введите число..." })
+    @Html.ValidationMessageFor(x => x)
+  </div>

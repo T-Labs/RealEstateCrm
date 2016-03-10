@@ -13,7 +13,7 @@ namespace WebApp.ViewModels
 
         public string SelectedText
         {
-            get { return Items.FirstOrDefault(x => x.Value == Id.ToString())?.Text ?? string.Empty; }
+            get { return Items?.FirstOrDefault(x => x.Value == Id.ToString())?.Text ?? string.Empty; }
         }
     }
 }

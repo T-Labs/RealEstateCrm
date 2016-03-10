@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using WebApp.Entities;
 using WebApp.Models;
@@ -19,20 +21,100 @@ namespace WebApp.Controllers
             _context = context;    
         }
 
-        public IActionResult Index(int page = 1)
+        public IActionResult Index(int page = 1, int? houseType = null, int? cityId = null, int? districtId = null, int? minCost = null, int? maxCost = null, int? objectId = null)
         {
             const int pageSize = 10;
             int start = (page - 1)*10;
 
-            var applicationDbContext = _context.Housing.Skip(start).Take(pageSize)
+            
+            IQueryable<Housing> list = _context.Housing;
+
+            if (objectId.HasValue)
+            {
+                list = list.Where(x => x.Id == objectId.Value);
+            }
+            else
+            {
+                if (houseType.HasValue)
+                {
+                    list = list.Where(x => x.TypesHousingId == houseType.Value);
+                }
+
+                if (cityId.HasValue)
+                {
+                    list = list.Where(x => x.CityId == cityId.Value);
+                }
+
+                if (districtId.HasValue)
+                {
+                    list = list.Where(x => x.DistrictId == districtId.Value);
+                }
+
+                if (minCost.HasValue)
+                {
+                    list = list.Where(x => x.Sum >= minCost.Value);
+                }
+
+                if (maxCost.HasValue)
+                {
+                    list = list.Where(x => x.Sum <= maxCost.Value);
+                }
+            }
+
+
+            var total = _context.Housing.Count();
+
+            ViewBag.TotalItems = total;
+            ViewBag.FilteredItemsCount = list.Count();
+
+
+            var items = list.Skip(start)
+                .Take(pageSize)
                 .Include(h => h.City)
                 .Include(h => h.District)
                 .Include(h => h.Street)
                 .Include(h => h.User)
-                .Include(x => x.Phones).ToList();
+                .Include(x => x.Phones)
+                .ToList()
+                .Select(x => HousingEditModel.Create(_context, x))
+                .ToList();
 
-            return View(applicationDbContext.Select(x => HousingEditModel.Create(_context,x)).ToList());
+            var model = new HousingIndexModel(_context, houseType)
+            {
+                Items = items
+            };
+            return View(model);
         }
+
+        [HttpPost]
+        public IActionResult Filter(HousingIndexModel filters, int page = 1)
+        {
+            if (filters == null)
+            {
+                return RedirectToAction("Index", new { page });
+            }
+
+            Func<int?, int?> intOrNull = (value) =>
+            {
+                if (value.HasValue && value.Value > 0)
+                {
+                    return value;
+                }
+                return null;
+            };
+
+            return RedirectToAction("Index", new
+            {
+                page,
+                houseType = intOrNull(filters.HousingTypeList.Id),
+                cityId = intOrNull(filters.City?.Id),
+                districtId = intOrNull(filters.District?.Id),
+                minCost = intOrNull(filters.MinCost),
+                maxCost = intOrNull(filters.MaxCost),
+                objectId = intOrNull(filters.SelectedObjectId)
+            });
+        }
+
 
         public IActionResult Details(int? id)
         {
