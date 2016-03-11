@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
+using Newtonsoft.Json;
 using WebApp.Entities;
 using WebApp.Models;
 using WebApp.ViewModels;
@@ -12,24 +14,27 @@ using WebApp.ViewModels;
 namespace WebApp.Controllers
 {
     [Authorize(Roles = RoleNames.Admin)]
-    public class HousingController : Controller
+    public class HousingController : BaseController
     {
-        private readonly ApplicationDbContext _context;
 
-        public HousingController(ApplicationDbContext context)
+        public HousingController(ApplicationDbContext context) : base(context, null)
         {
-            _context = context;    
         }
 
-        public IActionResult Index(int page = 1, int? houseType = null, int? cityId = null, int? districtId = null, int? minCost = null, int? maxCost = null, int? objectId = null)
+        public IActionResult Index(string filter, int page = 1, int? houseType = null, int? cityId = null, int? districtId = null, int? minCost = null, int? maxCost = null, int? objectId = null)
         {
+            var f = JsonConvert.DeserializeObject<HousingIndexFilterModel>(filter);
             const int pageSize = 10;
             int start = (page - 1)*10;
 
             
             IQueryable<Housing> list = _context.Housing;
 
-            if (objectId.HasValue)
+            if (f.IsArchived)
+            {
+                list = list.Where(x => x.IsArchive);
+            }
+            else if (objectId.HasValue)
             {
                 list = list.Where(x => x.Id == objectId.Value);
             }
@@ -62,11 +67,15 @@ namespace WebApp.Controllers
             }
 
 
-            var total = _context.Housing.Count();
+            var total = list.Count();
 
-            ViewBag.TotalItems = total;
-            ViewBag.FilteredItemsCount = list.Count();
+            ViewBag.TotalItems = _context.Housing.Count();
+            ViewBag.FilteredItemsCount = total;
 
+
+            var allCities = _context.Cities.Include(x => x.Districts).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
+            var allStreets = _context.Streets.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
+            var typesHousings = _context.TypesHousing.ToList();
 
             var items = list.Skip(start)
                 .Take(pageSize)
@@ -75,14 +84,14 @@ namespace WebApp.Controllers
                 .Include(h => h.Street)
                 .Include(h => h.User)
                 .Include(x => x.Phones)
-                .ToList()
-                .Select(x => HousingEditModel.Create(_context, x))
-                .ToList();
+                .ToList().Select(x => HousingEditModel.Create(x, typesHousings, allCities, allStreets));
 
             var model = new HousingIndexModel()
             {
                 Items = items,
-                Filters = new HousingIndexFilterModel(_context, houseType, cityId, districtId)
+                Filters = new HousingIndexFilterModel(_context, houseType, cityId, districtId),
+                TotalPages = (int)Math.Ceiling(total / (double)pageSize*1.0),
+                CurrentPage = page
             };
             return View(model);
         }
@@ -105,15 +114,18 @@ namespace WebApp.Controllers
                 return null;
             };
 
+            var json = JsonConvert.SerializeObject(filters);
             return RedirectToAction("Index", new
             {
                 page,
+                filter = json,
                 houseType = intOrNull(filters.HousingTypeList.Id),
                 cityId = intOrNull(filters.City?.Id),
                 districtId = intOrNull(filters.District?.Id),
                 minCost = intOrNull(filters.MinCost),
                 maxCost = intOrNull(filters.MaxCost),
-                objectId = intOrNull(filters.SelectedObjectId)
+                objectId = intOrNull(filters.SelectedObjectId),
+                isArchive = filters.IsArchived
             });
         }
 

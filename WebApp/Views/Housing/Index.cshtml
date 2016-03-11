@@ -1,4 +1,6 @@
-﻿@model WebApp.ViewModels.HousingIndexModel
+﻿@using System.Web
+@using Microsoft.AspNet.Http.Extensions
+@model WebApp.ViewModels.HousingIndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -30,9 +32,11 @@
 </form>
 
 <h4 class="ui horizontal divider header">
-  <i class="tag icon"></i>
-  Всего объектов в базе: @ViewBag.TotalItems Найдено: @ViewBag.FilteredItemsCount
+    <i class="tag icon"></i>
+    Всего объектов в базе: @ViewBag.TotalItems Найдено: @ViewBag.FilteredItemsCount
 </h4>
+
+<pager total-pages="@Model.TotalPages" current-page='@Model.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
 
 @foreach (var item in Model.Items)
 {
@@ -92,11 +96,5 @@
         </div>
 }
 
-<div class="ui circular labels">
-    <a class="ui label">Первая</a>
-    <a class="ui blue label">1</a>
-    <a class="ui label">2</a>
-    <a class="ui label">3</a>
-    <a class="ui label">Последняя</a>
-</div>
+<pager total-pages="@Model.TotalPages" current-page='@Model.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
 

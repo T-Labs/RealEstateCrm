@@ -63,7 +63,16 @@ namespace WebApp.ViewModels
 
         public static HousingEditModel Create(ApplicationDbContext context, Housing housing)
         {
+            var allCities = context.Cities.Include(x => x.Districts).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
+            var allStreets = context.Streets.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
             var typesHousings = context.TypesHousing.ToList();
+            
+            return Create(housing, typesHousings, allCities, allStreets);
+        }
+
+        public static HousingEditModel Create(Housing housing, List<TypesHousing> typesHousings, List<SelectListItem> allCities, List<SelectListItem> allStreets)
+        {
+            //var typesHousings = context.TypesHousing.ToList();
 
             var item = new HousingEditModel
             {
@@ -77,7 +86,7 @@ namespace WebApp.ViewModels
                 Phone1 = housing.Phones.SingleOrDefault(x => x.Order == 0)?.Number,
                 Phone2 = housing.Phones.SingleOrDefault(x => x.Order == 1)?.Number,
                 Phone3 = housing.Phones.SingleOrDefault(x => x.Order == 2)?.Number,
-                Address = new AddressSelectionModel(context, housing),
+                Address = new AddressSelectionModel(housing, allCities, allStreets),
                 IsArchived = housing.IsArchive,
                 HouseType = new DropDownViewModel
                 {

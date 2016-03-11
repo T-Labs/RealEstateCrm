@@ -42,15 +42,12 @@ namespace WebApp.ViewModels
         {
         }
 
-        public AddressSelectionModel(ApplicationDbContext context, Housing housing)
+        public AddressSelectionModel(Housing housing, List<SelectListItem> allCities, List<SelectListItem> allStreets)
         {
-            var allCities = context.Cities.Include(x => x.Districts).ToList();
-            var allStreets = context.Streets.ToList();
-
             City = new DropDownViewModel()
             {
                 Id = housing?.CityId ?? 0,
-                Items = allCities.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name })
+                Items = allCities
             };
 
             District = new DropDownViewModel()
@@ -62,7 +59,7 @@ namespace WebApp.ViewModels
             Street = new DropDownViewModel()
             {
                 Id = housing?.StreetId ?? 0,
-                Items = allStreets.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name })
+                Items = allStreets
             };
 
             HouseNumber = housing?.House;
