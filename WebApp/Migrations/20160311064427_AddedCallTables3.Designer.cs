@@ -8,9 +8,10 @@ using WebApp.Models;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160311064427_AddedCallTables3")]
+    partial class AddedCallTables3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -249,8 +250,6 @@ namespace WebApp.Migrations
 
                     b.Property<DateTime>("InDate");
 
-                    b.Property<bool>("IsArchive");
-
                     b.Property<string>("LastName");
 
                     b.Property<string>("MidleName");
@@ -376,6 +375,8 @@ namespace WebApp.Migrations
 
 
                     b.HasAnnotation("Relational:DiscriminatorValue", "CustomerCall");
+
+                    b.HasAnnotation("Relational:TableName", "CustomerCall");
                 });
 
             modelBuilder.Entity("WebApp.Entities.HousingCall", b =>
@@ -387,6 +388,8 @@ namespace WebApp.Migrations
                     b.Property<string>("Status");
 
                     b.HasAnnotation("Relational:DiscriminatorValue", "HousingCall");
+
+                    b.HasAnnotation("Relational:TableName", "HousingCall");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>

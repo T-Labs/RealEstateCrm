@@ -58,7 +58,7 @@ namespace WebApp.Entities
         
         public ApplicationUser User { get; set; }
 
-        //public bool IsArchive { get; set; }
+        public bool IsArchive { get; set; }
     }
 }
 

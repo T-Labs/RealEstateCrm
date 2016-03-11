@@ -13,16 +13,18 @@
 
 <form class="ui form segment" asp-action="Filter">
     <div class="three fields">
-        @Html.EditorFor(x => x.HousingTypeList)
-        @Html.EditorFor(x => x.City)
-        @Html.EditorFor(x => x.District)
+        @Html.EditorFor(x => x.Filters.HousingTypeList)
+        @Html.EditorFor(x => x.Filters.City)
+        @Html.EditorFor(x => x.Filters.District)
     </div>
 
     <div class="three fields">
-        @Html.EditorFor(x => x.MinCost, "int")
-        @Html.EditorFor(x => x.MaxCost, "int")
-        @Html.EditorFor(x => x.SelectedObjectId, "int")
+        @Html.EditorFor(x => x.Filters.MinCost, "int")
+        @Html.EditorFor(x => x.Filters.MaxCost, "int")
+        @Html.EditorFor(x => x.Filters.SelectedObjectId, "int")
     </div>
+
+    @Html.EditorFor(x => x.Filters.IsArchived, "checkbox")
     <input type="submit" value="Применить фильтр" class="ui primary button"/>
     <input type="button" value="Сброс" class="ui button"/>
 </form>
@@ -34,7 +36,8 @@
 
 @foreach (var item in Model.Items)
 {
-    <div class="ui stackable two column grid segment">
+    var archiveColorClass = item.IsArchived ? "secondary" : "";
+    <div class="ui stackable two column grid segment @archiveColorClass">
         <div class="thirteen wide column">
             <div class="ui grid">
                 <div class="four wide column">
@@ -56,9 +59,14 @@
         </div>
         <div class="two wide column right aligned">
             <div class="row column two">
-                <a asp-action="Edit" asp-route-id="1" class="ui button blue tiny">Редактировать</a>
+                <a asp-action="Edit" asp-route-id="@item.EditId" class="ui button blue tiny">Редактировать</a>
                 <a onclick='@($"$('#item{item.EditId}').modal('show');return false;")' class="ui button tiny">Подробности</a>
-                <a asp-action="Delete" asp-route-id="1" class="ui button red tiny" onclick="return confirm('Вы уверены что хотите удалить запись?');">Удалить</a>
+                @if (item.IsArchived) {
+                    <a asp-action="FromArchive" asp-route-id="@item.EditId" class="ui button basic tiny">Из архива</a>
+                } else {
+                    <a asp-action="ToArchive" asp-route-id="@item.EditId" class="ui button basic tiny">В архив</a>
+                }
+                <a asp-action="Delete" asp-route-id="@item.EditId" class="ui button red tiny" onclick="return confirm('Вы уверены что хотите удалить запись?');">Удалить</a>
             </div>
         </div>
     </div>

@@ -54,6 +54,9 @@ namespace WebApp.ViewModels
         public DateTime EndDate { get; set; }
 
         public string FullAddress { get; set; }
+
+        [Display(Name = "В архиве")]
+        public bool IsArchived { get; set; }
         public HousingEditModel()
         {
         }
@@ -75,6 +78,7 @@ namespace WebApp.ViewModels
                 Phone2 = housing.Phones.SingleOrDefault(x => x.Order == 1)?.Number,
                 Phone3 = housing.Phones.SingleOrDefault(x => x.Order == 2)?.Number,
                 Address = new AddressSelectionModel(context, housing),
+                IsArchived = housing.IsArchive,
                 HouseType = new DropDownViewModel
                 {
                     Id = housing.TypesHousingId,
@@ -123,7 +127,7 @@ namespace WebApp.ViewModels
             item.Room = Address.Room;
             item.TypesHousingId = HouseType.Id;
             item.EndDate = EndDate;
-
+            item.IsArchive = IsArchived;
             UpdatePhone(item, 0, Phone1);
             UpdatePhone(item, 1, Phone2);
             UpdatePhone(item, 2, Phone3);

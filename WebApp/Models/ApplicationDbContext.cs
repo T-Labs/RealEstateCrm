@@ -21,9 +21,13 @@ namespace WebApp.Models
 
         public DbSet<Customer>Clients { get; set; }
 
+        public DbSet<CustomerCall> CustomeCalls { get; set; } 
+
         public DbSet<District> Districts { get; set; }
 
         public DbSet<Housing> Housing { get; set; }
+
+        public DbSet<HousingCall> HousingCalls { get; set; }
 
         public DbSet<Sms> Smses { get; set; }
 
@@ -55,8 +59,8 @@ namespace WebApp.Models
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-            builder.Entity<HousingCall>().HasBaseType<Call>().ToTable("HousingCall");
-            builder.Entity<CustomerCall>().HasBaseType<Call>().ToTable("CustomerCall");
+            builder.Entity<HousingCall>();//.HasBaseType<Call>().ToTable("HousingCall");
+            builder.Entity<CustomerCall>();//.HasBaseType<Call>().ToTable("CustomerCall");
 
 
         }

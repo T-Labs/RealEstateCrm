@@ -13,6 +13,11 @@ namespace WebApp.ViewModels
     {
         public List<HousingEditModel> Items { get; set; }
 
+        public HousingIndexFilterModel Filters { get; set; }
+    }
+
+    public class HousingIndexFilterModel
+    {
         [UIHint("dropdown")]
         [Display(Name="Вид жилья")]
         public DropDownViewModel HousingTypeList { get; set; }
@@ -34,11 +39,14 @@ namespace WebApp.ViewModels
         [Display(Name = "ID объекта")]
         public int SelectedObjectId { get; set; }
 
-        public HousingIndexModel()
+        [Display(Name="Архивные записи")]
+        public bool IsArchived { get; set; }
+
+        public HousingIndexFilterModel()
         {
         }
 
-        public HousingIndexModel(ApplicationDbContext context, int? typesHousingId, int? cityId, int? districtId)
+        public HousingIndexFilterModel(ApplicationDbContext context, int? typesHousingId, int? cityId, int? districtId)
         {
             var housing = context.TypesHousing.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name  }).ToList();
             housing.Insert(0, new SelectListItem { Value = "", Selected = true, Text = "Все виды жилья" });

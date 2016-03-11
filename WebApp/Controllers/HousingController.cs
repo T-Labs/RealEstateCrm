@@ -79,16 +79,18 @@ namespace WebApp.Controllers
                 .Select(x => HousingEditModel.Create(_context, x))
                 .ToList();
 
-            var model = new HousingIndexModel(_context, houseType, cityId, districtId)
+            var model = new HousingIndexModel()
             {
-                Items = items
+                Items = items,
+                Filters = new HousingIndexFilterModel(_context, houseType, cityId, districtId)
             };
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Filter(HousingIndexModel filters, int page = 1)
+        public IActionResult Filter(HousingIndexModel model, int page = 1)
         {
+            var filters = model.Filters;
             if (filters == null)
             {
                 return RedirectToAction("Index", new { page });
@@ -202,5 +204,26 @@ namespace WebApp.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        
+        public IActionResult ToArchive(int id)
+        {
+            Housing housing = _context.Housing.Single(m => m.Id == id);
+            housing.IsArchive = true;
+            _context.Update(housing);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult FromArchive(int id)
+        {
+            Housing housing = _context.Housing.Single(m => m.Id == id);
+            housing.IsArchive = false;
+            _context.Update(housing);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

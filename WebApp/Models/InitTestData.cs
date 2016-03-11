@@ -18,6 +18,8 @@ namespace WebApp.Models
             if (!dbContext.Roles.Any())
             {
                 dbContext.Roles.Add(new IdentityRole { Name = RoleNames.Admin });
+                dbContext.Roles.Add(new IdentityRole { Name = RoleNames.Manager });
+                dbContext.Roles.Add(new IdentityRole { Name = RoleNames.Client });
                 dbContext.SaveChanges();
             }
 
@@ -25,6 +27,8 @@ namespace WebApp.Models
             {
                 var user = new ApplicationUser { UserName = "admin@admin.com", Email = "admin@admin.com" };
                 var result = userManager.CreateAsync(user, "admin");
+
+                userManager.AddToRoleAsync(user, RoleNames.Admin);
             }
             if (!dbContext.Cities.Any())
             {
