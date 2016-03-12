@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using WebApp.Entities;
@@ -12,21 +13,28 @@ namespace WebApp.Models
 #if DEBUG
         public static bool DatabaseInit = false;
 
-        public static void DatabaseInitData(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public static  void RoleSync(RoleManager<IdentityRole> roleManager)
         {
-
-            if (!dbContext.Roles.Any())
+            foreach (var role in RoleNames.AllRoles)
             {
-                dbContext.Roles.Add(new IdentityRole { Name = RoleNames.Admin });
-                dbContext.Roles.Add(new IdentityRole { Name = RoleNames.Manager });
-                dbContext.Roles.Add(new IdentityRole { Name = RoleNames.Client });
-                dbContext.SaveChanges();
+                var roleExist = roleManager.RoleExistsAsync(role);
+                if (!roleExist.Result)
+                {
+                    roleManager.CreateAsync(new IdentityRole
+                    {
+                        Name = role,
+                        NormalizedName = roleManager.NormalizeKey(role)
+                    });
+                }
             }
+        }
 
+        public static void DatabaseInitData(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
             if (!dbContext.Users.Any())
             {
                 var user = new ApplicationUser { UserName = "admin@admin.com", Email = "admin@admin.com" };
-                var result = userManager.CreateAsync(user, "admin");
+                var result = userManager.CreateAsync(user, "Admin@1");
 
                 userManager.AddToRoleAsync(user, RoleNames.Admin);
             }

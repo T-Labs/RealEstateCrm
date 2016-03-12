@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Metadata;
 using WebApp.Entities;
+using WebApp.Models;
 
 namespace WebApp.Models
 {
@@ -64,5 +65,7 @@ namespace WebApp.Models
 
 
         }
+
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }
