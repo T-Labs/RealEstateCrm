@@ -17,5 +17,16 @@ namespace WebApp.ViewModels
         {
             get { return Items?.FirstOrDefault(x => x.Value == Id.ToString())?.Text ?? string.Empty; }
         }
+
+
+        public DropDownViewModel()
+        {
+        }
+
+        public DropDownViewModel(int id, IEnumerable<SelectListItem> items)
+        {
+            Id = id;
+            Items = items;
+        }
     }
 }

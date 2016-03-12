@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -10,6 +11,9 @@ namespace WebApp.Models
     public class ApplicationUser : IdentityUser
     {
         public bool IsArchieved { get; set; }
+        
+        [Required]
+        public bool OpenPassword { get; set; }
 
     }
 }

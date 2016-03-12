@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
@@ -32,15 +33,17 @@ namespace WebApp.Controllers
             int? objectId = null, 
             bool? isArchive = null)
         {
-        //    var f = JsonConvert.DeserializeObject<HousingIndexFilterModel>(filter);
+
+            var userId = User.GetUserId();
+
+            var user = _context.Users.Single(x => x.Id == userId);
 
             var allCities = _context.Cities.Include(x => x.Districts).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
             var allStreets = _context.Streets.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
             var typesHousings = _context.TypesHousing.ToList();
-            
 
             var query = _context.Housing
-                                .AddIsArchiveFilter(isArchive)
+                                .AddIsArchiveFilter(isArchive ?? false)
                                 .AddCityFilter(cityId)
                                 .AddDistrictFilter(districtId)
                                 .AddHousingTypeFilter(houseType)
@@ -56,7 +59,10 @@ namespace WebApp.Controllers
             var model = new HousingIndexModel()
             {
                 Items = items,
-                Filters = new HousingIndexFilterModel(_context, houseType, cityId, districtId),
+                Filters = new HousingIndexFilterModel(_context, houseType, cityId, districtId)
+                {
+                    IsArchived = isArchive ?? false
+                },
                 TotalPages = totalPages,
                 CurrentPage = page
             };
@@ -80,12 +86,10 @@ namespace WebApp.Controllers
                 }
                 return null;
             };
-
-            var json = JsonConvert.SerializeObject(filters);
+            
             return RedirectToAction("Index", new
             {
                 page,
-                //filter = json,
                 houseType = intOrNull(filters.HousingTypeList.Id),
                 cityId = intOrNull(filters.City?.Id),
                 districtId = intOrNull(filters.District?.Id),
@@ -95,7 +99,12 @@ namespace WebApp.Controllers
                 isArchive = filters.IsArchived
             });
         }
+        
 
+        public IActionResult ResetFilter(int? page = 1)
+        {
+            return RedirectToAction("Index", new { page });
+        }
 
         public IActionResult Details(int? id)
         {

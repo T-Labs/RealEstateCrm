@@ -22,10 +22,11 @@ else
         <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="@Model.EditId"/>
 
-        <div class="three fields">
+        <div class="four fields">
             @Html.EditorFor(x => x.FirstName)
             @Html.EditorFor(x => x.MidleName)
             @Html.EditorFor(x => x.LastName)
+            @Html.EditorFor(x => x.IsPartnerShip)
         </div>
          <div class="three fields">
             @Html.EditorFor(x => x.Phone1)
@@ -38,15 +39,15 @@ else
              @Html.EditorFor(x => x.Cost) 
         </div>
         <div class="three fields">
-            @Html.EditorFor(x => x.Address.City, "dropdown")
-            @Html.EditorFor(x => x.Address.District, "dropdown")
-            @Html.EditorFor(x => x.Address.Street, "dropdown")
+            @Html.EditorFor(x => x.City, "dropdown")
+            @Html.EditorFor(x => x.District, "dropdown")
+            @Html.EditorFor(x => x.Street, "dropdown")
         </div>
 
         <div class="fields">
-            @Html.EditorFor(x => x.Address.HouseNumber)
-            @Html.EditorFor(x => x.Address.HouseBuilding)
-            @Html.EditorFor(x => x.Address.Room)
+            @Html.EditorFor(x => x.HouseNumber)
+            @Html.EditorFor(x => x.HouseBuilding)
+            @Html.EditorFor(x => x.Room)
         </div>
         <div class="fields">
             @Html.EditorFor(x => x.EndDate, "DateTime")
@@ -72,7 +73,7 @@ else
     
     <script type="text/javascript">
         $(function() {
-            $('#Address_City_Id').change(function(e) {
+            $('#City_Id').change(function(e) {
                 var cityId = $(this).val();
                 
                 $.ajax({
@@ -82,7 +83,7 @@ else
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (msg) {
-                        var district = $("#Address_District_Id");
+                        var district = $("#District_Id");
                         district.dropdown('clear');
                         var options = district.get(0).options;
                         options.length = 0;

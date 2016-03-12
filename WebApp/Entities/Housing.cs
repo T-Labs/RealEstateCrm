@@ -44,7 +44,7 @@ namespace WebApp.Entities
 
         public string MidleName { get; set; }
 
-        public int PartherShip { get; set; }
+        public bool PartherShip { get; set; }
 
         public string Comment { get; set; }
 

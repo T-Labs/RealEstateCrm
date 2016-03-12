@@ -15,20 +15,16 @@ namespace WebApp.TagHelpers
         public Microsoft.AspNet.Http.IReadableStringCollection QueryParams { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
-        {/*
-            <div class="ui circular labels">
-                <a class="ui label">Первая</a>
-                <a class="ui blue label">1</a>
-                <a class="ui label">2</a>
-                <a class="ui label">3</a>
-                <a class="ui label">Последняя</a>
-            </div>
-            */
+        {
+            if (TotalPages < 2)
+            {
+                return;
+            }
+
             output.TagName = "div";
-           // output.PreContent.SetContent("<ul class=\"link-list\">");
-            
-            
+         
             var items = new StringBuilder();
+            items.Append("<span>Страницы:</span>");
             for (var page = 1; page <= TotalPages; page++)
             {
                 if (CurrentPage == page)
@@ -47,7 +43,7 @@ namespace WebApp.TagHelpers
                     {
                         paramsUrl["page"] = page.ToString();
                     }
-                    //Where(x => x.Key != "page").Aggregate("", (x, y) => x + $"&{y.Key}={y.Value[0]}")
+         
                     var queryParams = paramsUrl.Aggregate("", (x, y) => x + $"&{y.Key}={y.Value}").Trim('&');
                     
                     items.Append($"<a class=\"ui label\" href=\"{LinkUrl}?{queryParams}\">{page}</a>");
@@ -55,7 +51,6 @@ namespace WebApp.TagHelpers
 
             }
             output.Content.SetHtmlContent(items.ToString());
-            //output.PostContent.SetContent("</ul>");
             output.Attributes.Clear();
             output.Attributes.Add("class", "ui circular labels");
         }

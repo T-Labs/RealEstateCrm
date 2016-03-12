@@ -10,7 +10,7 @@ namespace WebApp
     {
         public static Housing GetById(this DbSet<Housing> housings, int id)
         {
-            return housings.Include(x => x.Phones).Single(m => m.Id == id);
+            return housings.Include(x => x.Phones).Include(x => x.City).Include(x => x.District).Single(m => m.Id == id);
         }
 
         public static IQueryable<Housing> AddCityFilter(this IQueryable<Housing> query, int? cityId)
@@ -67,9 +67,9 @@ namespace WebApp
 
         public static IQueryable<Housing> AddIsArchiveFilter(this IQueryable<Housing> query, bool? isArchive)
         {
-            if (isArchive.HasValue && isArchive.Value)
+            if (isArchive.HasValue)
             {
-                query = query.Where(x => x.IsArchive);
+                query = query.Where(x => x.IsArchive == isArchive.Value);
             }
             return query;
         }

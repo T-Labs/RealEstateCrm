@@ -11,6 +11,7 @@ namespace WebApp.ViewModels
 {
     public class HousingEditModel
     {
+        [Display(Name = "ID объекта")]
         public int EditId { get; private set; }
         
         [Display(Name = "Фамилия")]
@@ -29,7 +30,30 @@ namespace WebApp.ViewModels
         [Display(Name = "Цена")]
         public double Cost { get; set; }
         
-        public AddressSelectionModel Address { get; set; }
+        [UIHint("dropdown")]
+        [Required]
+        [Display(Name = "Город")]
+        public DropDownViewModel City { get; set; }
+
+        [UIHint("dropdown")]
+        [Required]
+        [Display(Name = "Район")]
+        public DropDownViewModel District { get; set; }
+
+        [UIHint("dropdown")]
+        [Required]
+        [Display(Name = "Улица")]
+        public DropDownViewModel Street { get; set; }
+
+        [Required]
+        [Display(Name = "Номер дома")]
+        public string HouseNumber { get; set; }
+
+        [Display(Name = "Строение")]
+        public string HouseBuilding { get; set; }
+
+        [Display(Name = "Номер квартиры")]
+        public string Room { get; set; }
 
         [UIHint("phone")]
         [Required]
@@ -53,8 +77,14 @@ namespace WebApp.ViewModels
 
         public string FullAddress { get; set; }
 
+        [UIHint("checkbox")]
         [Display(Name = "В архиве")]
         public bool IsArchived { get; set; }
+
+        [UIHint("checkbox")]
+        [Display(Name = "Партнерство")]
+        public bool IsPartnerShip { get; set; }
+
         public HousingEditModel()
         {
         }
@@ -70,8 +100,6 @@ namespace WebApp.ViewModels
 
         public static HousingEditModel Create(Housing housing, List<TypesHousing> typesHousings, List<SelectListItem> allCities, List<SelectListItem> allStreets)
         {
-            //var typesHousings = context.TypesHousing.ToList();
-
             var item = new HousingEditModel
             {
                 EditId = housing.Id,
@@ -84,13 +112,25 @@ namespace WebApp.ViewModels
                 Phone1 = housing.Phones.SingleOrDefault(x => x.Order == 0)?.Number,
                 Phone2 = housing.Phones.SingleOrDefault(x => x.Order == 1)?.Number,
                 Phone3 = housing.Phones.SingleOrDefault(x => x.Order == 2)?.Number,
-                Address = new AddressSelectionModel(housing, allCities, allStreets),
+                HouseNumber = housing?.House,
+                HouseBuilding = housing?.Building,
+                Room = housing?.Room,
                 IsArchived = housing.IsArchive,
+                IsPartnerShip = housing.PartherShip,
                 HouseType = new DropDownViewModel
                 {
                     Id = housing.TypesHousingId,
                     Items = typesHousings.Select(x => new SelectListItem {Value = x.Id.ToString(), Text = x.Name })
                 }
+            };
+
+            item.City = new DropDownViewModel(housing?.CityId ?? 0, allCities);
+            item.Street = new DropDownViewModel(housing?.StreetId ?? 0, allStreets);
+
+            item.District = new DropDownViewModel()
+            {
+                Id = housing?.DistrictId ?? 0,
+                Items = housing?.City?.Districts?.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }) ?? new List<SelectListItem>()
             };
 
             var addressParts = new List<string>();
@@ -126,15 +166,17 @@ namespace WebApp.ViewModels
             item.LastName = LastName;
             item.Sum = Cost;
             item.Comment = Comment;
-            item.CityId = Address.City.Id;
-            item.DistrictId = Address.District.Id;
-            item.StreetId = Address.Street.Id;
-            item.House = Address.HouseNumber;
-            item.Building = Address.HouseBuilding;
-            item.Room = Address.Room;
+            item.CityId = City.Id;
+            item.DistrictId = District.Id;
+            item.StreetId = Street.Id;
+            item.House = HouseNumber;
+            item.Building = HouseBuilding;
+            item.Room = Room;
             item.TypesHousingId = HouseType.Id;
             item.EndDate = EndDate;
             item.IsArchive = IsArchived;
+            item.PartherShip = IsPartnerShip;
+
             UpdatePhone(item, 0, Phone1);
             UpdatePhone(item, 1, Phone2);
             UpdatePhone(item, 2, Phone3);
