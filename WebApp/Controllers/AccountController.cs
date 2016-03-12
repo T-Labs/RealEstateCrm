@@ -6,11 +6,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using RealEstateCrm.Services;
+using WebApp.Services;
 using WebApp.Models;
 using WebApp.ViewModels.Account;
 
-namespace RealEstateCrm.Controllers
+namespace WebApp.Controllers
 {
     [Authorize]
     public class AccountController : Controller

@@ -6,7 +6,7 @@ using Microsoft.Data.Entity;
 using Newtonsoft.Json;
 using WebApp.Models;
 
-namespace RealEstateCrm.ViewModels
+namespace WebApp.ViewModels
 {
     public class HousingIndexModel
     {

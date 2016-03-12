@@ -1,4 +1,4 @@
-﻿namespace RealEstateCrm
+﻿namespace WebApp
 {
     public static class RoleNames
     {

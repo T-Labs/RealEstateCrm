@@ -7,7 +7,7 @@ using Microsoft.Data.Entity;
 using WebApp.Entities;
 using WebApp.Models;
 
-namespace RealEstateCrm.ViewModels
+namespace WebApp.ViewModels
 {
     public class HousingEditModel
     {

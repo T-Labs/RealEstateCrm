@@ -2,13 +2,12 @@
 using System.Linq;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
-using RealEstateCrm.ViewModels;
+using WebApp.ViewModels;
 using WebApp;
 using WebApp.Entities;
 using WebApp.Models;
-using WebApp.ViewModels;
 
-namespace RealEstateCrm.WebApi
+namespace WebApp.WebApi
 {
     public class RentController : Controller
     {

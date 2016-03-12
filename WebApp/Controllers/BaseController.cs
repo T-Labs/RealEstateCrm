@@ -3,7 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Mvc;
 using WebApp.Models;
 
-namespace RealEstateCrm.Controllers
+namespace WebApp.Controllers
 {
     public abstract class BaseController : Controller
     {

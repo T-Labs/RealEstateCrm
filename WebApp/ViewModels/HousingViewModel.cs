@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using WebApp.Entities;
 
-namespace RealEstateCrm.ViewModels
+namespace WebApp.ViewModels
 {
     public class HousingViewModel
     {

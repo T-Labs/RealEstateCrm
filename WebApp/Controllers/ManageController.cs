@@ -5,11 +5,11 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using RealEstateCrm.Services;
+using WebApp.Services;
 using WebApp.Models;
 using WebApp.ViewModels.Manage;
 
-namespace RealEstateCrm.Controllers
+namespace WebApp.Controllers
 {
     [Authorize]
     public class ManageController : Controller

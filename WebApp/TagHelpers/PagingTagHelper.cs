@@ -2,7 +2,7 @@
 using System.Text;
 using Microsoft.AspNet.Razor.TagHelpers;
 
-namespace RealEstateCrm.TagHelpers
+namespace WebApp.TagHelpers
 {
     [HtmlTargetElement("pager", Attributes = "total-pages, current-page, link-url, query-params")]
     public class PagingTagHelper : TagHelper

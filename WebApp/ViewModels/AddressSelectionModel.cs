@@ -5,7 +5,7 @@ using Microsoft.AspNet.Mvc.Rendering;
 using WebApp.Entities;
 using WebApp.ViewModels;
 
-namespace RealEstateCrm.ViewModels
+namespace WebApp.ViewModels
 {
     public class AddressSelectionModel
     {

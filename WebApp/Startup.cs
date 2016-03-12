@@ -5,10 +5,10 @@ using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using RealEstateCrm.Services;
+using WebApp.Services;
 using WebApp.Models;
 
-namespace RealEstateCrm
+namespace WebApp
 {
     public class Startup
     {

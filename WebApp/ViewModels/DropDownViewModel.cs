@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.AspNet.Mvc.Rendering;
 using Newtonsoft.Json;
 
-namespace RealEstateCrm.ViewModels
+namespace WebApp.ViewModels
 {
     public class DropDownViewModel
     {

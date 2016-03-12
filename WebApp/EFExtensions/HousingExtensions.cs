@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Data.Entity;
 using WebApp.Entities;
 
-namespace RealEstateCrm
+namespace WebApp
 {
     public static class HousingExtensions
     {

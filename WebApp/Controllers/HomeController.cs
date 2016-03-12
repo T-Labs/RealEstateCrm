@@ -2,7 +2,7 @@
 using Microsoft.AspNet.Mvc;
 using WebApp.Models;
 
-namespace RealEstateCrm.Controllers
+namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {

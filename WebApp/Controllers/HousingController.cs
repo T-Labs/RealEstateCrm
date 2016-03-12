@@ -6,13 +6,13 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using Newtonsoft.Json;
-using RealEstateCrm.ViewModels;
+using WebApp.ViewModels;
 using WebApp;
 using WebApp.Entities;
 using WebApp.Models;
 using WebApp.ViewModels;
 
-namespace RealEstateCrm.Controllers
+namespace WebApp.Controllers
 {
     [Authorize(Roles = RoleNames.Admin)]
     public class HousingController : BaseController
