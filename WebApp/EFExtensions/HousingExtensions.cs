@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Data.Entity;
-using RealEstateCrm.Entities;
+using WebApp.Entities;
 
 namespace RealEstateCrm
 {

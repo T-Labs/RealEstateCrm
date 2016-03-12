@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Metadata;
-using RealEstateCrm.Entities;
+using WebApp.Entities;
 
 namespace WebApp.Models
 {

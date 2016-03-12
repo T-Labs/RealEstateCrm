@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using RealEstateCrm;
-using RealEstateCrm.Entities;
+using WebApp.Entities;
 
 namespace WebApp.Models
 {

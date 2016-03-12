@@ -4,7 +4,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using RealEstateCrm.ViewModels;
 using WebApp;
-using RealEstateCrm.Entities;
+using WebApp.Entities;
 using WebApp.Models;
 using WebApp.ViewModels;
 

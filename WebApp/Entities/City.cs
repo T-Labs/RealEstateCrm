@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RealEstateCrm.Entities
+namespace WebApp.Entities
 {
     public class City
     {

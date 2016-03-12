@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RealEstateCrm.Entities
+namespace WebApp.Entities
 {
     public class Sms
     {
