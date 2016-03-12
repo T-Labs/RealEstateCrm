@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using Newtonsoft.Json;
 using WebApp.Models;
 
-namespace WebApp.ViewModels
+namespace RealEstateCrm.ViewModels
 {
     public class HousingIndexModel
     {

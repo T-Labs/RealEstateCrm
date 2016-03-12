@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using WebApp.Entities;
 
-namespace WebApp.ViewModels
+namespace RealEstateCrm.ViewModels
 {
     public class HousingViewModel
     {

@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
+using RealEstateCrm.ViewModels;
+using WebApp;
 using WebApp.Entities;
 using WebApp.Models;
 using WebApp.ViewModels;
 
-namespace WebApp.WebApi
+namespace RealEstateCrm.WebApi
 {
-    
     public class RentController : Controller
     {
         // GET: api/values
@@ -18,7 +17,14 @@ namespace WebApp.WebApi
         [HttpGet]
         public IEnumerable<HousingViewModel> Get([FromServices] ApplicationDbContext dbContext, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
         {
-            var items = dbContext.Housing.GetByFilters(page, houseTypeId, cityId, priceFrom, priceTo);
+            IQueryable<Housing> query = dbContext.Housing
+                                                   .AddCityFilter(cityId)
+                                                   .AddHousingTypeFilter(houseTypeId)
+                                                   .AddCostFilter(priceFrom, priceTo);
+
+            int totalItems;
+            int totalPages;
+            var items = query.GetPage(page ?? 1, out totalItems, out totalPages);
             //Thread.Sleep(2000);
             bool isAuth = User.Identity.IsAuthenticated;
             return items.Select(x => HousingViewModel.Create(x, isAuth));

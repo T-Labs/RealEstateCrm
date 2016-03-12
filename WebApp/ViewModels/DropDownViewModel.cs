@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc.Rendering;
 using Newtonsoft.Json;
 
-namespace WebApp.ViewModels
+namespace RealEstateCrm.ViewModels
 {
     public class DropDownViewModel
     {

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 using Microsoft.AspNet.Razor.TagHelpers;
 
-namespace WebApp.TagHelpers
+namespace RealEstateCrm.TagHelpers
 {
     [HtmlTargetElement("pager", Attributes = "total-pages, current-page, link-url, query-params")]
     public class PagingTagHelper : TagHelper

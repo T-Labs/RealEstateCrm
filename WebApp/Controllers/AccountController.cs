@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Data.Entity;
 using Microsoft.Extensions.Logging;
+using RealEstateCrm.Services;
 using WebApp.Models;
-using WebApp.Services;
 using WebApp.ViewModels.Account;
 
-namespace WebApp.Controllers
+namespace RealEstateCrm.Controllers
 {
     [Authorize]
     public class AccountController : Controller

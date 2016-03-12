@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using Newtonsoft.Json;
+using RealEstateCrm.ViewModels;
+using WebApp;
 using WebApp.Entities;
 using WebApp.Models;
 using WebApp.ViewModels;
 
-namespace WebApp.Controllers
+namespace RealEstateCrm.Controllers
 {
     [Authorize(Roles = RoleNames.Admin)]
     public class HousingController : BaseController
@@ -21,76 +22,42 @@ namespace WebApp.Controllers
         {
         }
 
-        public IActionResult Index(string filter, int page = 1, int? houseType = null, int? cityId = null, int? districtId = null, int? minCost = null, int? maxCost = null, int? objectId = null)
+        public IActionResult Index(string filter, 
+            int page = 1, 
+            int? houseType = null, 
+            int? cityId = null, 
+            int? districtId = null, 
+            int? minCost = null, 
+            int? maxCost = null, 
+            int? objectId = null, 
+            bool? isArchive = null)
         {
-            var f = JsonConvert.DeserializeObject<HousingIndexFilterModel>(filter);
-            const int pageSize = 10;
-            int start = (page - 1)*10;
-
-            
-            IQueryable<Housing> list = _context.Housing;
-
-            if (f.IsArchived)
-            {
-                list = list.Where(x => x.IsArchive);
-            }
-            else if (objectId.HasValue)
-            {
-                list = list.Where(x => x.Id == objectId.Value);
-            }
-            else
-            {
-                if (houseType.HasValue)
-                {
-                    list = list.Where(x => x.TypesHousingId == houseType.Value);
-                }
-
-                if (cityId.HasValue)
-                {
-                    list = list.Where(x => x.CityId == cityId.Value);
-                }
-
-                if (districtId.HasValue)
-                {
-                    list = list.Where(x => x.DistrictId == districtId.Value);
-                }
-
-                if (minCost.HasValue)
-                {
-                    list = list.Where(x => x.Sum >= minCost.Value);
-                }
-
-                if (maxCost.HasValue)
-                {
-                    list = list.Where(x => x.Sum <= maxCost.Value);
-                }
-            }
-
-
-            var total = list.Count();
-
-            ViewBag.TotalItems = _context.Housing.Count();
-            ViewBag.FilteredItemsCount = total;
-
+        //    var f = JsonConvert.DeserializeObject<HousingIndexFilterModel>(filter);
 
             var allCities = _context.Cities.Include(x => x.Districts).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
             var allStreets = _context.Streets.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
             var typesHousings = _context.TypesHousing.ToList();
+            
 
-            var items = list.Skip(start)
-                .Take(pageSize)
-                .Include(h => h.City)
-                .Include(h => h.District)
-                .Include(h => h.Street)
-                .Include(h => h.User)
-                .Include(x => x.Phones)
-                .ToList().Select(x => HousingEditModel.Create(x, typesHousings, allCities, allStreets));
+            var query = _context.Housing
+                                .AddIsArchiveFilter(isArchive)
+                                .AddCityFilter(cityId)
+                                .AddDistrictFilter(districtId)
+                                .AddHousingTypeFilter(houseType)
+                                .AddCostFilter(minCost, maxCost);
+
+            int totalPages;
+            int totalItems;
+            var items = query.GetPage(page, out totalItems, out totalPages).Select(x => HousingEditModel.Create(x, typesHousings, allCities, allStreets));
+
+            ViewBag.TotalItems = _context.Housing.Count();
+            ViewBag.FilteredItemsCount = totalItems;
 
             var model = new HousingIndexModel()
             {
                 Items = items,
                 Filters = new HousingIndexFilterModel(_context, houseType, cityId, districtId),
-                TotalPages = (int)Math.Ceiling(total / (double)pageSize*1.0),
+                TotalPages = totalPages,
                 CurrentPage = page
             };
             return View(model);
@@ -118,7 +85,7 @@ namespace WebApp.Controllers
             return RedirectToAction("Index", new
             {
                 page,
-                filter = json,
+                //filter = json,
                 houseType = intOrNull(filters.HousingTypeList.Id),
                 cityId = intOrNull(filters.City?.Id),
                 districtId = intOrNull(filters.District?.Id),
