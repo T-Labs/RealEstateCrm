@@ -99,7 +99,7 @@ namespace WebApp.Migrations
                     b.HasAnnotation("Relational:TableName", "AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.Blacklist", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.Blacklist", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -113,7 +113,7 @@ namespace WebApp.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.Building", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.Building", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -163,7 +163,7 @@ namespace WebApp.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.Call", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.Call", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -175,7 +175,7 @@ namespace WebApp.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.City", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.City", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -185,7 +185,7 @@ namespace WebApp.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.Client", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.Client", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -233,7 +233,7 @@ namespace WebApp.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.District", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.District", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -245,7 +245,7 @@ namespace WebApp.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.DistrictToСlient", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.DistrictToСlient", b =>
                 {
                     b.Property<int>("ClientId");
 
@@ -254,7 +254,7 @@ namespace WebApp.Migrations
                     b.HasKey("ClientId", "DistrictId");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.Street", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.Street", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -266,7 +266,7 @@ namespace WebApp.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.TypesHousing", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.TypesHousing", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -356,61 +356,61 @@ namespace WebApp.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.Building", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.Building", b =>
                 {
                     b.HasOne("WebApp.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("WebApp.Entities.City")
+                    b.HasOne("RealEstateCrm.Entities.City")
                         .WithMany()
                         .HasForeignKey("CityId");
 
-                    b.HasOne("WebApp.Entities.District")
+                    b.HasOne("RealEstateCrm.Entities.District")
                         .WithMany()
                         .HasForeignKey("DistrictId");
 
-                    b.HasOne("WebApp.Entities.Street")
+                    b.HasOne("RealEstateCrm.Entities.Street")
                         .WithMany()
                         .HasForeignKey("StreetId");
 
-                    b.HasOne("WebApp.Entities.TypesHousing")
+                    b.HasOne("RealEstateCrm.Entities.TypesHousing")
                         .WithMany()
                         .HasForeignKey("TypesHousingId");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.Client", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.Client", b =>
                 {
                     b.HasOne("WebApp.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("WebApp.Entities.City")
+                    b.HasOne("RealEstateCrm.Entities.City")
                         .WithMany()
                         .HasForeignKey("CityId");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.District", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.District", b =>
                 {
-                    b.HasOne("WebApp.Entities.City")
+                    b.HasOne("RealEstateCrm.Entities.City")
                         .WithMany()
                         .HasForeignKey("CityId");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.DistrictToСlient", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.DistrictToСlient", b =>
                 {
-                    b.HasOne("WebApp.Entities.Client")
+                    b.HasOne("RealEstateCrm.Entities.Client")
                         .WithMany()
                         .HasForeignKey("ClientId");
 
-                    b.HasOne("WebApp.Entities.District")
+                    b.HasOne("RealEstateCrm.Entities.District")
                         .WithMany()
                         .HasForeignKey("DistrictId");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.Street", b =>
+            modelBuilder.Entity("RealEstateCrm.Entities.Street", b =>
                 {
-                    b.HasOne("WebApp.Entities.District")
+                    b.HasOne("RealEstateCrm.Entities.District")
                         .WithMany()
                         .HasForeignKey("DistrictId");
                 });

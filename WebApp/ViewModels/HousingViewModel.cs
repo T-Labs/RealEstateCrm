@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using WebApp.Entities;
+using RealEstateCrm.Entities;
 
 namespace RealEstateCrm.ViewModels
 {

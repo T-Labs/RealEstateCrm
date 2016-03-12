@@ -8,7 +8,7 @@ using Microsoft.Data.Entity;
 using Newtonsoft.Json;
 using RealEstateCrm.ViewModels;
 using WebApp;
-using WebApp.Entities;
+using RealEstateCrm.Entities;
 using WebApp.Models;
 using WebApp.ViewModels;
 

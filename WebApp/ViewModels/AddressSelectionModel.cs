@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNet.Mvc.Rendering;
-using WebApp.Entities;
+using RealEstateCrm.Entities;
 using WebApp.ViewModels;
 
 namespace RealEstateCrm.ViewModels

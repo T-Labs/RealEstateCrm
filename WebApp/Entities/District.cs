@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebApp.Entities
+namespace RealEstateCrm.Entities
 {
     public class District
     {

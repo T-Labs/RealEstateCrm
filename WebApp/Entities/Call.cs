@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApp.Models;
 
-namespace WebApp.Entities
+namespace RealEstateCrm.Entities
 {
     public abstract class Call
     {
