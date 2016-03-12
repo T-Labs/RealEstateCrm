@@ -2,19 +2,16 @@
 @using WebApp.ViewModels
 @model WebApp.ViewModels.EmployeeRegisterViewModel
 @{
-    ViewData["Title"] = "Регистрация сотрудника";
+    ViewData["Title"] = "Редактирование";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-controller="Employee" asp-action="Register" method="post" class="ui form" role="form">
-    <h4>Создание новой карточки сотрудника</h4>
+<form asp-controller="Employee" asp-action="Edit" method="post" class="ui form" role="form">
+    <h4>Редактирование карточки сотрудника</h4>
     <hr />
     <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
-    @Html.EditorFor(x => x.Email)
-    @Html.EditorFor(x => x.Password)
-    @Html.EditorFor(x => x.ConfirmPassword)
-
+    @Html.HiddenFor(x => x.EditId)
     @Html.EditorFor(x => x.FIO)
     
     @Html.EditorFor(x => x.IsCreateHousing)
@@ -27,7 +24,7 @@
 
 
     <div class="ui buttons">
-        <button type="submit" class="ui button blue">Создать карточку</button>
+        <button type="submit" class="ui button blue">Сохранить изменения</button>
     </div>
     
 </form>

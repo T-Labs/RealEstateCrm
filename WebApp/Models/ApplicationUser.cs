@@ -14,10 +14,9 @@ namespace WebApp.Models
     {
         public bool IsArchieved { get; set; }
 
-        //[Required]
-        //public bool OpenPassword { get; set; }
-
-        //public int CityId { get; set; }
-        //public City City { get; set; }
+        /*[Required]
+        public bool OpenPassword { get; set; }
+        public int CityId { get; set; }
+        public City City { get; set; }*/
     }
 }

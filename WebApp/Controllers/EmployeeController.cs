@@ -43,7 +43,11 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.FIO,
+                    Email = model.Email
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -51,16 +55,22 @@ namespace WebApp.Controllers
                     roles.Add(RoleNames.Employee);
                     roles.AddRange(model.GetSelectedRoles());
                     
-                    await _userManager.AddClaimAsync(user, new Claim("firstName", model.FirstName));
-                    await _userManager.AddClaimAsync(user, new Claim("middleName", model.MidleName));
-                    await _userManager.AddClaimAsync(user, new Claim("lastName", model.LastName));
                     var resultRole = await _userManager.AddToRolesAsync(user, roles);
 
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
+                AddErrors(result);
             }
             
             return View(model);
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
 
         // GET: Employee/Details/5
@@ -113,21 +123,24 @@ namespace WebApp.Controllers
             {
                 return HttpNotFound();
             }
-            return View(applicationUser);
+
+            var roles = _context.Roles.ToList();
+            return View(EmployeeRegisterViewModel.CreateForEdit(applicationUser, roles));
         }
 
         // POST: Employee/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ApplicationUser applicationUser)
+        public IActionResult Edit(EmployeeRegisterViewModel model, string editId)
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser applicationUser = _context.ApplicationUser.Include(x => x.Roles).Include(x => x.Claims).Single(m => m.Id == editId);
                 _context.Update(applicationUser);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(applicationUser);
+            return View();
         }
 
         // GET: Employee/Delete/5

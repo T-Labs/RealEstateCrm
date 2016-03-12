@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
 using WebApp.Models;
 
 namespace WebApp.ViewModels
 {
     public class EmployeeRegisterViewModel
     {
+        public string EditId { get; set; }
+
         [UIHint("string")]
         [Required]
         [EmailAddress]
@@ -29,17 +32,8 @@ namespace WebApp.ViewModels
         public string ConfirmPassword { get; set; }
 
         [UIHint("string")]
-        [Display(Name = "Фамилия")]
-        public string FirstName { get; set; }
-
-        [UIHint("string")]
-        [Required]
-        [Display(Name = "Имя")]
-        public string MidleName { get; set; }
-
-        [UIHint("string")]
-        [Display(Name = "Отчество")]
-        public string LastName { get; set; }
+        [Display(Name = "Ф.И.О.")]
+        public string FIO { get; set; }
 
         [UIHint("checkbox")]
         [Display(Name = "Создание объектов")]
@@ -93,11 +87,22 @@ namespace WebApp.ViewModels
         }
 
 
-        public static EmployeeRegisterViewModel CreateForEdit(ApplicationUser user)
+        public static EmployeeRegisterViewModel CreateForEdit(ApplicationUser user, List<IdentityRole> roles)
         {
+            Dictionary<string, IdentityRole> roleMap = roles.ToDictionary(x => x.Id, x => x);
             var item = new EmployeeRegisterViewModel
             {
-                
+                EditId = user.Id,
+                FIO = user.UserName,
+                IsCreateCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.CreateCustomer) != null,
+                IsEditCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.EditCustomer) != null,
+                IsDeleteCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.DeleteHousing) != null,
+
+                IsCreateHousing= user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.CreateHousing) != null,
+                IsEditHousing = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.EditHousing) != null,
+                IsDeleteHousiong = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.DeleteHousing) != null,
+
+                IsManageUsers = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.ManageUser) != null,
             };
 
             return item;
