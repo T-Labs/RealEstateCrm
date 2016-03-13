@@ -62,9 +62,9 @@ namespace WebApp.Models
                 .OnDelete(DeleteBehavior.Restrict);
             
             /*
-            builder.Entity<ApplicationUser>()
+            builder.Entity<Street>()
                 .HasOne(p => p.City)
-                .WithMany(b => b.Users)
+                .WithMany(b => b.Streets).HasForeignKey(x => x.CityId)
                 .OnDelete(DeleteBehavior.Restrict);*/
             
 

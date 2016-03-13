@@ -9,37 +9,61 @@
 <p>
     <a asp-action="Register" class="ui button blue">Добавить нового сотрудника</a>
 </p>
-<table class="ui single line table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Registration Date</th>
-      <th>E-mail address</th>
-        <th>Создание объектов</th>
-        <th>Редактирование объектов</th>
-        <th>Удаление объектов</th>
-        <th></th>
-    </tr>
-  </thead>
-    <tbody>
-    @foreach (var item in Model)
-    {
+
+
+
+@if (!Model.Any())
+{
+    <div class="ui negative message">
+        <div class="header">
+            Список сотрудников пуст
+        </div>
+        <p>Чтобы добавить нового сотрудника нажмите <a asp-action="Register">на ссылку</a>
+        </p>
+    </div>    
+}
+else
+{
+    <table class="ui collapsing selectable  table">
+        <thead>
         <tr>
-            <td>@item.FIO</td>
-            <td>@DateTime.Now.ToString()</td>
-            <td>@item.Email</td>
-            <td>@item.IsCreateHousing</td>
-            <td>@item.IsEditHousing</td>
-            <td>@item.IsDeleteHousiong</td>
-            <td>
-                 <div class="ui icon buttons">
+            <th class="two wide">@Html.DisplayNameFor(x => Model[0].FIO)</th>
+            <th>@Html.DisplayNameFor(x => Model[0].Email)</th>
+            <th>@Html.DisplayNameFor(x => Model[0].OpenPassword)</th>
+            <th>@Html.DisplayNameFor(x => Model[0].IsCreateHousing)</th>
+            <th>@Html.DisplayNameFor(x => Model[0].IsEditHousing)</th>
+            <th>@Html.DisplayNameFor(x => Model[0].IsDeleteHousiong)</th>
+            <th>@Html.DisplayNameFor(x => Model[0].IsCreateCustomer)</th>
+            <th>@Html.DisplayNameFor(x => Model[0].IsEditCustomer)</th>
+            <th>@Html.DisplayNameFor(x => Model[0].IsDeleteCustomer)</th>
+            <th>@Html.DisplayNameFor(x => Model[0].IsManageUsers)</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FIO</td>
+                <td>@item.Email</td>
+                <td>@item.OpenPassword</td>
+                <td>@Html.DisplayFor(x => item.IsCreateHousing, "bool-text")</td>
+                <td>@Html.DisplayFor(x => item.IsEditHousing, "bool-text")</td>
+                <td>@Html.DisplayFor(x => item.IsDeleteHousiong, "bool-text")</td>
+                <td>@Html.DisplayFor(x => item.IsCreateCustomer, "bool-text")</td>
+                <td>@Html.DisplayFor(x => item.IsEditCustomer, "bool-text")</td>
+                <td>@Html.DisplayFor(x => item.IsDeleteCustomer, "bool-text")</td>
+                <td>@Html.DisplayFor(x => item.IsManageUsers, "bool-text")</td>
+                <td>
+                    <div class="ui icon buttons">
                         <a asp-action="Edit" asp-route-id="@item.EditId" class="ui circular icon button basic  blue" title="Редактирование"><i class="edit icon"></i></a>
 
                         <a asp-action="Delete" asp-route-id="@item.EditId" class="ui button red tiny basic" onclick="return confirm('Вы уверены что хотите удалить запись?');" title="Удалить"><i class="trash icon"></i></a>
                     </div>
-            </td>
-        </tr>
-    }
-  
-    </tbody>
- </table>
+                </td>
+            </tr>
+        }
+
+        </tbody>
+    </table>
+}

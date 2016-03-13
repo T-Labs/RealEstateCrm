@@ -189,18 +189,10 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
 
-            return View(applicationUser);
-        }
-
-        // POST: Employee/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(string id)
-        {
-            ApplicationUser applicationUser = _context.ApplicationUser.Single(m => m.Id == id);
             _context.ApplicationUser.Remove(applicationUser);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
+        
     }
 }

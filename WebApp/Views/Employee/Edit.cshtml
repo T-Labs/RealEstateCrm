@@ -26,6 +26,7 @@
 
     <div class="ui buttons">
         <button type="submit" class="ui button blue">Сохранить изменения</button>
+        <button asp-action="Delete" asp-route-id="@Model.EditId" onclick="return confirm('Вы уверены что хотите удалить запись?');" class="ui button red">Удалить</button>
     </div>
-    
+    <a asp-action="Index" >Вернуться к списку</a>
 </form>

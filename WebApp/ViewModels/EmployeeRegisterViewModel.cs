@@ -46,6 +46,10 @@ namespace WebApp.ViewModels
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        [UIHint("string")]
+        [Display(Name = "Пароль")]
+        public string OpenPassword { get; set; }
+
         [UIHint("checkbox")]
         [Display(Name = "Создание объектов")]
         public bool IsCreateHousing { get; set; }
@@ -104,8 +108,9 @@ namespace WebApp.ViewModels
             var item = new EmployeeEditViewModel
             {
                 EditId = user.Id,
-                FIO = user.UserName,
+                FIO = user.FIO,
                 Email = user.Email,
+                OpenPassword = user.OpenPassword,
                 IsCreateCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.CreateCustomer) != null,
                 IsEditCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.EditCustomer) != null,
                 IsDeleteCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.DeleteCustomer) != null,
