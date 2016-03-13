@@ -34,6 +34,8 @@ namespace WebApp.Models
 
         public DbSet<TypesHousing> TypesHousing { get; set; }
 
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -58,14 +60,16 @@ namespace WebApp.Models
                 .HasOne(p => p.City)
                 .WithMany(b => b.Districts)
                 .OnDelete(DeleteBehavior.Restrict);
-
+            
+            /*
+            builder.Entity<ApplicationUser>()
+                .HasOne(p => p.City)
+                .WithMany(b => b.Users)
+                .OnDelete(DeleteBehavior.Restrict);*/
+            
 
             builder.Entity<HousingCall>();//.HasBaseType<Call>().ToTable("HousingCall");
             builder.Entity<CustomerCall>();//.HasBaseType<Call>().ToTable("CustomerCall");
-
-
         }
-
-        public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }

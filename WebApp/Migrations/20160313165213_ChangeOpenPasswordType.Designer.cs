@@ -8,9 +8,10 @@ using WebApp.Models;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160313165213_ChangeOpenPasswordType")]
+    partial class ChangeOpenPasswordType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -336,8 +337,7 @@ namespace WebApp.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FIO")
-                        .HasAnnotation("MaxLength", 255);
+                    b.Property<string>("FIO");
 
                     b.Property<bool>("IsArchieved");
 
@@ -353,8 +353,7 @@ namespace WebApp.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasAnnotation("MaxLength", 256);
 
-                    b.Property<string>("OpenPassword")
-                        .HasAnnotation("MaxLength", 50);
+                    b.Property<string>("OpenPassword");
 
                     b.Property<string>("PasswordHash");
 

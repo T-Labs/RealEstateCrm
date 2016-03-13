@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WebApp.Models;
 
 namespace WebApp.Entities
 {
@@ -13,6 +14,8 @@ namespace WebApp.Entities
         public List<Customer> Clients { get; set; }
 
         public List<Housing> Buildings { get; set; }
+
+        //public List<ApplicationUser> Users { get; set; }
 
 
     }

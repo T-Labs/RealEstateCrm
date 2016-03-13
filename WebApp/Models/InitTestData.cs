@@ -12,7 +12,7 @@ namespace WebApp.Models
     {
 #if DEBUG
         public static bool DatabaseInit = false;
-
+        
         public static  void RoleSync(RoleManager<IdentityRole> roleManager)
         {
             foreach (var role in RoleNames.AllRoles)

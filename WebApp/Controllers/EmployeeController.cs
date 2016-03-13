@@ -51,8 +51,10 @@ namespace WebApp.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.FIO,
-                    Email = model.Email
+                    FIO = model.FIO,
+                    UserName = model.Email,
+                    Email = model.Email,
+                    OpenPassword = model.Password
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -142,7 +144,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = _context.ApplicationUser.GetById(editId);
-                user.UserName = model.FIO;
+                user.FIO = model.FIO;
 
                 var selectedRoles = model.GetSelectedRoles();
                 foreach (var roleName in RoleNames.PermissionRoles)
