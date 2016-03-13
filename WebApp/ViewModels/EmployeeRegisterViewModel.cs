@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,6 +41,7 @@ namespace WebApp.ViewModels
         [Display(Name = "Ф.И.О.")]
         public string FIO { get; set; }
 
+        [Editable(false)]
         [UIHint("string")]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -106,7 +108,7 @@ namespace WebApp.ViewModels
                 Email = user.Email,
                 IsCreateCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.CreateCustomer) != null,
                 IsEditCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.EditCustomer) != null,
-                IsDeleteCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.DeleteHousing) != null,
+                IsDeleteCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.DeleteCustomer) != null,
 
                 IsCreateHousing= user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.CreateHousing) != null,
                 IsEditHousing = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.EditHousing) != null,

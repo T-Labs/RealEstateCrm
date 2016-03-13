@@ -12,6 +12,7 @@
     <hr />
     <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
     @Html.HiddenFor(x => x.EditId)
+    @Html.DisplayFor(x => x.Email, "string-field")
     @Html.EditorFor(x => x.FIO)
     
     @Html.EditorFor(x => x.IsCreateHousing)

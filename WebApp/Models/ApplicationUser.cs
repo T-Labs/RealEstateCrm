@@ -13,10 +13,16 @@ namespace WebApp.Models
     public class ApplicationUser : IdentityUser
     {
         public bool IsArchieved { get; set; }
+/*
+        public string FIO { get; set; }
 
-        /*[Required]
+        [Required]
         public bool OpenPassword { get; set; }
+
         public int CityId { get; set; }
-        public City City { get; set; }*/
+        public City City { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }*/
     }
 }

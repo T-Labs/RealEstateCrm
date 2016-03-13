@@ -20,13 +20,13 @@
         {
             Admin, Employee, Customer, 
             CreateHousing, EditHousing, DeleteHousing,
-            CreateHousing, EditCustomer, DeleteCustomer
+            CreateCustomer, EditCustomer, DeleteCustomer, ManageUser
         };
 
         public static string[] PermissionRoles = new[]
         {
             CreateHousing, EditHousing, DeleteHousing,
-            CreateHousing, EditCustomer, DeleteCustomer
+            CreateCustomer, EditCustomer, DeleteCustomer, ManageUser
         };
     }
 }
