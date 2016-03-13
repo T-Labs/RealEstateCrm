@@ -1,0 +1,13 @@
+﻿@model bool
+
+<div class="field">
+    <label>&nbsp;</label>
+    <div class="ui ">
+        @Html.LabelFor(x => x) @if (Model) {
+                                   <span> "Да"</span>
+                               } else {
+                                   <span>"Нет"</span>
+                               }
+    </div>
+</div>
+

@@ -8,9 +8,8 @@ using WebApp.Models;
 
 namespace WebApp.ViewModels
 {
-    public class EmployeeRegisterViewModel
+    public class EmployeeRegisterViewModel : EmployeeEditViewModel
     {
-        public string EditId { get; set; }
 
         [UIHint("string")]
         [Required]
@@ -30,10 +29,20 @@ namespace WebApp.ViewModels
         [Display(Name = "Подтвердите пароль")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают.")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class EmployeeEditViewModel
+    {
+        public string EditId { get; set; }
+
 
         [UIHint("string")]
         [Display(Name = "Ф.И.О.")]
         public string FIO { get; set; }
+
+        [UIHint("string")]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
 
         [UIHint("checkbox")]
         [Display(Name = "Создание объектов")]
@@ -87,13 +96,14 @@ namespace WebApp.ViewModels
         }
 
 
-        public static EmployeeRegisterViewModel CreateForEdit(ApplicationUser user, List<IdentityRole> roles)
+        public static EmployeeEditViewModel CreateForEdit(ApplicationUser user, List<IdentityRole> roles)
         {
             Dictionary<string, IdentityRole> roleMap = roles.ToDictionary(x => x.Id, x => x);
-            var item = new EmployeeRegisterViewModel
+            var item = new EmployeeEditViewModel
             {
                 EditId = user.Id,
                 FIO = user.UserName,
+                Email = user.Email,
                 IsCreateCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.CreateCustomer) != null,
                 IsEditCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.EditCustomer) != null,
                 IsDeleteCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.DeleteHousing) != null,

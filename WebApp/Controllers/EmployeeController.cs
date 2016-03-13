@@ -28,7 +28,13 @@ namespace WebApp.Controllers
         // GET: Employee
         public IActionResult Index()
         {
-            return View(_context.ApplicationUser.ToList());
+            var identityRoles = _context.Roles.ToList();
+            var roleEmployee = _context.Roles.Single(x => x.Name == RoleNames.Employee);
+            var model = _context.ApplicationUser.Include(x => x.Roles)
+                .Where(x => x.Roles.Any(r => r.RoleId == roleEmployee.Id))
+                .ToList()
+                .Select(x => EmployeeEditViewModel.CreateForEdit(x, identityRoles)).ToList();
+            return View(model);
         }
 
         [Authorize]
@@ -118,25 +124,48 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
             
-            ApplicationUser applicationUser = _context.ApplicationUser.Include(x => x.Roles).Include(x => x.Claims).Single(m => m.Id == id);
+            ApplicationUser applicationUser = _context.ApplicationUser.GetById(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
             }
 
             var roles = _context.Roles.ToList();
-            return View(EmployeeRegisterViewModel.CreateForEdit(applicationUser, roles));
+            return View(EmployeeEditViewModel.CreateForEdit(applicationUser, roles));
         }
 
         // POST: Employee/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(EmployeeRegisterViewModel model, string editId)
+        public async Task<IActionResult> Edit(EmployeeEditViewModel model, string editId)
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser applicationUser = _context.ApplicationUser.Include(x => x.Roles).Include(x => x.Claims).Single(m => m.Id == editId);
-                _context.Update(applicationUser);
+                ApplicationUser user = _context.ApplicationUser.GetById(editId);
+                user.UserName = model.FIO;
+
+                var selectedRoles = model.GetSelectedRoles();
+                foreach (var roleName in RoleNames.PermissionRoles)
+                {
+                    bool isSelected = selectedRoles.Contains(roleName);
+                    bool userInRole = await _userManager.IsInRoleAsync(user, roleName);
+                    if (isSelected)
+                    {
+                        if (!userInRole)
+                        {
+                            await _userManager.AddToRoleAsync(user, roleName);
+                        }
+                    }
+                    else
+                    {
+                        if (userInRole)
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, roleName);
+                        }
+                    }
+                }
+
+                _context.Update(user);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }

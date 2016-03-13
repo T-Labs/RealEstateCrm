@@ -22,5 +22,11 @@
             CreateHousing, EditHousing, DeleteHousing,
             CreateHousing, EditCustomer, DeleteCustomer
         };
+
+        public static string[] PermissionRoles = new[]
+        {
+            CreateHousing, EditHousing, DeleteHousing,
+            CreateHousing, EditCustomer, DeleteCustomer
+        };
     }
 }
