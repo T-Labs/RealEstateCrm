@@ -11,11 +11,10 @@ using WebApp.ViewModels;
 using WebApp;
 using WebApp.Entities;
 using WebApp.Models;
-using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
-    [Authorize(Roles = RoleNames.Admin)]
+    [Authorize(AuthPolicy.Employees)]
     public class HousingController : BaseController
     {
 

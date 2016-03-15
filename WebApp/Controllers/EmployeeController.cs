@@ -14,7 +14,7 @@ using WebApp.ViewModels.Account;
 
 namespace WebApp.Controllers
 {
-    [Authorize(Roles = RoleNames.Admin + "," + RoleNames.ManageUser)]
+    [Authorize(AuthPolicy.ManageUser)]
     public class EmployeeController : Controller
     {
         private ApplicationDbContext _context;
@@ -26,6 +26,7 @@ namespace WebApp.Controllers
             this._userManager = userManager;
         }
 
+        [Authorize(AuthPolicy.ManageUser)]
         // GET: Employee
         public IActionResult Index()
         {

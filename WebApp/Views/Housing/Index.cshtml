@@ -2,9 +2,11 @@
 @using Microsoft.AspNet.Http.Extensions
 @using WebApp.ViewModels
 @model WebApp.ViewModels.HousingIndexModel
+@using Microsoft.AspNet.Authorization
 
 @{
     ViewData["Title"] = "Index";
+    @inject IAuthorizationService _auth;
 }
 
 <h2>Список объектов</h2>
@@ -75,8 +77,10 @@
                 <div class="row column two">
                     <a onclick='@($"showModal('#item{item.EditId}');return false;")' class="ui button tiny">Подробности</a>
                     <div class="ui icon buttons">
-                        <a asp-action="Edit" asp-route-id="@item.EditId" class="ui circular icon button basic  blue" title="Редактирование"><i class="edit icon"></i></a>
-
+                        @if (await _auth.AuthorizeAsync(User, AuthPolicy.EditHousing))
+                        {
+                            <a show-if="@_auth.AuthorizeAsync(User, item, AuthPolicy.EditHousing)" asp-action="Edit" asp-route-id="@item.EditId" class="ui circular icon button basic  blue" title="Редактирование"><i class="edit icon"></i></a>
+                        }
                         @if (item.IsArchived)
                         {
                             <a asp-action="FromArchive" asp-route-id="@item.EditId" class="ui button teal tiny basic" title="Из архива"><i class="archive icon"></i></a>

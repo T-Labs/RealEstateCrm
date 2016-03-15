@@ -29,4 +29,18 @@
             CreateCustomer, EditCustomer, DeleteCustomer, ManageUser
         };
     }
+
+    public static class AuthPolicy
+    {
+        public const string Employees = "Employees";
+        public const string CreateHousing = "CreateHousing";
+        public const string EditHousing = "EditHousing";
+        public const string DeleteHousing = "DeleteHousing";
+
+        public const string CreateCustomer = "CreateCustomer";
+        public const string EditCustomer = "EditCustomer";
+        public const string DeleteCustomer = "DeleteCustomer";
+
+        public const string ManageUser = "ManageUser";
+    }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNet.Builder;
+﻿using System;
+using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WebApp.Services;
 using WebApp.Models;
+using WebApp.Policies;
 
 namespace WebApp
 {
@@ -46,15 +49,25 @@ namespace WebApp
 
             services.AddMvc();
 
+            services.AddAuthorization(config =>
+            {
+                Action<AuthorizationPolicyBuilder, string> employeeRoles = (p, roleName) =>
+                {
+                    p.AddRequirements(new EmployeePermissionRequired(roleName));
+                };
+
+                config.AddPolicy(AuthPolicy.Employees, p => { p.AddRequirements(new EmployeePermissionRequired()); });
+
+                config.AddPolicy(AuthPolicy.ManageUser, p => { employeeRoles(p, RoleNames.ManageUser); });
+                config.AddPolicy(AuthPolicy.CreateHousing, p => { employeeRoles(p, RoleNames.CreateHousing); });
+                config.AddPolicy(AuthPolicy.EditHousing, p => { employeeRoles(p, RoleNames.EditHousing); });
+
+               
+            });
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-
-          /*  services.Configure<Microsoft.AspNet.Authorization.AuthorizationOptions>(options =>
-            {
-                options.AddPolicy("ManageUsers", policy => policy.RequireRole(RoleNames.ManageUser));
-            });*/
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
