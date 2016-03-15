@@ -362,8 +362,11 @@ namespace WebApp.Models
 
 
                 #endregion
+
+                var cityList = dbContext.Cities.Select(x => x.Id).ToList();
                 foreach (var street in streets)
                 {
+                    street.CityId = cityList[Random.Next(cityList.Count)];
                     dbContext.Streets.Add(street);
                 }
 

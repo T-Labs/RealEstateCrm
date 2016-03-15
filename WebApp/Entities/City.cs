@@ -15,10 +15,10 @@ namespace WebApp.Entities
         public List<Customer> Clients { get; set; }
 
         public List<Housing> Buildings { get; set; }
-        
-        //public ICollection<Street> Streets { get; set; }
 
-        //public List<ApplicationUser> Users { get; set; }
+        public ICollection<Street> Streets { get; set; }
+
+        public List<ApplicationUser> Users { get; set; }
 
 
     }

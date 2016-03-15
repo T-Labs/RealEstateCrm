@@ -30,6 +30,7 @@ else
             <th class="two wide">@Html.DisplayNameFor(x => Model[0].FIO)</th>
             <th>@Html.DisplayNameFor(x => Model[0].Email)</th>
             <th>@Html.DisplayNameFor(x => Model[0].OpenPassword)</th>
+              <th>@Html.DisplayNameFor(x => Model[0].City)</th>
             <th>@Html.DisplayNameFor(x => Model[0].IsCreateHousing)</th>
             <th>@Html.DisplayNameFor(x => Model[0].IsEditHousing)</th>
             <th>@Html.DisplayNameFor(x => Model[0].IsDeleteHousiong)</th>
@@ -47,6 +48,7 @@ else
                 <td>@item.FIO</td>
                 <td>@item.Email</td>
                 <td>@item.OpenPassword</td>
+                <td>@Html.DisplayFor(x => item.City)</td>
                 <td>@Html.DisplayFor(x => item.IsCreateHousing, "bool-text")</td>
                 <td>@Html.DisplayFor(x => item.IsEditHousing, "bool-text")</td>
                 <td>@Html.DisplayFor(x => item.IsDeleteHousiong, "bool-text")</td>

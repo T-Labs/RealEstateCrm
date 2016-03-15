@@ -14,6 +14,7 @@ using WebApp.ViewModels.Account;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = RoleNames.Admin + "," + RoleNames.ManageUser)]
     public class EmployeeController : Controller
     {
         private ApplicationDbContext _context;
@@ -33,19 +34,20 @@ namespace WebApp.Controllers
             var model = _context.ApplicationUser.Include(x => x.Roles)
                 .Where(x => x.Roles.Any(r => r.RoleId == roleEmployee.Id))
                 .ToList()
-                .Select(x => EmployeeEditViewModel.CreateForEdit(x, identityRoles)).ToList();
+                .Select(x => EmployeeEditViewModel.CreateForEdit(x, identityRoles, _context.Cities.ToList())).ToList();
             return View(model);
         }
 
         [Authorize]
-        public IActionResult Register()
+        public IActionResult Create()
         {
-            return View();
+            var model = new EmployeeRegisterViewModel(0, _context.Cities.ToList());
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(EmployeeRegisterViewModel model)
+        public async Task<IActionResult> Create(EmployeeRegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +67,7 @@ namespace WebApp.Controllers
                     
                     var resultRole = await _userManager.AddToRolesAsync(user, roles);
 
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                    return RedirectToAction(nameof(Index));
                 }
                 AddErrors(result);
             }
@@ -97,27 +99,7 @@ namespace WebApp.Controllers
 
             return View(applicationUser);
         }
-
-        // GET: Employee/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Employee/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(ApplicationUser applicationUser)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.ApplicationUser.Add(applicationUser);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(applicationUser);
-        }
-
+        
         // GET: Employee/Edit/5
         public IActionResult Edit(string id)
         {
@@ -133,7 +115,8 @@ namespace WebApp.Controllers
             }
 
             var roles = _context.Roles.ToList();
-            return View(EmployeeEditViewModel.CreateForEdit(applicationUser, roles));
+            var cityList = _context.Cities.ToList();
+            return View(EmployeeEditViewModel.CreateForEdit(applicationUser, roles, cityList));
         }
 
         // POST: Employee/Edit/5
@@ -145,6 +128,7 @@ namespace WebApp.Controllers
             {
                 ApplicationUser user = _context.ApplicationUser.GetById(editId);
                 user.FIO = model.FIO;
+                user.CityId = model.City.Id;
 
                 var selectedRoles = model.GetSelectedRoles();
                 foreach (var roleName in RoleNames.PermissionRoles)

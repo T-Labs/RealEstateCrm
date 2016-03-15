@@ -19,12 +19,12 @@ namespace WebApp.Models
 
         [MaxLength(50)]
         public string OpenPassword { get; set; }
-/*
-        public int CityId { get; set; }
+    
+        public int? CityId { get; set; }
 
         [ForeignKey("CityId")]
         public virtual City City { get; set; }
-        */
+        
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
     }

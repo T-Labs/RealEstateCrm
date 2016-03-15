@@ -1,37 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
+using WebApp.Entities;
 using WebApp.Models;
 
 namespace WebApp.ViewModels
 {
-    public class EmployeeRegisterViewModel : EmployeeEditViewModel
-    {
-
-        [UIHint("string")]
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [UIHint("string")]
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
-        public string Password { get; set; }
-
-        [UIHint("string")]
-        [DataType(DataType.Password)]
-        [Display(Name = "Подтвердите пароль")]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают.")]
-        public string ConfirmPassword { get; set; }
-    }
-
     public class EmployeeEditViewModel
     {
         public string EditId { get; set; }
@@ -82,6 +57,15 @@ namespace WebApp.ViewModels
         [Display(Name = "Город")]
         public DropDownViewModel City { get; set; }
 
+        public EmployeeEditViewModel()
+        {
+        }
+
+        public EmployeeEditViewModel(int cityId, List<City> cityList)
+        {
+            City = new DropDownViewModel(cityId, cityList.ToSelectList());
+        }
+
         public List<string> GetSelectedRoles()
         {
             var roles = new List<string>();
@@ -102,7 +86,7 @@ namespace WebApp.ViewModels
         }
 
 
-        public static EmployeeEditViewModel CreateForEdit(ApplicationUser user, List<IdentityRole> roles)
+        public static EmployeeEditViewModel CreateForEdit(ApplicationUser user, List<IdentityRole> roles, List<City> cityList)
         {
             Dictionary<string, IdentityRole> roleMap = roles.ToDictionary(x => x.Id, x => x);
             var item = new EmployeeEditViewModel
@@ -111,6 +95,7 @@ namespace WebApp.ViewModels
                 FIO = user.FIO,
                 Email = user.Email,
                 OpenPassword = user.OpenPassword,
+                City = new DropDownViewModel(user.CityId ?? 0, cityList.ToSelectList()),
                 IsCreateCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.CreateCustomer) != null,
                 IsEditCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.EditCustomer) != null,
                 IsDeleteCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.DeleteCustomer) != null,

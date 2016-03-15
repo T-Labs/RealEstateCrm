@@ -49,7 +49,12 @@ namespace WebApp
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-            
+
+          /*  services.Configure<Microsoft.AspNet.Authorization.AuthorizationOptions>(options =>
+            {
+                options.AddPolicy("ManageUsers", policy => policy.RequireRole(RoleNames.ManageUser));
+            });*/
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,8 +79,8 @@ namespace WebApp
                     using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
                         .CreateScope())
                     {
-                        serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
-                             .Database.Migrate();
+                        var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                        dbContext.Database.Migrate();
                     }
                 }
                 catch { }

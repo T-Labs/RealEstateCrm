@@ -60,16 +60,19 @@ namespace WebApp.Models
                 .HasOne(p => p.City)
                 .WithMany(b => b.Districts)
                 .OnDelete(DeleteBehavior.Restrict);
-            
-            /*
+
             builder.Entity<Street>()
                 .HasOne(p => p.City)
-                .WithMany(b => b.Streets).HasForeignKey(x => x.CityId)
-                .OnDelete(DeleteBehavior.Restrict);*/
-            
+                .WithMany(b => b.Streets)
+                .OnDelete(DeleteBehavior.Restrict);
+          
+             builder.Entity<ApplicationUser>()
+                   .HasOne(p => p.City)
+                   .WithMany(b => b.Users)
+                   .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<HousingCall>();//.HasBaseType<Call>().ToTable("HousingCall");
-            builder.Entity<CustomerCall>();//.HasBaseType<Call>().ToTable("CustomerCall");
+            builder.Entity<HousingCall>();
+            builder.Entity<CustomerCall>();
         }
     }
 }
