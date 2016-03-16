@@ -77,9 +77,6 @@ else
                 var cityId = $(this).val();
                 
              
-                var streets = $("#Street_Id");
-                streets.dropdown('clear');
-
                 $.ajax({
                     type: "GET",
                     url: "/api/rent/districtByCity?cityId=" + cityId,
@@ -97,9 +94,33 @@ else
                         });
                     },
                     error: function() {
-                        alert("Failed to load genders");
+                        alert("Ошибка при загрузке списка районов");
                     }
                 });
+
+                 $.ajax({
+                    type: "GET",
+                    url: "/api/rent/streetsByCity?cityId=" + cityId,
+                    data: {},
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                      
+                        var streets = $("#Street_Id");
+                         streets.dropdown('clear');
+
+                        var options = streets.get(0).options;
+                        options.length = 0;
+
+                        $.each(response.items, function(index, item) {
+                            options.add(new Option(item.Text, item.Value));
+                        });
+                    },
+                    error: function() {
+                        alert("Ошибка при загрузке списка улиц");
+                    }
+                });
+                //
             });
         });
     </script>

@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.Data.Entity;
 using WebApp.ViewModels;
 using WebApp;
 using WebApp.Entities;
@@ -57,20 +58,23 @@ namespace WebApp.WebApi
             return districts.OrderBy(x => x.Name).Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
         }
 
-       /* [Route("api/rent/streetsByCity")]
+        [Route("api/rent/streetsByCity")]
         [HttpGet]
         public JsonResult GetStreetsByCity([FromServices] ApplicationDbContext repo, int? cityId)
         {
           
             if (cityId.HasValue)
             {
-                var city = repo.Cities.FirstOrDefault(x => x.Id == cityId);
-                districts = districts.Where(x => x.CityId == cityId.Value);
+                var city = repo.Cities.Include(x => x.Streets).Single(x => x.Id == cityId);
+                return new JsonResult(new
+                {
+                    items = city.Streets.ToSelectList()
+                });
             }
             return new JsonResult(new
             {
                 items = new List<SelectListItem>()
             });
-        }*/
+        }
     }
 }
