@@ -18,6 +18,7 @@ namespace WebApp.ViewModels
             get { return Items?.FirstOrDefault(x => x.Value == Id.ToString())?.Text ?? string.Empty; }
         }
 
+        public bool Disabled { get; set; }
 
         public DropDownViewModel()
         {

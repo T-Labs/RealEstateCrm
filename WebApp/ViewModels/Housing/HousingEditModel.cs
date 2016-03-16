@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using WebApp.Entities;
@@ -89,16 +91,19 @@ namespace WebApp.ViewModels
         {
         }
 
-        public static HousingEditModel Create(ApplicationDbContext context, Housing housing)
+        public static HousingEditModel Create(ApplicationDbContext context, Housing housing, IAuthorizationService auth, ClaimsPrincipal user)
         {
-            var allCities = context.Cities.Include(x => x.Districts).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-            var allStreets = context.Streets.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
+            var allCities = context.Cities.Include(x => x.Districts).Include(x => x.Streets).ToSelectList().ToList();
             var typesHousings = context.TypesHousing.ToList();
             
-            return Create(housing, typesHousings, allCities, allStreets);
+            return Create(housing, typesHousings, allCities, auth, user);
         }
 
-        public static HousingEditModel Create(Housing housing, List<TypesHousing> typesHousings, List<SelectListItem> allCities, List<SelectListItem> allStreets)
+        public static HousingEditModel Create(Housing housing, 
+            List<TypesHousing> typesHousings, 
+            List<SelectListItem> allCities,
+            IAuthorizationService auth,
+            ClaimsPrincipal user)
         {
             var item = new HousingEditModel
             {
@@ -124,8 +129,11 @@ namespace WebApp.ViewModels
                 }
             };
 
-            item.City = new DropDownViewModel(housing?.CityId ?? 0, allCities);
-            item.Street = new DropDownViewModel(housing?.StreetId ?? 0, allStreets);
+            item.City = new DropDownViewModel(housing?.CityId ?? 0, allCities)
+            {
+                Disabled = user.IsInRole(RoleNames.Employee)
+            };
+            item.Street = new DropDownViewModel(housing?.StreetId ?? 0, housing?.City?.Streets?.ToSelectList());
 
             item.District = new DropDownViewModel()
             {

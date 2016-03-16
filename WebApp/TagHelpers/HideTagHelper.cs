@@ -6,13 +6,13 @@ using Microsoft.AspNet.Razor.TagHelpers;
 
 namespace WebApp.TagHelpers
 {
-    [HtmlTargetElement(Attributes = "show-if")]
-    public class ShowTagHelper : TagHelper
+    [HtmlTargetElement(Attributes = "hide-if")]
+    public class HideTagHelper : TagHelper
     {
-        public bool ShowIf { get; set; }
+        public bool HideIf { get; set; }
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (!ShowIf)
+            if (HideIf)
             {
                 output.SuppressOutput();
             }

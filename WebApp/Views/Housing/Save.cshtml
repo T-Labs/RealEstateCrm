@@ -76,6 +76,10 @@ else
             $('#City_Id').change(function(e) {
                 var cityId = $(this).val();
                 
+             
+                var streets = $("#Street_Id");
+                streets.dropdown('clear');
+
                 $.ajax({
                     type: "GET",
                     url: "/api/rent/districtByCity?cityId=" + cityId,

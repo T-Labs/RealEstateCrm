@@ -17,9 +17,10 @@ namespace WebApp.Controllers
     [Authorize(AuthPolicy.Employees)]
     public class HousingController : BaseController
     {
-
-        public HousingController(ApplicationDbContext context) : base(context, null)
+        private IAuthorizationService AuthService { get; set; }
+        public HousingController(ApplicationDbContext context, IAuthorizationService auth) : base(context, null)
         {
+            AuthService = auth;
         }
 
         public IActionResult Index(string filter, 
@@ -37,8 +38,7 @@ namespace WebApp.Controllers
 
             var user = _context.Users.Single(x => x.Id == userId);
 
-            var allCities = _context.Cities.Include(x => x.Districts).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-            var allStreets = _context.Streets.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
+            var allCities = _context.Cities.Include(x => x.Districts).Include(x => x.Streets).ToSelectList().ToList();
             var typesHousings = _context.TypesHousing.ToList();
 
             var query = _context.Housing
@@ -50,7 +50,7 @@ namespace WebApp.Controllers
 
             int totalPages;
             int totalItems;
-            var items = query.GetPage(page, out totalItems, out totalPages).Select(x => HousingEditModel.Create(x, typesHousings, allCities, allStreets));
+            var items = query.GetPage(page, out totalItems, out totalPages).Select(x => HousingEditModel.Create(x, typesHousings, allCities, AuthService, User));
 
             ViewBag.TotalItems = _context.Housing.Count();
             ViewBag.FilteredItemsCount = totalItems;
@@ -121,18 +121,22 @@ namespace WebApp.Controllers
             return View(housing);
         }
         
+        [Authorize(AuthPolicy.CreateHousing)]
         public IActionResult Create()
         {
+            var city = User.IsInRole(RoleNames.Employee) ? CurrentUser?.City : _context.Cities.Include(x => x.Districts).FirstOrDefault();
             var housing = new Housing()
             {
-                City = _context.Cities.FirstOrDefault(),
+                City = city,
+                CityId = city?.Id ?? 0,
                 Phones = new List<HousingPhone>()
             };
-            var model = HousingEditModel.Create(_context, housing);
+            var model = HousingEditModel.Create(_context, housing, AuthService, User);
             return View("Save", model);
         }
 
         [HttpPost]
+        [Authorize(AuthPolicy.CreateHousing)]
         [ValidateAntiForgeryToken]
         public IActionResult Create(HousingEditModel housing)
         {
@@ -150,6 +154,7 @@ namespace WebApp.Controllers
             return View("Save", housing);
         }
 
+        [Authorize(AuthPolicy.EditHousing)]
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -161,13 +166,14 @@ namespace WebApp.Controllers
             if (housing == null)
             {
                 return HttpNotFound();
-            }   
-            
-            var model = HousingEditModel.Create(_context, housing);
+            }
+
+            var model = HousingEditModel.Create(_context, housing, AuthService, User);
             return View("Save", model);
         }
 
         [HttpPost]
+        [Authorize(AuthPolicy.EditHousing)]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(HousingEditModel housing, int editId)
         {
@@ -182,6 +188,7 @@ namespace WebApp.Controllers
             return View("Save", housing);
         }
 
+        [Authorize(AuthPolicy.DeleteHousing)]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -192,7 +199,7 @@ namespace WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        
+        [Authorize(AuthPolicy.EditHousing)]
         public IActionResult ToArchive(int id)
         {
             Housing housing = _context.Housing.Single(m => m.Id == id);
@@ -202,6 +209,7 @@ namespace WebApp.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(AuthPolicy.EditHousing)]
         public IActionResult FromArchive(int id)
         {
             Housing housing = _context.Housing.Single(m => m.Id == id);

@@ -56,6 +56,21 @@ namespace WebApp.WebApi
             }
             return districts.OrderBy(x => x.Name).Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name });
         }
-        
+
+       /* [Route("api/rent/streetsByCity")]
+        [HttpGet]
+        public JsonResult GetStreetsByCity([FromServices] ApplicationDbContext repo, int? cityId)
+        {
+          
+            if (cityId.HasValue)
+            {
+                var city = repo.Cities.FirstOrDefault(x => x.Id == cityId);
+                districts = districts.Where(x => x.CityId == cityId.Value);
+            }
+            return new JsonResult(new
+            {
+                items = new List<SelectListItem>()
+            });
+        }*/
     }
 }

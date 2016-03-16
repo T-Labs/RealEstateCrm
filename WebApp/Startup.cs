@@ -61,8 +61,10 @@ namespace WebApp
                 config.AddPolicy(AuthPolicy.ManageUser, p => { employeeRoles(p, RoleNames.ManageUser); });
                 config.AddPolicy(AuthPolicy.CreateHousing, p => { employeeRoles(p, RoleNames.CreateHousing); });
                 config.AddPolicy(AuthPolicy.EditHousing, p => { employeeRoles(p, RoleNames.EditHousing); });
-
-               
+                config.AddPolicy(AuthPolicy.DeleteHousing, p => { employeeRoles(p, RoleNames.DeleteHousing); });
+                config.AddPolicy(AuthPolicy.CreateCustomer, p => { employeeRoles(p, RoleNames.CreateCustomer); });
+                config.AddPolicy(AuthPolicy.EditCustomer, p => { employeeRoles(p, RoleNames.EditCustomer); });
+                config.AddPolicy(AuthPolicy.DeleteCustomer, p => { employeeRoles(p, RoleNames.DeleteCustomer); });
             });
 
             // Add application services.
