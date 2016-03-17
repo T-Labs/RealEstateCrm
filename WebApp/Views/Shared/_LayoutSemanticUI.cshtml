@@ -59,7 +59,17 @@
             </div>
         </div>
         <!-- Page Contents -->
-    <div class="ui main container" ng-view="" >
+    <div class="ui main container" ng-view="">
+        @if (TempData["CrmSuccessMessage"] != null)
+        {
+            <div class="ui success message">
+                  <i class="close icon"></i>
+                  <div class="header">
+                    @TempData["CrmSuccessMessage"]
+                  </div>
+                  <!--<p>You may now log-in with the username you have chosen</p>-->
+                </div>
+        }
         @RenderBody()
     </div>
             

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -33,14 +33,14 @@ namespace WebApp.Controllers
             int? objectId = null, 
             bool? isArchive = null)
         {
-
-            var userId = User.GetUserId();
-
-            var user = _context.Users.Single(x => x.Id == userId);
-
             var allCities = _context.Cities.Include(x => x.Districts).Include(x => x.Streets).ToSelectList().ToList();
             var typesHousings = _context.TypesHousing.ToList();
-
+            
+            if (User.IsInRole(RoleNames.Employee))
+            {
+                cityId = CurrentUser?.City?.Id;
+            }
+        
             var query = _context.Housing
                                 .AddIsArchiveFilter(isArchive ?? false)
                                 .AddCityFilter(cityId)
@@ -55,16 +55,23 @@ namespace WebApp.Controllers
             ViewBag.TotalItems = _context.Housing.Count();
             ViewBag.FilteredItemsCount = totalItems;
 
-            var model = new HousingIndexModel()
+            var model = new HousingIndexModel
             {
                 Items = items,
-                Filters = new HousingIndexFilterModel(_context, houseType, cityId, districtId)
+                Filters = new HousingIndexFilterModel
                 {
-                    IsArchived = isArchive ?? false
+                    IsArchived = isArchive ?? false,
+                    HousingTypeList = new DropDownViewModel(houseType ?? 0, _context.TypesHousing.ToSelectList(true)),
+                    City = new DropDownViewModel(cityId ?? 0, _context.Cities.ToSelectList(true))
+                    {
+                        Disabled = User.IsInRole(RoleNames.Employee)
+                    },
+                    District = new DropDownViewModel(districtId ?? 0, _context.Districts.ToSelectList(true))
                 },
                 TotalPages = totalPages,
                 CurrentPage = page
             };
+            
             return View(model);
         }
 
@@ -183,6 +190,8 @@ namespace WebApp.Controllers
                 housing.UpdateEntity(dbItem);
                 _context.Update(dbItem);
                 _context.SaveChanges();
+
+                TempData["CrmSuccessMessage"] = "Запись была успешно сохранена";
                 return RedirectToAction("Index");
             }
             return View("Save", housing);

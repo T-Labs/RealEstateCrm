@@ -8,14 +8,14 @@ using WebApp.Entities;
 
 namespace WebApp
 {
-    public static class CityExtensions
+    public static class TypeHousingExtensions
     {
-        public static IEnumerable<SelectListItem> ToSelectList(this IEnumerable<City> cityList, bool addedEmpty = false)
+        public static IEnumerable<SelectListItem> ToSelectList(this IEnumerable<TypesHousing> cityList, bool addedEmpty = false)
         {
             var items = cityList.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
             if (addedEmpty)
             {
-                items.Insert(0, new SelectListItem { Value = "", Selected = true, Text = "Все города" });
+                items.Insert(0, new SelectListItem { Value = "", Selected = true, Text = "Все виды жилья" });
             }
             return items;
         }
