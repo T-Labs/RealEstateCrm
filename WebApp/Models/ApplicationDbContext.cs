@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
+using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 using WebApp.Entities;
 using WebApp.Models;
@@ -70,9 +71,31 @@ namespace WebApp.Models
                    .HasOne(p => p.City)
                    .WithMany(b => b.Users)
                    .OnDelete(DeleteBehavior.Restrict);
+            
+            builder.Entity<Housing>(c =>
+            {
+                 c.Property(p => p.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            });
 
             builder.Entity<HousingCall>();
             builder.Entity<CustomerCall>();
+        }
+
+        public override int SaveChanges()
+        {
+            var list = ChangeTracker.Entries<Housing>().ToList();
+          /*
+            foreach (var item in list.Where(t => t.State == EntityState.Added))
+            {
+                item.Entity.CreatedAt = System.DateTime.UtcNow;
+            }*/
+                
+            foreach (var item in list.Where(t => t.State == EntityState.Modified))
+            {
+                item.Entity.LastEditedAt = DateTime.UtcNow;
+            }
+            
+            return base.SaveChanges();
         }
     }
 }

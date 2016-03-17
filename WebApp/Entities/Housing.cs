@@ -59,6 +59,8 @@ namespace WebApp.Entities
         public ApplicationUser User { get; set; }
 
         public bool IsArchive { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? LastEditedAt { get; set; }
     }
 }
 
