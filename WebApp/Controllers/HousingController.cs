@@ -229,5 +229,30 @@ namespace WebApp.Controllers
         }
 
 
+        [Authorize(AuthPolicy.EditHousing)]
+        public JsonResult AddCall(int housingId, string status)
+        {
+            var housing = _context.Housing.Include(x => x.Calls).Single(m => m.Id == housingId);
+            if (housing == null)
+            {
+                return Json(new { status = "failed", message = "Housing not found"});
+            }
+
+            HousingCallType ctype;
+            Enum.TryParse(status, out ctype);
+
+            housing.Calls.Add(new HousingCall
+            {
+                User = CurrentUser,
+               // Housing = housing,
+                Status = status,
+                StatusType = ctype
+            });
+
+            _context.Update(housing);
+            _context.SaveChanges();
+
+            return Json(new { status = "ok" });
+        }
     }
 }

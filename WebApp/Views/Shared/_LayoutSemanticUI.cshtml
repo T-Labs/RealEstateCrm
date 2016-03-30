@@ -31,17 +31,20 @@
         </environment>
     </head>
     <body>
-        <div class="ui fixed inverted menu">
+        <div class="ui fixed menu">
             <div class="ui container">
                 <a href="#" class="header item">                    
                     RealEstate CRM
                 </a>
-                <a href="#" class="item">Home</a>
+                <a href="#" class="item">Домашняя</a>
+                <a class="item" asp-controller="Employee" asp-action="Index">Сотрудники</a>
+                <a class="item" asp-controller="Housing" asp-action="Index">Объекты</a>
+
                 <div class="ui simple dropdown item">
-                    Dropdown <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <a class="item" href="#">Link Item</a>
-                        <a class="item" href="#">Link Item</a>
+                    Админка <i class="dropdown icon"></i>
+                    <div class="menu right">
+                        <a class="item" asp-controller="Employee" asp-action="Index">Сотрудники</a>
+                        <a class="item" asp-controller="Housing" asp-action="Index">Объекты</a>
                         <div class="divider"></div>
                         <div class="header">Header Item</div>
                         <div class="item">
@@ -55,7 +58,9 @@
                         <a class="item" href="#">Link Item</a>
                     </div>
                 </div>
-                @await Html.PartialAsync("_LoginPartial")
+                  <div class="menu right">
+                      @await Html.PartialAsync("_LoginPartialSemanticUI")
+                 </div>
             </div>
         </div>
         <!-- Page Contents -->

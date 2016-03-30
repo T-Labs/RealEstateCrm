@@ -8,9 +8,10 @@ using WebApp.Models;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160330081404_CallsForHousing")]
+    partial class CallsForHousing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -281,8 +282,6 @@ namespace WebApp.Migrations
                     b.Property<int>("HousingId");
 
                     b.Property<string>("Status");
-
-                    b.Property<int>("StatusType");
 
                     b.HasKey("Id");
                 });

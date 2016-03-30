@@ -61,6 +61,8 @@ namespace WebApp.Entities
         public bool IsArchive { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? LastEditedAt { get; set; }
+
+        public List<HousingCall> Calls { get; set; } 
     }
 }
 

@@ -98,7 +98,7 @@
             </div>
         </div>
     </div>
-    <div class="ui modal" id='@($"item{item.EditId}")'>
+    <div class="ui modal" id='@($"item{item.EditId}")' item-id="@item.EditId">
           <i class="close icon"></i>
           <div class="header">
             @Html.DisplayFor(x => item.HouseType)
@@ -111,25 +111,25 @@
                     <label>Результат прозвона</label>
                     <div class="field">
                       <div class="ui radio checkbox">
-                        <input type="radio" name="example2" checked="checked">
+                        <input type="radio" name="callResult" checked="checked" value="Verified">
                         <label>Проверено</label>
                       </div>
                     </div>
                     <div class="field">
                       <div class="ui radio checkbox">
-                        <input type="radio" name="example2">
+                        <input type="radio" name="callResult" value="DontAnswer">
                         <label>Не отвечает</label>
                       </div>
                     </div>
                     <div class="field">
                       <div class="ui radio checkbox">
-                        <input type="radio" name="example2">
+                        <input type="radio" name="callResult" value="NotAvailable">
                         <label>Недоступен</label>
                       </div>
                     </div>
                     <div class="field">
                       <div class="ui radio checkbox">
-                        <input type="radio" name="example2">
+                        <input type="radio" name="callResult" value="CorrectedWithoutCall">
                         <label>Корректировка без прозвона</label>
                       </div>
                     </div>
@@ -161,8 +161,26 @@
                   return false;
                 },
         onApprove: function() {
-                window.alert('Approved!');
-            }
+           
+            var itemId = $(this).attr('item-id');
+
+            $.ajax({
+                type: "POST",
+                url :'/Housing/AddCall',
+                data: {
+                      housingId: itemId,
+                      status: $(this).find(':checked').val()
+                  },
+
+                 success: (response) => {
+                      window.alert('success!');
+                 },
+                error: (response) => {
+                    alert('error');
+                }
+           }
+            );
+        }
           }).modal('show');
     }
 </script>

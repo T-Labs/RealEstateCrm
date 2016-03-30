@@ -14,8 +14,7 @@ namespace WebApp.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Blacklist> BlackLists { get; set; }
-
-        public DbSet<Call> Calls { get; set; }
+        
 
         public DbSet<Street> Streets { get; set; }
 
