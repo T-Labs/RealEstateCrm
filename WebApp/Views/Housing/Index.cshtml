@@ -5,7 +5,7 @@
 @using Microsoft.AspNet.Authorization
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Список объектов";
     @inject IAuthorizationService _auth;
 }
 
@@ -44,17 +44,20 @@
 </h4>
 
 <pager total-pages="@Model.TotalPages" current-page='@Model.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
-
+    <div class="housing-items"> 
 @foreach (var item in Model.Items)
 {
     var archiveColorClass = item.IsArchived ? "secondary" : "";
     <div class="ui segment">
-        @if (item.IsArchived) {
+        @if (item.IsArchived)
+        {
             <div class="ui top left attached red label">В архиве</div>
-        } else {
+        }
+        else
+        {
             <div class="ui top left attached label">Актуальные</div>
         }
-  
+
         <div class="ui stackable two column grid  @archiveColorClass">
 
             <div class="thirteen wide column">
@@ -79,11 +82,11 @@
             </div>
             <div class="two wide column right aligned">
                 <div class="row column two">
-                    <a onclick='@($"showModal('#item{item.EditId}');return false;")' class="ui button tiny">Подробности</a>
+                    <a onclick='@($"showModal('#item{item.EditId}', '{item.EditId}');return false;")' class="ui button tiny">Подробности</a>
                     <div class="ui icon buttons">
-                       
-                            <a show-if="@userHasEdit" asp-action="Edit" asp-route-id="@item.EditId" class="ui circular icon button basic  blue" title="Редактирование"><i class="edit icon"></i></a>
-                        
+
+                        <a show-if="@userHasEdit" asp-action="Edit" asp-route-id="@item.EditId" class="ui circular icon button basic  blue" title="Редактирование"><i class="edit icon"></i></a>
+
                         @if (item.IsArchived)
                         {
                             <a show-if="@userHasEdit" asp-action="FromArchive" asp-route-id="@item.EditId" class="ui button teal tiny basic" title="Из архива"><i class="archive icon"></i></a>
@@ -96,91 +99,106 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="ui modal" id='@($"item{item.EditId}")' item-id="@item.EditId">
-          <i class="close icon"></i>
-          <div class="header">
-            @Html.DisplayFor(x => item.HouseType)
-          </div>
-          <div class="content">
-            <div class="description">
-             @Html.DisplayFor(x => item.Comment)
-                <div class="ui form">
-                  <div class="grouped fields">
-                    <label>Результат прозвона</label>
-                    <div class="field">
-                      <div class="ui radio checkbox">
-                        <input type="radio" name="callResult" checked="checked" value="Verified">
-                        <label>Проверено</label>
-                      </div>
+            <div class="row thirteen wide column">
+                <div class="ui accordion field">
+                    <div class="title ui label">
+                        <i class="icon dropdown"></i>
+                        Прозвоны
                     </div>
-                    <div class="field">
-                      <div class="ui radio checkbox">
-                        <input type="radio" name="callResult" value="DontAnswer">
-                        <label>Не отвечает</label>
-                      </div>
+                    <div class="content">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="header">New York City</div>
+                                A lovely city
+                            </div>
+                            <div class="item">
+                                <div class="header">Chicago</div>
+                                Also quite a lovely city
+                            </div>
+                            <div class="item">
+                                <div class="header">Los Angeles</div>
+                                Sometimes can be a lovely city
+                            </div>
+                            <div class="item">
+                                <div class="header">San Francisco</div>
+                                What a lovely city
+                            </div>
+                        </div>
                     </div>
-                    <div class="field">
-                      <div class="ui radio checkbox">
-                        <input type="radio" name="callResult" value="NotAvailable">
-                        <label>Недоступен</label>
-                      </div>
-                    </div>
-                    <div class="field">
-                      <div class="ui radio checkbox">
-                        <input type="radio" name="callResult" value="CorrectedWithoutCall">
-                        <label>Корректировка без прозвона</label>
-                      </div>
-                    </div>
-                  </div>
                 </div>
             </div>
-          </div>
-          <div class="actions">
-            <div class="ui black deny button">
-              Закрыть
-            </div>
-            <div class="ui positive right labeled icon button">
-              Yep, that's me
-              <i class="checkmark icon"></i>
-            </div>
-          </div>
         </div>
+    </div>
+
 }
+        <div id="modalContainer" class="ui modal">
 
-<pager total-pages="@Model.TotalPages" current-page='@Model.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
+        </div>
 
-<script type="text/javascript">
+        <div id="loading" class="ui modal">
+              <div class="ui segment">
+              <div class="ui active dimmer">
+                <div class="ui text loader">Loading</div>
+              </div>
+              <p></p>
+            </div>
+        </div>
+    </div>
 
-    function showModal(id) {
-    $(id).modal({
-        closable: false,
-        onDeny: function(){
-                  window.alert('Wait not yet!');
-                  return false;
-                },
-        onApprove: function() {
-           
-            var itemId = $(this).attr('item-id');
+    <pager total-pages="@Model.TotalPages" current-page='@Model.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
 
-            $.ajax({
-                type: "POST",
-                url :'/Housing/AddCall',
-                data: {
-                      housingId: itemId,
-                      status: $(this).find(':checked').val()
-                  },
+    @section scripts
+    {
+        <script type="text/javascript">
 
-                 success: (response) => {
-                      window.alert('success!');
-                 },
-                error: (response) => {
-                    alert('error');
-                }
-           }
-            );
-        }
-          }).modal('show');
+            function showModal(id, itemId) {
+                $('#loading').modal('show');
+                  $.ajax({
+                                type: "POST",
+                                url: '/Housing/DetailsDialog',
+                                data: {
+                                    id: itemId
+                                },
+
+                                success: (response) => {
+                                    $('#modalContainer').html(response);
+                                   $('#loading').modal('close');
+                                       var dialog = $(id);
+                                       dialog.modal({
+                                            closable: false,
+                                            onDeny: function() {
+                                                window.alert('Wait not yet!');
+                                                return false;
+                                            },
+                                            onApprove: function() {
+
+                                                $.ajax({
+                                                        type: "POST",
+                                                        url: '/Housing/AddCall',
+                                                        data: {
+                                                            housingId: itemId,
+                                                            status: $(this).find(':checked').val()
+                                                        },
+
+                                                        success: (response) => {
+                                                            window.alert('success!');
+                                                        },
+                                                        error: (response) => {
+                                                            alert('error');
+                                                        }
+                                                    });
+                                            }
+                                       }).modal('show');
+                                },
+                                error: (response) => {
+                                    alert('error');
+                                }
+                            });
+             
+            }
+
+            $(function() {
+                $('.housing-items .ui.accordion').accordion();
+            });
+        </script>
     }
-</script>

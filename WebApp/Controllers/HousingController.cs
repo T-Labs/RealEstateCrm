@@ -254,5 +254,11 @@ namespace WebApp.Controllers
 
             return Json(new { status = "ok" });
         }
+
+        public IActionResult DetailsDialog(int id)
+        {
+            var h = _context.Housing.GetById(id);
+            return PartialView("DetailsDialog", HousingEditModel.Create(_context, h, AuthService, User));
+        }
     }
 }
