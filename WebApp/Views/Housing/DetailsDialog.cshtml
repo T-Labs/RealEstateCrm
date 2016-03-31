@@ -8,6 +8,28 @@
     <div class="content">
     <div class="description">
         @Html.DisplayFor(x => Model.Comment)
+        <div class="field">
+            <table class="ui single line table compact">
+              <thead>
+                <tr>
+                  <th>Дата</th>
+                  <th>Статус</th>
+                  <th>Сотрудник</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var call in Model.Calls)
+                {
+                    <tr>
+                        <td>@call.Date.ToShortDateString()</td>
+                        <td>@call.Status</td>
+                        <td>@call.EmployeeName</td>
+                    </tr>
+                }
+              </tbody>
+            </table>
+        </div>
+
         <div class="ui form">
             <div class="grouped fields">
             <label>Результат прозвона</label>

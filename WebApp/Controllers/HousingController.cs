@@ -136,7 +136,8 @@ namespace WebApp.Controllers
             {
                 City = city,
                 CityId = city?.Id ?? 0,
-                Phones = new List<HousingPhone>()
+                Phones = new List<HousingPhone>(),
+                Calls = new List<HousingCall>()
             };
             var model = HousingEditModel.Create(_context, housing, AuthService, User);
             return View("Save", model);

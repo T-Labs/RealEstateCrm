@@ -97,34 +97,18 @@
                         }
                         <a asp-action="Delete" show-if="@userHasDelete" asp-route-id="@item.EditId" class="ui button red tiny basic" onclick="return confirm('Вы уверены что хотите удалить запись?');" title="Удалить"><i class="trash icon"></i></a>
                     </div>
-                </div>
-            </div>
-            <div class="row thirteen wide column">
-                <div class="ui accordion field">
-                    <div class="title ui label">
-                        <i class="icon dropdown"></i>
-                        Прозвоны
+                    
+                    <div class="ui teal floating dropdown button tiny" id="callDropDown">
+                      <div class="text">Прозвон</div>
+                      <i class="dropdown icon"></i>
+                      <div class="menu">
+                         <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'Verified')");'><i class="home icon"></i> Проверено</a>
+                          <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'DontAnswer')");'><i class="users icon"></i> Не отвечает</a>
+                          <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'NotAvailable')");'><i class="search icon"></i> Недоступен</a>
+                          <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'CorrectedWithoutCall')");'><i class="search icon"></i> Корректировка без прозвона</a>
+                      </div>
                     </div>
-                    <div class="content">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="header">New York City</div>
-                                A lovely city
-                            </div>
-                            <div class="item">
-                                <div class="header">Chicago</div>
-                                Also quite a lovely city
-                            </div>
-                            <div class="item">
-                                <div class="header">Los Angeles</div>
-                                Sometimes can be a lovely city
-                            </div>
-                            <div class="item">
-                                <div class="header">San Francisco</div>
-                                What a lovely city
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -149,56 +133,48 @@
 
     @section scripts
     {
+        <script src="~/Scripts/housing.js"></script>
         <script type="text/javascript">
 
             function showModal(id, itemId) {
                 $('#loading').modal('show');
                   $.ajax({
-                                type: "POST",
-                                url: '/Housing/DetailsDialog',
-                                data: {
-                                    id: itemId
-                                },
+                        type: "POST",
+                        url: '/Housing/DetailsDialog',
+                        data: {
+                            id: itemId
+                        },
 
-                                success: (response) => {
-                                    $('#modalContainer').html(response);
-                                   $('#loading').modal('close');
-                                       var dialog = $(id);
-                                       dialog.modal({
-                                            closable: false,
-                                            onDeny: function() {
-                                                window.alert('Wait not yet!');
-                                                return false;
-                                            },
-                                            onApprove: function() {
-
-                                                $.ajax({
-                                                        type: "POST",
-                                                        url: '/Housing/AddCall',
-                                                        data: {
-                                                            housingId: itemId,
-                                                            status: $(this).find(':checked').val()
-                                                        },
-
-                                                        success: (response) => {
-                                                            window.alert('success!');
-                                                        },
-                                                        error: (response) => {
-                                                            alert('error');
-                                                        }
-                                                    });
-                                            }
-                                       }).modal('show');
-                                },
-                                error: (response) => {
-                                    alert('error');
-                                }
-                            });
+                        success: (response) => {
+                            $('#modalContainer').html(response);
+                            $('#loading').modal('close');
+                                var dialog = $(id);
+                                dialog.modal({
+                                    closable: false,
+                                    onDeny: function() {
+                                        window.alert('Wait not yet!');
+                                        return false;
+                                    },
+                                    onApprove: function() {
+                                       Housiong.addCall(itemId, $(this).find(':checked').val());
+                                    }
+                                }).modal('show');
+                        },
+                        error: (response) => {
+                            alert('error');
+                        }
+                    });
              
             }
 
             $(function() {
                 $('.housing-items .ui.accordion').accordion();
+                
+
+                $('#callDropDown')
+                      .dropdown({
+                        action: 'hide'
+                      });
             });
         </script>
     }

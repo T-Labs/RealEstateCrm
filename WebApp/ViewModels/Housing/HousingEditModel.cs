@@ -87,6 +87,8 @@ namespace WebApp.ViewModels
         [Display(Name = "Партнерство")]
         public bool IsPartnerShip { get; set; }
 
+        public List<HousingCallViewModel> Calls { get; set; }
+
         public HousingEditModel()
         {
         }
@@ -126,7 +128,8 @@ namespace WebApp.ViewModels
                 {
                     Id = housing.TypesHousingId,
                     Items = typesHousings.Select(x => new SelectListItem {Value = x.Id.ToString(), Text = x.Name })
-                }
+                },
+                Calls = housing.Calls.Select(HousingCallViewModel.Create).ToList()
             };
 
             item.City = new DropDownViewModel(housing?.CityId ?? 0, allCities)

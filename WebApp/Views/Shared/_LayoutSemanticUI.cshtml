@@ -31,38 +31,47 @@
         </environment>
     </head>
     <body>
-        <div class="ui fixed menu">
-            <div class="ui container">
-                <a href="#" class="header item">                    
-                    RealEstate CRM
-                </a>
-                <a href="#" class="item">Домашняя</a>
-                <a class="item" asp-controller="Employee" asp-action="Index">Сотрудники</a>
-                <a class="item" asp-controller="Housing" asp-action="Index">Объекты</a>
+    <div class="ui fixed menu" id="topMenu">
+        <div class="ui container">
+            <a href="#" class="header item">
+                RealEstate CRM
+            </a>
+            <a href="#" class="item">Домашняя</a>
+            <a class="item" asp-controller="Employee" asp-action="Index">Сотрудники</a>
+            <a class="item" asp-controller="Housing" asp-action="Index">Объекты</a>
 
-                <div class="ui simple dropdown item">
-                    Админка <i class="dropdown icon"></i>
-                    <div class="menu right">
-                        <a class="item" asp-controller="Employee" asp-action="Index">Сотрудники</a>
-                        <a class="item" asp-controller="Housing" asp-action="Index">Объекты</a>
-                        <div class="divider"></div>
-                        <div class="header">Header Item</div>
-                        <div class="item">
-                            <i class="dropdown icon"></i>
-                            Sub Menu
-                            <div class="menu">
-                                <a class="item" href="#">Link Item</a>
-                                <a class="item" href="#">Link Item</a>
-                            </div>
+            <div class="ui simple dropdown item">
+                Админка <i class="dropdown icon"></i>
+                <div class="menu right">
+                    <a class="item" asp-controller="Employee" asp-action="Index">Сотрудники</a>
+                    <a class="item" asp-controller="Housing" asp-action="Index">Объекты</a>
+                    <div class="divider"></div>
+                    <div class="header">Header Item</div>
+                    <div class="item">
+                        <i class="dropdown icon"></i>
+                        Sub Menu
+                        <div class="menu">
+                            <a class="item" href="#">Link Item</a>
+                            <a class="item" href="#">Link Item</a>
                         </div>
-                        <a class="item" href="#">Link Item</a>
                     </div>
+                    <a class="item" href="#">Link Item</a>
                 </div>
-                  <div class="menu right">
-                      @await Html.PartialAsync("_LoginPartialSemanticUI")
-                 </div>
+            </div>
+            <div class="menu right">
+                @await Html.PartialAsync("_LoginPartialSemanticUI")
             </div>
         </div>
+    </div>
+    <div id="messagePopup" class="hidden">
+        <div class="ui message">
+          <i class="close icon"></i>
+          <div class="header">
+            Welcome back!
+          </div>
+          <p>This is a special notification which you can dismiss if you're bored with it.</p>
+        </div>
+    </div>
         <!-- Page Contents -->
     <div class="ui main container" ng-view="">
         @if (TempData["CrmSuccessMessage"] != null)

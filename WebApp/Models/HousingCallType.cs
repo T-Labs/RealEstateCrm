@@ -13,4 +13,5 @@ namespace WebApp.Models
         NotAvailable,
         CorrectedWithoutCall
     }
+    
 }
