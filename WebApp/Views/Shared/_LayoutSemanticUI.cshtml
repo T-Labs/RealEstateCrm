@@ -23,6 +23,10 @@
             <link rel="stylesheet" type="text/css" href="~/lib/semantic-ui/dist/components/sidebar.css">
             <link rel="stylesheet" type="text/css" href="~/lib/semantic-ui/dist/components/transition.css">
             <link rel="stylesheet" type="text/css" href="~/lib/jquery-ui/themes/base/jquery-ui.css">
+
+
+            <link href="~/lib/pnotify/dist/pnotify.css" media="all" rel="stylesheet" type="text/css"/>
+             <link href="~/lib/pnotify/dist/pnotify.brighttheme.css" media="all" rel="stylesheet" type="text/css" />
             <style>
                 .main.container {
                     margin-top: 7em;
@@ -61,17 +65,12 @@
             <div class="menu right">
                 @await Html.PartialAsync("_LoginPartialSemanticUI")
             </div>
+             <div class="menu" id="notifyBlock">
+                
+            </div>
         </div>
     </div>
-    <div id="messagePopup" class="hidden">
-        <div class="ui message">
-          <i class="close icon"></i>
-          <div class="header">
-            Welcome back!
-          </div>
-          <p>This is a special notification which you can dismiss if you're bored with it.</p>
-        </div>
-    </div>
+    
         <!-- Page Contents -->
     <div class="ui main container" ng-view="">
         @if (TempData["CrmSuccessMessage"] != null)
@@ -95,14 +94,10 @@
                 
                 </script>
                 <script src="~/lib/jquery-ui/jquery-ui.js"></script>
-                <script src="~/lib/angular/angular.min.js"></script>
-                <script src="~/lib/ui-router/release/angular-ui-router.min.js"></script>
-                <script src="~/controllers/home.controller.js"></script>
-                <script src="~/App.js"></script>
-
-
+                <script src="~/lib/notifyjs/dist/notify.js"></script>
+                 <script src="~/lib/pnotify/dist/pnotify.js"></script>
                 <script src="~/lib/semantic-ui/dist/semantic.js"></script>
-                
+                <script src="~/Scripts/Tools.js"></script>
 
                 <script>
                     $('.ui.dropdown').dropdown();

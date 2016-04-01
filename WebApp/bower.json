@@ -10,6 +10,8 @@
     "angular-ui-bootstrap": "0.13.4",
     "ui-router": "~0.2.18",
     "semantic-ui": "~2.1.8",
-    "jquery-ui": "1.11.4"
+    "jquery-ui": "1.11.4",
+    "notifyjs": "~0.4.0",
+    "pnotify": "~3.0.0"
   }
 }

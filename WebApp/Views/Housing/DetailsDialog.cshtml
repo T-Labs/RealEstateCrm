@@ -21,7 +21,7 @@
                 @foreach (var call in Model.Calls)
                 {
                     <tr>
-                        <td>@call.Date.ToShortDateString()</td>
+                        <td>@call.Date.ToString()</td>
                         <td>@call.Status</td>
                         <td>@call.EmployeeName</td>
                     </tr>

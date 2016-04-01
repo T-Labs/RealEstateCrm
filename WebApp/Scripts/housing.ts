@@ -12,16 +12,12 @@ class Housiong {
                 },
 
                 success: (response) => {
-                    window.alert('success!');
-                    var topMenu: any = $('topMenu');
-                     topMenu.popup({
-                        position : 'top right',
-                        title    : 'My favorite dog',
-                        content  : '<div class="ui message"><i class="close icon"></i><div class="header">Welcome back!</div><p>This is a special notification which you can dismiss if you're bored with it.</p></div>'
-                      }).popup('show');
+                    Notify.success('Прозвон успешно добавлен');
+                   
                 },
                 error: (response) => {
-                    alert('error');
+                    Notify.error('Ошибка при добавления прозвонов');
+                    console.error(response);
                 }
             });
     }

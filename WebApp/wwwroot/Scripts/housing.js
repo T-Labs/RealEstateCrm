@@ -11,16 +11,11 @@ var Housiong = (function () {
                 status: status
             },
             success: function (response) {
-                window.alert('success!');
-                var topMenu = $('topMenu');
-                topMenu.popup({
-                    position: 'right center',
-                    title: 'My favorite dog',
-                    content: 'My favorite dog would like other dogs as much as themselves'
-                });
+                Notify.success('Прозвон успешно добавлен');
             },
             error: function (response) {
-                alert('error');
+                Notify.error('Ошибка при добавления прозвонов');
+                console.error(response);
             }
         });
     };
