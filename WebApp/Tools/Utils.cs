@@ -6,9 +6,17 @@ using WebApp.Models;
 
 namespace WebApp
 {
-    internal static class Utils
+    public static class Utils
     {
+        public static bool IsSet(this object obj)
+        {
+            return obj != null;
+        }
 
+        public static bool IsNull(this object obj)
+        {
+            return obj == null;
+        }
     }
 
     internal static class HousingCallTypeExtensions

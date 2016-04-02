@@ -75,6 +75,20 @@ namespace WebApp.Controllers
             return View(model);
         }
 
+
+        public IActionResult Cards(string filter,
+            int page = 1,
+            int? houseType = null,
+            int? cityId = null,
+            int? districtId = null,
+            int? minCost = null,
+            int? maxCost = null,
+            int? objectId = null,
+            bool? isArchive = null)
+        {
+            return Index(filter, page, houseType, cityId, districtId, minCost, maxCost, objectId, isArchive);
+        }
+
         [HttpPost]
         public IActionResult Filter(HousingIndexModel model, int page = 1)
         {
