@@ -96,10 +96,10 @@
                     <div class="text"><i class="phone icon"></i>
                     </div>
                     <div class="menu">
-                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'Verified')");'><i class="checkmark icon"></i> Проверено</a>
-                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'DontAnswer')");'><i class="frown icon"></i> Не отвечает</a>
-                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'NotAvailable')");'><i class="warning circle icon"></i> Недоступен</a>
-                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'CorrectedWithoutCall')");'><i class="write icon"></i> Корректировка без прозвона</a>
+                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, '{HousingCallType.Verified.ToString()}')");'><i class="checkmark icon"></i> Проверено</a>
+                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, '{HousingCallType.DontAnswer.ToString()}')");'><i class="frown icon"></i> Не отвечает</a>
+                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, '{HousingCallType.NotAvailable.ToString()}')");'><i class="warning circle icon"></i> Недоступен</a>
+                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, '{HousingCallType.CorrectedWithoutCall.ToString()}')");'><i class="write icon"></i> Корректировка без прозвона</a>
                     </div>
                 </div>
             </div>

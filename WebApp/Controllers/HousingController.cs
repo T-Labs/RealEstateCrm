@@ -133,13 +133,13 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
 
-            Housing housing = _context.Housing.Single(m => m.Id == id);
+            Housing housing = _context.Housing.GetById(id.Value);
             if (housing == null)
             {
                 return HttpNotFound();
             }
-
-            return View(housing);
+            var model = HousingEditModel.Create(_context, housing, AuthService, User);
+            return View(model);
         }
         
         [Authorize(AuthPolicy.CreateHousing)]

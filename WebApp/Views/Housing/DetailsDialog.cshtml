@@ -3,70 +3,28 @@
 <div class="ui modal" id='@($"item{Model.EditId}")' item-id="@Model.EditId">
     <i class="close icon"></i>
     <div class="header">
-    @Html.DisplayFor(x => Model.HouseType)
+         @if (Model.IsArchived)
+        {
+            <div class="ui top attached red label">В архиве</div>
+        }
+        else
+        {
+            <div class="ui top left attached label">Актуальные</div>
+        }<div>Подробности</div>
     </div>
     <div class="content">
-    <div class="description">
-        @Html.DisplayFor(x => Model.Comment)
-        <div class="field">
-            <table class="ui single line table compact">
-              <thead>
-                <tr>
-                  <th>Дата</th>
-                  <th>Статус</th>
-                  <th>Сотрудник</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach (var call in Model.Calls)
-                {
-                    <tr>
-                        <td>@call.Date.ToString()</td>
-                        <td>@call.Status</td>
-                        <td>@call.EmployeeName</td>
-                    </tr>
-                }
-              </tbody>
-            </table>
+        <div class="description">
+            <div>
+                <a class="ui button" asp-action="Details" asp-route-id="@Model.EditId" target="_blank">Открыть в новой вкладке</a>
+            </div>
+            @{
+                await Html.RenderPartialAsync("Details", Model);
+            }
         </div>
-
-        <div class="ui form">
-            <div class="grouped fields">
-            <label>Результат прозвона</label>
-            <div class="field">
-                <div class="ui radio checkbox">
-                <input type="radio" name="callResult" checked="checked" value="Verified">
-                <label>Проверено</label>
-                </div>
-            </div>
-            <div class="field">
-                <div class="ui radio checkbox">
-                <input type="radio" name="callResult" value="DontAnswer">
-                <label>Не отвечает</label>
-                </div>
-            </div>
-            <div class="field">
-                <div class="ui radio checkbox">
-                <input type="radio" name="callResult" value="NotAvailable">
-                <label>Недоступен</label>
-                </div>
-            </div>
-            <div class="field">
-                <div class="ui radio checkbox">
-                <input type="radio" name="callResult" value="CorrectedWithoutCall">
-                <label>Корректировка без прозвона</label>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
     </div>
     <div class="actions">
-    <div class="ui black deny button">
-        Закрыть
-    </div>
     <div class="ui positive right labeled icon button">
-        Yep, that's me
+       Закрыть
         <i class="checkmark icon"></i>
     </div>
     </div>

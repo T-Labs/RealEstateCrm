@@ -17,6 +17,11 @@ namespace WebApp
         {
             return obj == null;
         }
+
+        public static string ToLocalizedString(this bool b)
+        {
+            return b ? "Да" : "Нет";
+        }
     }
 
     internal static class HousingCallTypeExtensions

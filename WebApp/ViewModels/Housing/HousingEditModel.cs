@@ -77,6 +77,7 @@ namespace WebApp.ViewModels
         [Display(Name = "Дата освобождения объекта")]
         public DateTime EndDate { get; set; }
 
+        [Display(Name = "Полный адрес")]
         public string FullAddress { get; set; }
 
         [UIHint("checkbox")]

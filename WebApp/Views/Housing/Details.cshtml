@@ -1,96 +1,53 @@
-@model WebApp.Entities.Housing
+﻿@model WebApp.ViewModels.HousingEditModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Housing</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Building)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Building)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Comment)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Comment)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Currency)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Currency)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.House)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.House)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.InDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.InDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.MidleName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.MidleName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PartherShip)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PartherShip)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.RevisionDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.RevisionDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Room)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Room)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Sum)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Sum)
-        </dd>
-    </dl>
-</div>
-<p>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</p>
+@if (!IsPartial)
+{
+    <a class="ui button" asp-action="Index">Вернуться к списку</a>
+    <a class="ui button" asp-action="Edit" asp-route-id="@Model.EditId">Редактировать</a>
+}
+<table class="ui definition table single compact">
+    <tbody>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.FirstName)</td><td>@Model.FirstName</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.MidleName)</td><td>@Model.MidleName</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.LastName)</td><td>@Model.LastName</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.Phone1)</td><td>@Model.Phone1</td>
+    </tr>
+    <tr hide-if="@string.IsNullOrEmpty(Model.Phone2)">
+        <td class="two wide column">@Html.LabelFor(x => x.Phone2)</td><td>@Model.Phone2</td>
+    </tr>
+    <tr hide-if="@string.IsNullOrEmpty(Model.Phone3)">
+        <td class="two wide column">@Html.LabelFor(x => x.Phone3)</td><td>@Model.Phone3</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.IsPartnerShip)</td><td>@Model.IsPartnerShip.ToLocalizedString()</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.Comment)</td><td>@Model.Comment</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.HouseType)</td><td>@Html.DisplayFor(x => x.HouseType)</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.Cost)</td><td>@Model.Cost</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.FullAddress)</td><td>@Model.FullAddress</td>
+    </tr>
+    <tr>
+        <td class="two wide column">История прозвонов</td>
+        <td>@{ await Html.RenderPartialAsync("CallHistory", Model); }</td>
+    </tr>
+    </tbody>
+</table>
