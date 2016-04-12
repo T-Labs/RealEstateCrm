@@ -1,16 +1,29 @@
 @model WebApp.Entities.Street
 
 @{
-    ViewData["Title"] = "Create";
+    Layout = null;
 }
 
-<h2>Create</h2>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
 
 <form asp-action="Create">
     <div class="form-horizontal">
         <h4>Street</h4>
         <hr />
         <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="CityId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="CityId" class ="form-control"></select>
+            </div>
+        </div>
         <div class="form-group">
             <label asp-for="Name" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -30,3 +43,5 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+</body>
+</html>

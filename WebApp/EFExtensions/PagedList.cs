@@ -19,7 +19,7 @@ namespace WebApp
 
             int excludedRows = (pageNum - 1) * pageSize;
 
-            query = isAscendingOrder ? query.OrderBy(orderByProperty) : query.OrderByDescending(orderByProperty);
+           // query = isAscendingOrder ? query.OrderBy(orderByProperty) : query.OrderByDescending(orderByProperty);
 
             return query.Skip(excludedRows).Take(pageSize);
         }

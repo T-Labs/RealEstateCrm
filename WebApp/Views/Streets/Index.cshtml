@@ -1,36 +1,32 @@
-@model IEnumerable<WebApp.Entities.Street>
-
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h2>Index</h2>
+﻿@using System.Threading.Tasks
+@using WebApp.ViewModels
+@model WebApp.ViewModels.SteetMainModel
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<div class="letter-filter">
-@{
-    for (var letter =Convert.ToInt32('�'); letter < Convert.ToInt32('�'); letter++)
-    {
-        <span>@letter.ToString()</span>
-    }
-}
-</div>
 
-<table class="table">
+<form class="ui form segment" asp-action="Filter">
+    <div class="two fields">
+        @Html.EditorFor(x => Model.Filter.Name)
+        @Html.EditorFor(x => Model.Filter.City)
+    </div>
+    <input type="submit" value="Применить фильтр" class="ui primary button"/>
+    <a asp-action="Index" asp-route-id="1" class="ui button">Сброс</a>
+</form>
+
+<pager total-pages="@ViewBag.TotalPages" current-page='@ViewBag.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
+<table class="ui single line table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
+        <th>Название</th>
+        <th>Город</th>
         <th></th>
     </tr>
     
-@foreach (var item in Model) {
+@foreach (var item in Model.Items) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
+        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+        <td>@Html.DisplayFor(modelItem => item.City)</td>
         <td>
             <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
             <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

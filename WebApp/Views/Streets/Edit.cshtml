@@ -1,10 +1,17 @@
 @model WebApp.Entities.Street
 
 @{
-    ViewData["Title"] = "Edit";
+    Layout = null;
 }
 
-<h2>Edit</h2>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
 
 <form asp-action="Edit">
     <div class="form-horizontal">
@@ -12,6 +19,13 @@
         <hr />
         <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="CityId" class="control-label col-md-2">CityId</label>
+            <div class="col-md-10">
+                <select asp-for="CityId" class="form-control" />
+                <span asp-validation-for="CityId" class="text-danger" />
+            </div>
+        </div>
         <div class="form-group">
             <label asp-for="Name" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -31,3 +45,5 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+</body>
+</html>
