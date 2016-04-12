@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Http.Internal;
 using Microsoft.AspNet.Mvc;
@@ -57,7 +57,7 @@ namespace WebApp.Controllers
         // POST: BlackLists/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(BlackListViewModel model, FormCollection fields)
+        public IActionResult Create(BlackListViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -69,8 +69,13 @@ namespace WebApp.Controllers
                 };
                 _context.BlackLists.Add(item);
                 _context.SaveChanges();
+
+                var editUrl = Url.Action("Edit", new { id = item.Id });
+                SuccessMessage($"<a href=\"{editUrl}\">Запись</a> была создана");
+
                 return RedirectToAction("Index");
             }
+            
             return View(model);
         }
 
@@ -107,6 +112,9 @@ namespace WebApp.Controllers
                 };
                 _context.Update(item);
                 _context.SaveChanges();
+
+                var editUrl = Url.Action("Edit", new {id = model.Id});
+                SuccessMessage($"<a href=\"{editUrl}\">Запись</a> была успешно изменена");
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -129,6 +137,7 @@ namespace WebApp.Controllers
 
             _context.BlackLists.Remove(blacklist);
             _context.SaveChanges();
+            SuccessMessage("Запись была удалена");
             return RedirectToAction("Index");
         }
         

@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Rendering;
 using WebApp.Models;
 using Microsoft.Data.Entity;
+using Microsoft.Extensions.WebEncoders;
 
 namespace WebApp.Controllers
 {
@@ -22,8 +25,20 @@ namespace WebApp.Controllers
         protected BaseController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
-            
         }
-        
+
+
+        protected void SuccessMessage(string message)
+        {
+            // Microsoft.Extensions.WebEncoders.HtmlEncoder.Default.HtmlEncode();
+            
+           // using (var tw = new StringWriter())
+            {
+             //  HtmlEncoder.Default.HtmlEncode(message, tw);
+                TempData["CrmSuccessMessage"] = message;
+            }
+          
+        }
+
     }
 }

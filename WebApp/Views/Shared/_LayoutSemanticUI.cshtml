@@ -77,9 +77,7 @@
         {
             <div class="ui success message">
                   <i class="close icon"></i>
-                  <div class="header">
-                    @TempData["CrmSuccessMessage"]
-                  </div>
+                <div class="header">@Html.Raw(TempData["CrmSuccessMessage"].ToString())</div>
                   <!--<p>You may now log-in with the username you have chosen</p>-->
                 </div>
         }
