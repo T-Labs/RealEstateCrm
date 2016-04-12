@@ -1,0 +1,18 @@
+﻿@model WebApp.ViewModels.BlackListViewModel
+
+<form asp-action="Edit" class="ui form"  method="post" >
+    <div class="form-horizontal">
+        <h4 class="ui divided header">Новая запись</h4>
+
+        <div asp-validation-summary="ValidationSummary.ModelOnly" class="ui red"></div>
+
+        @Html.EditorFor(x => x.PhoneNumber)
+        @Html.EditorFor(x => x.Description)
+
+        <div class="ui buttons">
+            <button type="submit" class="ui button blue">Сохранить изменения</button>
+        </div>
+        <a asp-action="Index">Вернуться к списку</a>
+    </div>
+</form>
+

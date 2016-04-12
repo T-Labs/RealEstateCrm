@@ -48,7 +48,7 @@ namespace WebApp.Models
 
             if (!dbContext.TypesHousing.Any())
             {
-                var houseTypes = new TypesHousing[]
+                var houseTypes = new List<TypesHousing>
                 {
                     new TypesHousing {Name = "1-к квартира"},
                     new TypesHousing {Name = "2-к квартира"},
@@ -58,6 +58,26 @@ namespace WebApp.Models
                     new TypesHousing {Name = "комната"},
                     new TypesHousing {Name = "коммуналка"}
                 };
+
+
+                var additionList = new string[]
+                {
+                    "Дом",
+                    "Флигель",
+                    "Гостинка",
+                    "Малосемейка",
+                    "Комната в общежитии",
+                    "Койко-место",
+                    "Коттедж",
+                    "Особняк",
+                    "Часть дома",
+                    "Комната в секции"
+                };
+
+                foreach (var item in additionList)
+                {
+                    houseTypes.Add(new TypesHousing {Name = item });
+                }
 
                 foreach (var type in houseTypes)
                 {

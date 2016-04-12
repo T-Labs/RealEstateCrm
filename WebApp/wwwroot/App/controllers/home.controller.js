@@ -77,5 +77,5 @@ var HomeController = (function () {
         this.$location.search({ city: this.city, district: this.disctrict, houseType: this.selectedHouseType, priceFrom: this.priceFrom, priceTo: this.priceTo });
     };
     return HomeController;
-})();
+}());
 //# sourceMappingURL=home.controller.js.map

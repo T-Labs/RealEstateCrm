@@ -9,5 +9,7 @@ function routerConfig($stateProvider, $urlRouterProvider, $locationProvider) {
         reloadOnSearch: false
     });
 }
-app.controller('HomeController', HomeController).config(routerConfig);
+app
+    .controller('HomeController', HomeController)
+    .config(routerConfig);
 //# sourceMappingURL=App.js.map

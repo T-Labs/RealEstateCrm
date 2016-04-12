@@ -14,4 +14,6 @@ function routerConfig($stateProvider: angular.ui.IStateProvider, $urlRouterProvi
         });
 }
 
-app.controller('HomeController', HomeController).config(routerConfig);
+app
+    .controller('HomeController', HomeController)
+    .config(routerConfig);

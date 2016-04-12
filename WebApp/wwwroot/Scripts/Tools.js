@@ -12,5 +12,5 @@ var Notify = (function () {
         $.notify(message, 'info');
     };
     return Notify;
-})();
+}());
 //# sourceMappingURL=Tools.js.map

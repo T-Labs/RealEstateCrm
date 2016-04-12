@@ -43,7 +43,7 @@
             <a href="#" class="item">Домашняя</a>
             <a class="item" asp-controller="Employee" asp-action="Index">Сотрудники</a>
             <a class="item" asp-controller="Housing" asp-action="Index">Объекты</a>
-
+            <a class="item" asp-controller="BlackList" asp-action="Index">Черный список</a>
             <div class="ui simple dropdown item">
                 Админка <i class="dropdown icon"></i>
                 <div class="menu right">
@@ -82,6 +82,11 @@
                   </div>
                   <!--<p>You may now log-in with the username you have chosen</p>-->
                 </div>
+        }
+
+        @if (ViewBag.SectionTitle != null)
+        {
+            <h2 class="ui dividing header">@ViewBag.SectionTitle</h2>
         }
         @RenderBody()
     </div>

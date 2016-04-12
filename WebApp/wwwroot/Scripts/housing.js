@@ -20,5 +20,5 @@ var Housiong = (function () {
         });
     };
     return Housiong;
-})();
+}());
 //# sourceMappingURL=housing.js.map
