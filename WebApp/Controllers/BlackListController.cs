@@ -18,10 +18,16 @@ namespace WebApp.Controllers
         }
 
         // GET: BlackLists
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            var applicationDbContext = _context.BlackLists.Include(b => b.User);
+            int totalRows;
+            int totalPages;
+            var applicationDbContext = _context.BlackLists.Include(b => b.User)
+                                                .PagedResult(page, 10, x => x.DateAdd, false, out totalRows, out totalPages);
             var model = applicationDbContext.ToList().Select(BlackListViewModel.Create);
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
             return View(model);
         }
 

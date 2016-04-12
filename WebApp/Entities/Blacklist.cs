@@ -8,6 +8,10 @@ namespace WebApp.Entities
 {
     public class Blacklist
     {
+        public Blacklist()
+        {
+            DateAdd = DateTime.Now;
+        }
         public int Id { get; set; }
 
         public string Description { get; set; }

@@ -3,6 +3,7 @@
 <p>
     <a asp-action="Create" class="ui button">Добавить</a>
 </p>
+<pager total-pages="@ViewBag.TotalPages" current-page='@ViewBag.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
 <table class="ui single line table">
     <thead>
         <tr>
