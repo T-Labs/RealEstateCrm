@@ -7,7 +7,7 @@ namespace WebApp.ViewModels
 {
     public class SteetMainModel
     {
-        public IEnumerable<StreetViewModel> Items { get; set; }
+        public List<StreetItemViewModel> Items { get; set; }
         public StreetFilterModel Filter { get; set; } = new StreetFilterModel();
     }
 }

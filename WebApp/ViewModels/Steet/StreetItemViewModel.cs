@@ -8,7 +8,7 @@ using WebApp.Entities;
 
 namespace WebApp.ViewModels
 {
-    public class StreetViewModel
+    public class StreetItemViewModel
     {
         public int Id { get; set; }
 
@@ -22,13 +22,13 @@ namespace WebApp.ViewModels
         public DropDownViewModel City { get; set; }
 
 
-        public static StreetViewModel Create(Street street, IEnumerable<SelectListItem> cityList)
+        public static StreetItemViewModel Create(Street street, DropDownViewModel cityList)
         {
-            var item = new StreetViewModel
+            var item = new StreetItemViewModel
             {
                 Id = street.Id,
                 Name = street.Name,
-                City = new DropDownViewModel(street.CityId, cityList)
+                City = cityList
             };
 
             return item;

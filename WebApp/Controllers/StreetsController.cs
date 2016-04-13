@@ -1,3 +1,4 @@
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
@@ -5,6 +6,7 @@ using Microsoft.Data.Entity;
 using WebApp.Entities;
 using WebApp.Models;
 using Microsoft.AspNet.Authorization;
+using WebApp.Models.SemanticUI;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers
@@ -24,7 +26,8 @@ namespace WebApp.Controllers
             int totalPages;
             IQueryable<Street> query = _context.Streets.Include(s => s.City).OrderBy(x => x.Name);
 
-            if (User.IsInRole(RoleNames.Employee))
+            var isEmployee = User.IsInRole(RoleNames.Employee);
+            if (isEmployee)
             {
                 cityId = CurrentUser?.City?.Id ?? 0;
             }
@@ -44,7 +47,7 @@ namespace WebApp.Controllers
             var dbItems = query.PagedResult(page, 20, x => x.Name, false, out totalRows, out totalPages);
 
             var cityList = _context.Cities.ToSelectList(true);
-            var items = dbItems.ToList().Select(x => StreetViewModel.Create(x, cityList));
+            var items = dbItems.ToList().Select(x => StreetItemViewModel.Create(x, GetCityModel(x.CityId)));
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;
@@ -56,10 +59,7 @@ namespace WebApp.Controllers
                 Filter = new StreetFilterModel
                 {
                     Name = name,
-                    City = new DropDownViewModel(cityId, cityList)
-                    {
-                        Disabled = User.IsInRole(RoleNames.Employee)
-                    }
+                    City = GetCityModel(cityId)
                 }
             };
             return View(model);
@@ -95,23 +95,42 @@ namespace WebApp.Controllers
         // GET: Streets/Create
         public IActionResult Create()
         {
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "City");
-            return View();
+            var model = new StreetItemViewModel()
+            {
+                 Name = "",
+                 City = GetCityModel(0)
+            };
+            return View("Save", model);
         }
 
         // POST: Streets/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Street street)
+        public IActionResult Create(StreetItemViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var existingStreet = _context.Streets.FirstOrDefault(x => x.CityId == model.City.Id && x.Name.ToLower() == model.Name.ToLower());
+                if (existingStreet != null)
+                {
+                    ErrorMessage("Улица с таким именем уже существует!");
+                    model.City = GetCityModel(model.City.Id);
+                    return View("Save", model);
+                }
+
+                var street = new Street
+                {
+                    Name = model.Name,
+                    CityId = model.City.Id
+                };
                 _context.Streets.Add(street);
                 _context.SaveChanges();
+
+                var editUrl = Url.Action("Edit", new { id = street.Id });
+                SuccessMessage($"<a href=\"{editUrl}\">Запись</a> была создана");
                 return RedirectToAction("Index");
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "City", street.CityId);
-            return View(street);
+            return View("Save", model);
         }
 
         // GET: Streets/Edit/5
@@ -122,28 +141,36 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
 
-            Street street = _context.Streets.Single(m => m.Id == id);
+            Street street = _context.Streets.Include(x => x.City).Single(m => m.Id == id);
             if (street == null)
             {
                 return HttpNotFound();
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "City", street.CityId);
-            return View(street);
+            
+            var model = StreetItemViewModel.Create(street, GetCityModel(street.CityId));
+            return View("Save", model);
         }
 
         // POST: Streets/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Street street)
+        public IActionResult Edit(StreetItemViewModel model)
         {
             if (ModelState.IsValid)
             {
+                Street street = _context.Streets.Include(x => x.City).Single(m => m.Id == model.Id);
+                street.Name = model.Name;
+                street.CityId = model.City.Id;
                 _context.Update(street);
                 _context.SaveChanges();
+
+                var editUrl = Url.Action("Edit", new { id = model.Id });
+                SuccessMessage($"<a href=\"{editUrl}\">Запись</a> была успешно изменена");
+
                 return RedirectToAction("Index");
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "City", street.CityId);
-            return View(street);
+            
+            return View(model);
         }
 
         // GET: Streets/Delete/5
@@ -161,18 +188,23 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
 
-            return View(street);
-        }
-
-        // POST: Streets/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            Street street = _context.Streets.Single(m => m.Id == id);
             _context.Streets.Remove(street);
             _context.SaveChanges();
+
+            SuccessMessage("Запись была удалена");
+
             return RedirectToAction("Index");
+        }
+        
+        public JsonResult Search(string q)
+        {
+            var query = _context.Streets.Include(x => x.City).Where(x => x.Name.Contains(q)).ToList();
+
+            return new JsonResult(new
+            {
+                success = true,
+                results = query.Select(x => new SearchResultItem { title= x.Name, description = x.City.Name })
+            });
         }
     }
 }

@@ -1,37 +1,68 @@
-﻿@using System.Threading.Tasks
-@using WebApp.ViewModels
-@model WebApp.ViewModels.SteetMainModel
+﻿@model WebApp.ViewModels.SteetMainModel
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="ui button">Добавить</a>
 </p>
 
 <form class="ui form segment" asp-action="Filter">
     <div class="two fields">
-        @Html.EditorFor(x => Model.Filter.Name)
+        @Html.EditorFor(x => Model.Filter.Name, "string-search")
         @Html.EditorFor(x => Model.Filter.City)
+
     </div>
     <input type="submit" value="Применить фильтр" class="ui primary button"/>
     <a asp-action="Index" asp-route-id="1" class="ui button">Сброс</a>
 </form>
 
-<pager total-pages="@ViewBag.TotalPages" current-page='@ViewBag.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
-<table class="ui single line table">
-    <tr>
-        <th>Название</th>
-        <th>Город</th>
-        <th></th>
-    </tr>
-    
-@foreach (var item in Model.Items) {
-    <tr>
-        <td>@Html.DisplayFor(modelItem => item.Name)</td>
-        <td>@Html.DisplayFor(modelItem => item.City)</td>
-        <td>
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-        </td>
-    </tr>
+
+@if (!Model.Items.Any())
+{
+    <div class="ui positive message">
+        <div class="header">
+            Информация
+        </div>
+        <p>По Вашему запросу не найдено записей!</p>
+    </div>
 }
-</table>
+else
+{
+
+    <pager total-pages="@ViewBag.TotalPages" current-page='@ViewBag.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
+    <table class="ui single line table">
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Город</th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.City)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Вы уверены что хотите удалить запись?');">Удалить</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@section scripts {
+    <script type="text/javascript">
+        $(function() {
+            $('#Name_UI_Search').search({
+                apiSettings: {
+                    url: '/Streets/Search?q={query}'
+                },
+                minCharacters: 3
+            });
+        });
+    </script>
+}
+

@@ -8,6 +8,7 @@ using Microsoft.AspNet.Mvc.Rendering;
 using WebApp.Models;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.WebEncoders;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
@@ -30,15 +31,24 @@ namespace WebApp.Controllers
 
         protected void SuccessMessage(string message)
         {
-            // Microsoft.Extensions.WebEncoders.HtmlEncoder.Default.HtmlEncode();
-            
-           // using (var tw = new StringWriter())
-            {
-             //  HtmlEncoder.Default.HtmlEncode(message, tw);
-                TempData["CrmSuccessMessage"] = message;
-            }
-          
+            TempData["CrmSuccessMessage"] = message;
         }
 
+        protected void ErrorMessage(string message)
+        {
+            TempData["CrmErrorMessage"] = message;
+        }
+
+
+        protected DropDownViewModel GetCityModel(int cityId)
+        {
+            var isEmployee = User.IsInRole(RoleNames.Employee);
+            var cityList = _context.Cities.ToSelectList(true);
+            var city = new DropDownViewModel(cityId, cityList)
+            {
+                Disabled = isEmployee
+            };
+            return city;
+        }
     }
 }

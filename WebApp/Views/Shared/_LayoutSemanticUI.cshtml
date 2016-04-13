@@ -82,6 +82,14 @@
                   <!--<p>You may now log-in with the username you have chosen</p>-->
                 </div>
         }
+        @if (TempData["CrmErrorMessage"] != null)
+        {
+            <div class="ui negative message">
+                <i class="close icon"></i>
+                <div class="header">@Html.Raw(TempData["CrmErrorMessage"].ToString())</div>
+                <!--<p>You may now log-in with the username you have chosen</p>-->
+            </div>
+        }
 
         @if (ViewBag.SectionTitle != null)
         {

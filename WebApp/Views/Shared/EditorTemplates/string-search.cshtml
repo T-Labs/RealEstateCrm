@@ -1,0 +1,21 @@
+﻿@model string
+
+<div class="field">
+    <label>@Html.LabelFor(x => x)
+        @if (ViewData.ModelMetadata.IsRequired)
+        {
+            <span style="color: Red; font-weight: bold;">*</span>
+        }
+    </label>
+
+    
+    <div class="ui category search" id='@($"{ViewData.ModelMetadata.PropertyName }_UI_Search")'>
+        <div class="ui icon input">
+            @Html.TextBoxFor(x => x, new { @placeholder = "Введите текст...", @class="prompt" })
+            <i class="search icon"></i>
+        </div>
+        <div class="results"></div>
+    </div>
+    @Html.ValidationMessageFor(x => x)
+
+</div>
