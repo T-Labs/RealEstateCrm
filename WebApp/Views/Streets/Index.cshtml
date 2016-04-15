@@ -52,6 +52,7 @@ else
         </tbody>
     </table>
 }
+<pager total-pages="@ViewBag.TotalPages" current-page='@ViewBag.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
 
 @section scripts {
     <script type="text/javascript">

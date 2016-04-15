@@ -55,7 +55,7 @@ namespace WebApp.Controllers
 
             var model = new SteetMainModel
             {
-                Items = items,
+                Items = items.ToList(),
                 Filter = new StreetFilterModel
                 {
                     Name = name,

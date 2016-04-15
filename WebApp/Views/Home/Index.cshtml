@@ -1,9 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-    Layout = "_LayoutSemanticUI";
+﻿@model WebApp.ViewModels.Home.HomePageViewModel
+@{
+    ViewData["Title"] = "Главная";
 }
 
-<div class="ui container" ng-controller="HomeController as ctrl">
+<div class="ui container">
     <h2 class="ui center aligned icon header">
         <i class="circular users icon"></i>
         Your logo here
@@ -37,56 +37,46 @@
             </div>
             <div class="thirteen wide column">
                 <div class="ui container">
-                    <div class="ui segment" ng-if="ctrl.loadingdata">
-                        <p></p>
-                        <div class="ui active inverted dimmer">
-                            <div class="ui loader"></div>
-                        </div>
-                    </div>
 
-                    <div class="ui three column stackable grid segment" ng-repeat="item in ctrl.rentData | limitTo: 10">
-                        <div class="four wide column">
-                            <div class="ui">
-                                <h3><i class="home icon"></i>{{item.HouseType}}
-                                </h3>
+                    @foreach(var item in Model.Items) {
+                        <div class="ui three column stackable grid segment">
+                            <div class="four wide column">
+                                <div class="ui">
+                                    <h3><i class="home icon"></i>@item.HouseType
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
-                        <div class="four wide column">
-                            <div class="ui ">
-                                <h3><i class="ruble icon"></i>{{item.Price}}
-                                </h3>
+                            <div class="four wide column">
+                                <div class="ui ">
+                                    <h3><i class="ruble icon"></i>@item.Price
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
-                        <div class="eight wide column">
-                            <div class="ui right aligned">
-                                <i class="marker icon"></i> {{item.CityName}} {{item.District}} {{item.Street}}
+                            <div class="eight wide column">
+                                <div class="ui right aligned">
+                                    <i class="marker icon"></i> @($"{item.CityName} {item.District} {item.Street}")
+                                </div>
                             </div>
-                        </div>
-                        <div class="ten wide column">
-                            <div class="ui"><i class="write icon"></i> <span>{{item.Description}}</span></div>
-                        </div>
-                        <div class="six wide column">
-                            <div class="ui"><i class="phone icon"></i>
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <span>{{item.Phone}}</span>
-                                }
-                                else
-                                {
-                                    <span>Номер телефона виден только зарегистрированному пользователю</span>
-                                }
+                            <div class="ten wide column">
+                                <div class="ui"><i class="write icon"></i> <span>@item.Description</span></div>
+                            </div>
+                            <div class="six wide column">
+                                <div class="ui"><i class="phone icon"></i>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <span>@item.Phone</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Номер телефона виден только зарегистрированному пользователю</span>
+                                    }
 
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
+                    <pager total-pages="@Model.TotalPages" current-page='@Model.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
 
-                    <div class="ui circular labels">
-                        <a class="ui label">Первая</a>
-                        <a class="ui blue label">1</a>
-                        <a class="ui label">2</a>
-                        <a class="ui label">3</a>
-                        <a class="ui label">Последняя</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -94,12 +84,3 @@
 
 
 </div>
-
-
-@section scripts
-{
-    <script src="~/lib/angular/angular.min.js"></script>
-    <script src="~/lib/ui-router/release/angular-ui-router.min.js"></script>
-    <script src="~/controllers/home.controller.js"></script>
-    <script src="~/App.js"></script>    
-}

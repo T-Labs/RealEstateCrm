@@ -29,7 +29,7 @@
              <link href="~/lib/pnotify/dist/pnotify.brighttheme.css" media="all" rel="stylesheet" type="text/css" />
             <style>
                 .main.container {
-                    margin-top: 7em;
+                    margin-top: 4em;
                   }
             </style>
         </environment>
@@ -77,10 +77,10 @@
         @if (TempData["CrmSuccessMessage"] != null)
         {
             <div class="ui success message">
-                  <i class="close icon"></i>
+                <i class="close icon"></i>
                 <div class="header">@Html.Raw(TempData["CrmSuccessMessage"].ToString())</div>
-                  <!--<p>You may now log-in with the username you have chosen</p>-->
-                </div>
+                <!--<p>You may now log-in with the username you have chosen</p>-->
+            </div>
         }
         @if (TempData["CrmErrorMessage"] != null)
         {
@@ -97,6 +97,34 @@
         }
         @RenderBody()
     </div>
+        <div class="ui inverted vertical footer segment">
+            <div class="ui container">
+                <div class="ui stackable inverted divided equal height stackable grid">
+                    <div class="three wide column">
+                        <h4 class="ui inverted header">About</h4>
+                        <div class="ui inverted link list">
+                            <a href="#" class="item">Sitemap</a>
+                            <a href="#" class="item">Contact Us</a>
+                            <a href="#" class="item">Religious Ceremonies</a>
+                            <a href="#" class="item">Gazebo Plans</a>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <h4 class="ui inverted header">Services</h4>
+                        <div class="ui inverted link list">
+                            <a href="#" class="item">Banana Pre-Order</a>
+                            <a href="#" class="item">DNA FAQ</a>
+                            <a href="#" class="item">How To Access</a>
+                            <a href="#" class="item">Favorite X-Men</a>
+                        </div>
+                    </div>
+                    <div class="seven wide column">
+                        <h4 class="ui inverted header">Footer Header</h4>
+                        <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
             
 
             <environment names="Development">
