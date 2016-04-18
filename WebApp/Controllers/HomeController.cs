@@ -27,43 +27,21 @@ namespace WebApp.Controllers
             }
         }
 
-        public IActionResult Index(int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
+        public IActionResult Index(int? page, string houseTypeId, int? cityId, int? priceFrom, int? priceTo)
         {
-
-            Func<Housing, bool> func = (x) =>
+            var houseTypeIdArray = string.IsNullOrEmpty(houseTypeId) ? new int[] {} : houseTypeId.Split(',').Select(x => Convert.ToInt32(x)).ToArray();
+            var filterData = new HousingExtensions.FilterData
             {
-                bool result = true;
-                if (cityId.HasValue)
-                {
-                    result &= x.CityId == cityId.Value;
-                }
-
-                if (houseTypeId.Length > 0)
-                {
-                    result &= houseTypeId.Contains(x.TypesHousingId);
-                }
-
-                if (priceFrom.HasValue && priceTo.HasValue)
-                {
-                    result &= x.Sum >= priceFrom.Value && x.Sum <= priceTo.Value;
-                }
-                else if (priceFrom.HasValue)
-                {
-                    result &= x.Sum >= priceFrom.Value;
-                }
-                else if (priceTo.HasValue)
-                {
-                    result &= x.Sum <= priceTo.Value;
-                }
-                return result;
+                CityId = cityId,
+                Page = page,
+                PriceFrom = priceFrom,
+                PriceTo = priceTo,
+                HouseTypeId = houseTypeIdArray
             };
 
-            IQueryable<Housing> query = _context.Housing.Include(x => x.City)
-                .Include(x => x.Street)
-                .Include(x => x.District)
-                .Include(x => x.Phones)
-                .Include(x => x.TypesHousing)
-                .Include(x => x.User).AsQueryable().Where(x => func(x));
+            IQueryable<Housing> query = _context.Housing
+                .IncludeAll()
+                .Where(x => HousingExtensions.Filter(filterData)(x));
 
             int totalItems;
             int totalPages;
@@ -78,7 +56,7 @@ namespace WebApp.Controllers
                 TotalPages = totalPages,
                 Filter = new HomePageFilter()
                 {
-                    HousingTypeList = new MultiSelectList(_context.TypesHousing, "Id", "Name", houseTypeId)
+                    HousingTypeList = new MultiSelectList(_context.TypesHousing, "Id", "Name", houseTypeIdArray.Select(x => x.ToString()))
                     //new DropDownViewModel(houseType ?? 0, _context.TypesHousing.ToSelectList(true))
                 }
             };
@@ -89,16 +67,13 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Filter(HomePageViewModel model, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
         {
-            var housingTypeString = string.Empty;            
-            foreach (var item in houseTypeId)
-            {
-                housingTypeString += $"houseTypeId={item}&";
-            }
+            var housingTypeString = houseTypeId.Aggregate(string.Empty, (current, item) => current + $"{item},");
 
             return RedirectToAction(nameof(Index),
                 new
                 {
-                    page, houseTypeId = housingTypeString.TrimEnd('&'), cityId, priceFrom, priceTo
+                    page,
+                    houseTypeId = housingTypeString.TrimEnd(','), cityId, priceFrom, priceTo
                 });
         }
 

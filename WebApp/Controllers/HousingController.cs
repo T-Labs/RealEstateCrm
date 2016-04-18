@@ -40,14 +40,23 @@ namespace WebApp.Controllers
             {
                 cityId = CurrentUser?.City?.Id;
             }
-        
-            var query = _context.Housing
-                                .AddIsArchiveFilter(isArchive ?? false)
-                                .AddCityFilter(cityId)
-                                .AddDistrictFilter(districtId)
-                                .AddHousingTypeFilter(houseType)
-                                .AddCostFilter(minCost, maxCost);
 
+            var filterData = new HousingExtensions.FilterData()
+            {
+                CityId = cityId,
+                PriceTo = minCost,
+                PriceFrom = maxCost,
+                Page = page
+            };
+
+            if (houseType.HasValue)
+            {
+                filterData.HouseTypeId = new int[] { houseType.Value };
+            }
+
+
+            var query = _context.Housing.Where(x => HousingExtensions.Filter(filterData)(x));
+            
             int totalPages;
             int totalItems;
             var queryResult = query.GetPage(page, out totalItems, out totalPages);
@@ -134,7 +143,7 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
 
-            Housing housing = _context.Housing.GetById(id.Value);
+            Housing housing = _context.Housing.GetFullById(id.Value);
             if (housing == null)
             {
                 return HttpNotFound();
@@ -185,7 +194,7 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
             
-            Housing housing = _context.Housing.GetById(id.Value);
+            Housing housing = _context.Housing.GetFullById(id.Value);
             if (housing == null)
             {
                 return HttpNotFound();
@@ -202,7 +211,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dbItem = _context.Housing.GetById(editId);
+                var dbItem = _context.Housing.GetFullById(editId);
                 housing.UpdateEntity(dbItem);
                 _context.Update(dbItem);
                 _context.SaveChanges();
@@ -273,7 +282,7 @@ namespace WebApp.Controllers
 
         public IActionResult DetailsDialog(int id)
         {
-            var h = _context.Housing.GetById(id);
+            var h = _context.Housing.GetFullById(id);
             return PartialView("DetailsDialog", HousingEditModel.Create(_context, h, AuthService, User));
         }
     }

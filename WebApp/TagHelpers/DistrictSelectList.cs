@@ -6,15 +6,15 @@ using WebApp.Models;
 
 namespace WebApp.TagHelpers
 {
-    [HtmlTargetElement("city-list", Attributes = "city-id, name")]
-    public class CitySelectListTagHelper : TagHelper
+    [HtmlTargetElement("district-list", Attributes = "city-id, name")]
+    public class DistrictSelectListTagHelper : TagHelper
     {
         public int CityId { get; set; }
         public string Name { get; set; }
 
         private ApplicationDbContext DbContext;
 
-        public CitySelectListTagHelper([FromServices] ApplicationDbContext dbContext)
+        public DistrictSelectListTagHelper([FromServices] ApplicationDbContext dbContext)
         {
             DbContext = dbContext;
         }
@@ -26,9 +26,9 @@ namespace WebApp.TagHelpers
             
 
             var items = new StringBuilder();
-            var cityList = DbContext.Cities.OrderBy(x => x.Name).ToList();
+            var cityList = DbContext.Districts.Where(x => x.CityId == CityId).OrderBy(x => x.Name).ToList();
 
-            items.Append("<option value=\"\"Все города</option>");
+            items.Append("<option value=\"\"Все районы</option>");
             foreach (var city in cityList)
             {
                 items.Append($"<option value=\"{city.Id}\">{city.Name}</option>");

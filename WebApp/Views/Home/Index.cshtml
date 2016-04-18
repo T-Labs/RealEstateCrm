@@ -16,18 +16,15 @@
                     <div class="ui center aligned">
                         <div class="field">
                             <label>Город</label>
-                            <city-list city-id="@Model.Filter.CityId" name="cityId" id="filter_cityId">
-                                <option>Варопарп</option>
-                            </city-list>
+                            <city-list city-id="@Model.Filter.CityId" name="cityId" id="filter_cityId"></city-list>
                         </div>
                         <div class="field" id="filter_district_container" style="display: none">
                             <label>Район</label>
-                            <select name="disctict" id="filter_district" class="ui fluid normal dropdown">
-                            </select>
+                            <city-list city-id="@Model.Filter.CityId" name="districtId" id="filter_district"></city-list>
                         </div>
                         <div class="field">
                             <label>Тип жилья</label>
-                            <select asp-for="@Model.Filter.HousingTypeList" asp-items="@Model.Filter.HousingTypeList" name="houseTypeId" class="ui fluid dropdown" multiple="multiple">
+                            <select asp-for="@Model.Filter.HousingTypeList" asp-items="@Model.Filter.HousingTypeList" name="houseTypeId" class="ui fluid dropdown1" multiple="multiple">
                             </select>
                         </div>
                         <div class="field">

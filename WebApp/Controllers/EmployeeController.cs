@@ -20,7 +20,7 @@ namespace WebApp.Controllers
         private ApplicationDbContext _context;
         private UserManager<ApplicationUser> _userManager;
 
-        public EmployeeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public EmployeeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             this._userManager = userManager;

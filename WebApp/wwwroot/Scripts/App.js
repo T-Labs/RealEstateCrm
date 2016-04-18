@@ -52,7 +52,6 @@ var App = (function () {
             }
         }
         else if (key < 48 || key > 57) {
-            $(this).popup({ title: 'Введите цифру' });
             if (window.event) {
                 window.event.returnValue = false;
             }

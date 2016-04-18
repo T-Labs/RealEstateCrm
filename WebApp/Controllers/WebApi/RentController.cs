@@ -13,22 +13,22 @@ namespace WebApp.WebApi
     public class RentController : Controller
     {
         // GET: api/values
-        [Route("api/rent")]
-        [HttpGet]
-        public IEnumerable<HousingViewModel> Get([FromServices] ApplicationDbContext dbContext, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
-        {
-            IQueryable<Housing> query = dbContext.Housing
-                                                   .AddCityFilter(cityId)
-                                                   .AddHousingTypeFilter(houseTypeId)
-                                                   .AddCostFilter(priceFrom, priceTo);
+        //[Route("api/rent")]
+        //[HttpGet]
+        //public IEnumerable<HousingViewModel> Get([FromServices] ApplicationDbContext dbContext, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
+        //{
+        //    IQueryable<Housing> query = dbContext.Housing
+        //                                           .AddCityFilter(cityId)
+        //                                           .AddHousingTypeFilter(houseTypeId)
+        //                                           .AddCostFilter(priceFrom, priceTo);
 
-            int totalItems;
-            int totalPages;
-            var items = query.GetPage(page ?? 1, out totalItems, out totalPages);
-            //Thread.Sleep(2000);
-            bool isAuth = User.Identity.IsAuthenticated;
-            return items.Select(x => HousingViewModel.Create(x, isAuth));
-        }
+        //    int totalItems;
+        //    int totalPages;
+        //    var items = query.GetPage(page ?? 1, out totalItems, out totalPages);
+        //    //Thread.Sleep(2000);
+        //    bool isAuth = User.Identity.IsAuthenticated;
+        //    return items.Select(x => HousingViewModel.Create(x, isAuth));
+        //}
 
         [Route("api/rent/houseTypes")]
         [HttpGet]

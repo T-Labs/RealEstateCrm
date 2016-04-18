@@ -9,7 +9,16 @@ namespace WebApp
 {
     public static class HousingExtensions
     {
-        public static Housing GetById(this DbSet<Housing> housings, int id)
+        public class FilterData
+        {
+            public int? Page { get; set; }
+            public int[] HouseTypeId { get; set; }
+            public int? CityId { get; set; }
+            public int? PriceFrom { get; set; }
+            public int? PriceTo { get; set; }
+        }
+
+        public static Housing GetFullById(this DbSet<Housing> housings, int id)
         {
             return housings.Include(x => x.Phones)
                 .Include(x => x.City)
@@ -18,66 +27,48 @@ namespace WebApp
                 .Single(m => m.Id == id);
         }
 
-        public static IQueryable<Housing> AddCityFilter(this IQueryable<Housing> query, int? cityId)
+        public static IQueryable<Housing> IncludeAll(this DbSet<Housing> housing)
         {
-            if (cityId.HasValue)
-            {
-                query = query.Where(x => x.CityId == cityId.Value);
-            }
-            return query;
-        }
-
-        public static IQueryable<Housing> AddDistrictFilter(this IQueryable<Housing> query, int? districtId)
-        {
-            if (districtId.HasValue)
-            {
-                query = query.Where(x => x.DistrictId == districtId.Value);
-            }
-            return query;
-        }
-
-        public static IQueryable<Housing> AddHousingTypeFilter(this IQueryable<Housing> query, int? houseTypeId)
-        {
-            if (houseTypeId.HasValue)
-            {
-                query = query.Where(x => x.TypesHousing.Id == houseTypeId.Value);
-            }
-            return query;
-        }
-
-        public static IQueryable<Housing> AddHousingTypeFilter(this IQueryable<Housing> query, int[] houseTypeId)
-        {
-            if (houseTypeId.Length > 0)
-            {
-                query = query.Where(x => houseTypeId.Contains(x.TypesHousing.Id));
-            }
-            return query;
-       }
-
-
-
-        public static IQueryable<Housing> AddCostFilter(this IQueryable<Housing> query, int? priceFrom, int? priceTo)
-        {
-            if (priceFrom.HasValue)
-            {
-                query = query.Where(x => x.Sum >= priceFrom.Value);
-            }
-
-            if (priceTo.HasValue)
-            {
-                query = query.Where(x => x.Sum <= priceTo.Value);
-            }
-            return query;
+            return housing.Include(x => x.City)
+                .Include(x => x.Street)
+                .Include(x => x.District)
+                .Include(x => x.Phones)
+                .Include(x => x.TypesHousing)
+                .Include(x => x.User);
         }
 
 
-        public static IQueryable<Housing> AddIsArchiveFilter(this IQueryable<Housing> query, bool? isArchive)
+        public static Func<Housing, bool> Filter(FilterData filter)
         {
-            if (isArchive.HasValue)
+            Func<Housing, bool> func = (x) =>
             {
-                query = query.Where(x => x.IsArchive == isArchive.Value);
-            }
-            return query;
+                bool result = true;
+                if (filter.CityId.HasValue)
+                {
+                    result &= x.CityId == filter.CityId.Value;
+                }
+
+                if (filter.HouseTypeId.Length > 0)
+                {
+                    result &= filter.HouseTypeId.Contains(x.TypesHousingId);
+                }
+
+                if (filter.PriceFrom.HasValue && filter.PriceTo.HasValue)
+                {
+                    result &= x.Sum >= filter.PriceFrom.Value && x.Sum <= filter.PriceTo.Value;
+                }
+                else if (filter.PriceFrom.HasValue)
+                {
+                    result &= x.Sum >= filter.PriceFrom.Value;
+                }
+                else if (filter.PriceTo.HasValue)
+                {
+                    result &= x.Sum <= filter.PriceTo.Value;
+                }
+                return result;
+            };
+
+            return func;
         }
         
         public static List<Housing> GetPage(this IQueryable<Housing> query, int page, out int totalItems, out int totalPages)
@@ -109,17 +100,6 @@ namespace WebApp
 
             return result.ToList();
         }
-
-        /*public static List<Housing> GetByFilters(this DbSet<Housing> housings, int page, int?[] houseTypeId, int? cityId, int? districtId, int? priceFrom, int? priceTo, bool? isArchive, int? objectId)
-        {
-            IQueryable<Housing> query = housings
-                                .AddIsArchiveFilter(isArchive)
-                                .AddCityFilter(cityId)
-                                .AddDistrictFilter(districtId)
-                                .AddHousingTypeFilter(houseTypeId)
-                                .AddCostFilter(priceFrom, priceTo);
-
-            return query.GetPage(page);
-        }*/
+        
     }
 }

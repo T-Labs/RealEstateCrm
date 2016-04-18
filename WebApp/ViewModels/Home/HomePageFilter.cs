@@ -20,7 +20,7 @@ namespace WebApp.ViewModels.Home
 
         [UIHint("dropdown")]
         [Display(Name = "Район")]
-        public DropDownViewModel District { get; set; }
+        public List<SelectListItem> District { get; set; }
 
         [Display(Name = "Цена от")]
         public int MinCost { get; set; }
