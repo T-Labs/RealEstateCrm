@@ -5,7 +5,7 @@
     "removeComments": false,
     "sourceMap": true,
     "target": "es5",
-    "outDir": "wwwroot",
+    "outDir": "wwwroot/Scripts",
     "module": "commonjs"
   },
   "exclude": [

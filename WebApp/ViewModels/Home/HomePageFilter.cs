@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Mvc.Rendering;
 using Newtonsoft.Json;
 
 namespace WebApp.ViewModels.Home
 {
     public class HomePageFilter
     {
-        [UIHint("dropdown")]
+        [UIHint("dropdown-multiple")]
         [Display(Name = "Вид жилья")]
-        public DropDownViewModel HousingTypeList { get; set; }
+        public MultiSelectList HousingTypeList { get; set; }
 
-        [UIHint("dropdown")]
+       
         [Display(Name = "Город")]
-        public DropDownViewModel City { get; set; }
+        public int CityId { get; set; }
 
         [UIHint("dropdown")]
         [Display(Name = "Район")]
@@ -26,5 +27,6 @@ namespace WebApp.ViewModels.Home
 
         [Display(Name = "Цена до")]
         public int MaxCost { get; set; }
+
     }
 }

@@ -20,6 +20,8 @@ namespace WebApp.ViewModels
 
         public bool Disabled { get; set; }
 
+        public bool IsMultiple { get; set; }
+
         public DropDownViewModel()
         {
         }

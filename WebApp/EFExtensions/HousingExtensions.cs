@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Data.Entity;
 using WebApp.Entities;
+using System.Linq.Expressions;
 
 namespace WebApp
 {
@@ -51,7 +52,8 @@ namespace WebApp
                 query = query.Where(x => houseTypeId.Contains(x.TypesHousing.Id));
             }
             return query;
-        }
+       }
+
 
 
         public static IQueryable<Housing> AddCostFilter(this IQueryable<Housing> query, int? priceFrom, int? priceTo)
@@ -102,7 +104,8 @@ namespace WebApp
                 .Include(x => x.Phones)
                 .Include(x => x.TypesHousing)
                 .Include(x => x.User)
-                .Include(x => x.Calls);
+                .Include(x => x.Calls);//.ThenInclude(x => x.Select(c => c.User));
+
 
             return result.ToList();
         }

@@ -1,0 +1,19 @@
+﻿@using WebApp.ViewModels
+@model MultiSelectList
+@{
+   // var items = Model.Items;
+    var disabled = false; //Model.Disabled ? "disabled" : string.Empty;
+}
+
+<div class="field">
+    <label>
+        <label>@Html.LabelFor(x => x)
+            @if (ViewData.ModelMetadata.IsRequired)
+            {
+                <text><span style="color: Red; font-weight: bold;">*</span></text>
+            }
+        </label>
+    </label>
+   @Html.DropDownListFor(x => x, Model , new {@class = "ui fluid dropdown " + disabled, multiple = "multiple" })
+   
+</div>

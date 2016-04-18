@@ -50,7 +50,8 @@ namespace WebApp.Controllers
 
             int totalPages;
             int totalItems;
-            var items = query.GetPage(page, out totalItems, out totalPages).Select(x => HousingEditModel.Create(x, typesHousings, allCities, AuthService, User));
+            var queryResult = query.GetPage(page, out totalItems, out totalPages);
+            var items = queryResult.Select(x => HousingEditModel.Create(x, typesHousings, allCities, AuthService, User)).ToList();
 
             ViewBag.TotalItems = _context.Housing.Count();
             ViewBag.FilteredItemsCount = totalItems;
