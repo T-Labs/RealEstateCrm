@@ -12,10 +12,12 @@ namespace WebApp
         public class FilterData
         {
             public int? Page { get; set; }
-            public int[] HouseTypeId { get; set; }
+            public int[] HouseTypeId { get; set; } = new int[] { };
             public int? CityId { get; set; }
             public int? PriceFrom { get; set; }
             public int? PriceTo { get; set; }
+
+            public bool? IsArchived { get; set; }
         }
 
         public static Housing GetFullById(this DbSet<Housing> housings, int id)
@@ -64,6 +66,11 @@ namespace WebApp
                 else if (filter.PriceTo.HasValue)
                 {
                     result &= x.Sum <= filter.PriceTo.Value;
+                }
+
+                if (filter.IsArchived.HasValue)
+                {
+                    result &= x.IsArchive == filter.IsArchived.Value;
                 }
                 return result;
             };

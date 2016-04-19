@@ -35,11 +35,16 @@ else
         </div>
         @Html.EditorFor(x => x.Comment, "textarea")
         <div class="two fields">
-             @Html.EditorFor(x => x.HouseType, "dropdown")
+            @*  @Html.EditorFor(x => x.HouseType, "dropdown")*@
+            <div class="field">
+                <label>@Html.LabelFor(x => x.HouseTypeId)</label>
+                <housiong-type-list house-type-id="@Model.HouseTypeId" id="@Html.IdFor(x => x.HouseTypeId)" name="@Html.IdFor(x => x.HouseTypeId)"></housiong-type-list>
+            </div>
+            
              @Html.EditorFor(x => x.Cost) 
         </div>
         <div class="three fields">
-            @Html.EditorFor(x => x.City, "dropdown")
+            @Html.EditorFor(x => x.CityId, "city-selector")
             @Html.EditorFor(x => x.District, "dropdown")
             @Html.EditorFor(x => x.Street, "dropdown")
         </div>
@@ -73,7 +78,7 @@ else
     
     <script type="text/javascript">
         $(function() {
-            $('#City_Id').change(function(e) {
+            $('#CityId').change(function (e) {
                 var cityId = $(this).val();
                 
              

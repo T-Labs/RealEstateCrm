@@ -16,7 +16,7 @@
                     <div class="ui center aligned">
                         <div class="field">
                             <label>Город</label>
-                            <city-list city-id="@Model.Filter.CityId" name="cityId" id="filter_cityId"></city-list>
+                            <city-list city-id="@Model.Filter.CityId" name="cityId" id="filter_cityId" class="filter_cityId"></city-list>
                         </div>
                         <div class="field" id="filter_district_container" style="display: none">
                             <label>Район</label>
@@ -24,7 +24,7 @@
                         </div>
                         <div class="field">
                             <label>Тип жилья</label>
-                            <select asp-for="@Model.Filter.HousingTypeList" asp-items="@Model.Filter.HousingTypeList" name="houseTypeId" class="ui fluid dropdown1" multiple="multiple">
+                            <select asp-for="@Model.Filter.HousingTypeList" asp-items="@Model.Filter.HousingTypeList" name="houseTypeId" class="ui fluid dropdown selection multiple" multiple="multiple">
                             </select>
                         </div>
                         <div class="field">
@@ -42,7 +42,7 @@
                   
                         <script type="text/javascript">
                             $(function () {
-                                $('.dropdown')
+                                $('.filter_cityId')
                                   .dropdown({
                                     
                                       onChange: function (value, text, $selectedItem) {

@@ -46,7 +46,8 @@ namespace WebApp.Controllers
                 CityId = cityId,
                 PriceTo = minCost,
                 PriceFrom = maxCost,
-                Page = page
+                Page = page,
+                IsArchived = isArchive
             };
 
             if (houseType.HasValue)
@@ -60,7 +61,7 @@ namespace WebApp.Controllers
             int totalPages;
             int totalItems;
             var queryResult = query.GetPage(page, out totalItems, out totalPages);
-            var items = queryResult.Select(x => HousingEditModel.Create(x, typesHousings, allCities, AuthService, User)).ToList();
+            var items = queryResult.Select(x => HousingEditModel.Create(x, typesHousings, allCities, User)).ToList();
 
             ViewBag.TotalItems = _context.Housing.Count();
             ViewBag.FilteredItemsCount = totalItems;
@@ -148,7 +149,7 @@ namespace WebApp.Controllers
             {
                 return HttpNotFound();
             }
-            var model = HousingEditModel.Create(_context, housing, AuthService, User);
+            var model = HousingEditModel.Create(_context, housing, User);
             return View(model);
         }
         
@@ -163,7 +164,7 @@ namespace WebApp.Controllers
                 Phones = new List<HousingPhone>(),
                 Calls = new List<HousingCall>()
             };
-            var model = HousingEditModel.Create(_context, housing, AuthService, User);
+            var model = HousingEditModel.Create(_context, housing, User);
             return View("Save", model);
         }
 
@@ -200,7 +201,7 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
 
-            var model = HousingEditModel.Create(_context, housing, AuthService, User);
+            var model = HousingEditModel.Create(_context, housing, User);
             return View("Save", model);
         }
 
@@ -219,6 +220,8 @@ namespace WebApp.Controllers
                 TempData["CrmSuccessMessage"] = "Запись была успешно сохранена";
                 return RedirectToAction("Index");
             }
+
+            var errors = ModelState.Values.Where(x => x.Errors.Any()).ToList();
             return View("Save", housing);
         }
 
@@ -283,7 +286,7 @@ namespace WebApp.Controllers
         public IActionResult DetailsDialog(int id)
         {
             var h = _context.Housing.GetFullById(id);
-            return PartialView("DetailsDialog", HousingEditModel.Create(_context, h, AuthService, User));
+            return PartialView("DetailsDialog", HousingEditModel.Create(_context, h, User));
         }
     }
 }

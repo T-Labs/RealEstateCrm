@@ -6,11 +6,13 @@ using WebApp.Models;
 
 namespace WebApp.TagHelpers
 {
-    [HtmlTargetElement("city-list", Attributes = "city-id, name")]
+    [HtmlTargetElement("city-list", Attributes = "city-id, name, disabled")]
     public class CitySelectListTagHelper : TagHelper
     {
         public int CityId { get; set; }
         public string Name { get; set; }
+
+        public bool Disabled { get; set; }
 
         private ApplicationDbContext DbContext;
 
@@ -23,7 +25,12 @@ namespace WebApp.TagHelpers
         {
 
             output.TagName = "select";
-            
+
+            if (Disabled)
+            {
+                output.Attributes["disabled"] = "disabled";
+            }
+
 
             var items = new StringBuilder();
             var cityList = DbContext.Cities.OrderBy(x => x.Name).ToList();
@@ -31,7 +38,14 @@ namespace WebApp.TagHelpers
             items.Append("<option value=\"\"Все города</option>");
             foreach (var city in cityList)
             {
-                items.Append($"<option value=\"{city.Id}\">{city.Name}</option>");
+                if (city.Id == CityId)
+                {
+                    items.Append($"<option value=\"{city.Id}\" selected=\"true\">{city.Name}</option>");
+                }
+                else
+                {
+                    items.Append($"<option value=\"{city.Id}\">{city.Name}</option>");
+                }
             }
         
             output.Content.SetHtmlContent(items.ToString());

@@ -31,11 +31,11 @@ namespace WebApp.ViewModels
 
         [Display(Name = "Цена")]
         public double Cost { get; set; }
-        
-        [UIHint("dropdown")]
+       
+        [UIHint("city-selector")]
         [Required]
         [Display(Name = "Город")]
-        public DropDownViewModel City { get; set; }
+        public int CityId { get; set; }
 
         [UIHint("dropdown")]
         [Required]
@@ -70,9 +70,12 @@ namespace WebApp.ViewModels
         [Display(Name = "Телефон 3 для связи")]
         public string Phone3 { get; set; }
 
-        [UIHint("dropdown")]
+       /* [UIHint("dropdown")]
         [Display(Name =  "Тип жилья")]
-        public DropDownViewModel HouseType { get; set; }
+        public DropDownViewModel HouseType { get; set; }*/
+
+        [Display(Name = "Тип жилья")]
+        public int HouseTypeId { get; set; }
 
         [Display(Name = "Дата освобождения объекта")]
         public DateTime EndDate { get; set; }
@@ -94,18 +97,17 @@ namespace WebApp.ViewModels
         {
         }
 
-        public static HousingEditModel Create(ApplicationDbContext context, Housing housing, IAuthorizationService auth, ClaimsPrincipal user)
+        public static HousingEditModel Create(ApplicationDbContext context, Housing housing,  ClaimsPrincipal user)
         {
             var allCities = context.Cities.Include(x => x.Districts).Include(x => x.Streets).ToSelectList().ToList();
             var typesHousings = context.TypesHousing.ToList();
             
-            return Create(housing, typesHousings, allCities, auth, user);
+            return Create(housing, typesHousings, allCities, user);
         }
 
         public static HousingEditModel Create(Housing housing, 
             List<TypesHousing> typesHousings, 
             List<SelectListItem> allCities,
-            IAuthorizationService auth,
             ClaimsPrincipal user)
         {
             var item = new HousingEditModel
@@ -125,18 +127,20 @@ namespace WebApp.ViewModels
                 Room = housing?.Room,
                 IsArchived = housing.IsArchive,
                 IsPartnerShip = housing.PartherShip,
-                HouseType = new DropDownViewModel
+               /* HouseType = new DropDownViewModel
                 {
                     Id = housing.TypesHousingId,
                     Items = typesHousings.Select(x => new SelectListItem {Value = x.Id.ToString(), Text = x.Name })
-                },
-                Calls = housing.Calls.Select(HousingCallViewModel.Create).ToList()
+                },*/
+                HouseTypeId = housing.TypesHousingId,
+                CityId = housing.CityId
+                //Calls = housing.Calls.Select(HousingCallViewModel.Create).ToList()
             };
 
-            item.City = new DropDownViewModel(housing?.CityId ?? 0, allCities)
+           /* item.City = new DropDownViewModel(housing?.CityId ?? 0, allCities)
             {
                 Disabled = user.IsInRole(RoleNames.Employee)
-            };
+            };*/
             item.Street = new DropDownViewModel(housing?.StreetId ?? 0, housing?.City?.Streets?.ToSelectList());
 
             item.District = new DropDownViewModel()
@@ -178,13 +182,13 @@ namespace WebApp.ViewModels
             item.LastName = LastName;
             item.Sum = Cost;
             item.Comment = Comment;
-            item.CityId = City.Id;
+            item.CityId = CityId;
             item.DistrictId = District.Id;
             item.StreetId = Street.Id;
             item.House = HouseNumber;
             item.Building = HouseBuilding;
             item.Room = Room;
-            item.TypesHousingId = HouseType.Id;
+            item.TypesHousingId = HouseTypeId;
             item.EndDate = EndDate;
             item.IsArchive = IsArchived;
             item.PartherShip = IsPartnerShip;

@@ -1,0 +1,14 @@
+﻿@model int
+
+
+<div class="field">
+    <label>
+        <label>@Html.LabelFor(x => x)
+            @if (ViewData.ModelMetadata.IsRequired)
+            {
+                <text><span style="color: Red; font-weight: bold;">*</span></text>
+            }
+        </label>
+    </label>
+    <city-list id="@Html.IdFor(x => x)" name="@Html.IdFor(x => x)" city-id="@Model" disabled="false"></city-list>
+</div>

@@ -56,7 +56,13 @@ namespace WebApp.Controllers
                 TotalPages = totalPages,
                 Filter = new HomePageFilter()
                 {
-                    HousingTypeList = new MultiSelectList(_context.TypesHousing, "Id", "Name", houseTypeIdArray.Select(x => x.ToString()))
+                    HousingTypeList = _context.TypesHousing.ToList().Select(x => new SelectListItem()
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.Name,
+                        Selected = houseTypeIdArray.Contains(x.Id)
+                    }).ToList()
+                    //new MultiSelectList(_context.TypesHousing, "Id", "Name", houseTypeIdArray.Select(x => x.ToString()))
                     //new DropDownViewModel(houseType ?? 0, _context.TypesHousing.ToSelectList(true))
                 }
             };

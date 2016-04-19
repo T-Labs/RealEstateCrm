@@ -12,7 +12,7 @@ namespace WebApp.ViewModels.Home
     {
         [UIHint("dropdown-multiple")]
         [Display(Name = "Вид жилья")]
-        public MultiSelectList HousingTypeList { get; set; }
+        public List<SelectListItem> HousingTypeList { get; set; }
 
        
         [Display(Name = "Город")]
