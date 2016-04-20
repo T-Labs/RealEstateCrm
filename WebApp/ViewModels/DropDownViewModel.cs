@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Mvc.Rendering;
 using Newtonsoft.Json;
 
 namespace WebApp.ViewModels
 {
+    [Obsolete("Don't use")]
     public class DropDownViewModel
     {
         public int Id { get; set; }

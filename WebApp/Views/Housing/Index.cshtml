@@ -9,7 +9,8 @@
     @inject IAuthorizationService _auth;
 }
 
-@{
+ @{
+   
     bool userHasCreate = await _auth.AuthorizeAsync(User, AuthPolicy.CreateHousing);
     bool userHasEdit = await _auth.AuthorizeAsync(User, AuthPolicy.EditHousing);
     bool userHasDelete = await _auth.AuthorizeAsync(User, AuthPolicy.DeleteHousing);
@@ -22,9 +23,12 @@
 
 <form class="ui form segment" asp-action="Filter">
     <div class="three fields">
-        @Html.EditorFor(x => x.Filters.HousingTypeList)
-        @Html.EditorFor(x => x.Filters.City)
-        @Html.EditorFor(x => x.Filters.District)
+        @Html.EditorFor(x => x.Filters.HousingTypeId)
+        @Html.EditorFor(x => x.Filters.CityId)
+        <div class="field">
+            @Html.LabelFor(x => x.Filters.DistrictId)
+            <district-list city-id="@Model.Filters.CityId" district-id="@Model.Filters.DistrictId" id="@Html.IdFor(x => x.Filters.DistrictId)" name="@Html.IdFor(x => x.Filters.DistrictId)"></district-list>
+        </div>
     </div>
 
     <div class="three fields">

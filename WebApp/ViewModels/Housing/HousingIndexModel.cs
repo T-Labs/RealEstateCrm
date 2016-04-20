@@ -20,34 +20,27 @@ namespace WebApp.ViewModels
 
     public class HousingIndexFilterModel
     {
-        [JsonProperty("ht")]
-        [UIHint("dropdown")]
+        [UIHint("housiong-type-selector")]
         [Display(Name="Вид жилья")]
-        public DropDownViewModel HousingTypeList { get; set; }
+        public int HousingTypeId { get; set; }
 
-        [JsonProperty("c")]
-        [UIHint("dropdown")]
+        [UIHint("city-selector")]
         [Display(Name = "Город")]
-        public DropDownViewModel City { get; set; }
+        public int CityId { get; set; }
 
-        [JsonProperty("d")]
-        [UIHint("dropdown")]
+
         [Display(Name = "Район")]
-        public DropDownViewModel District { get; set; }
+        public int DistrictId { get; set; }
 
-        [JsonProperty("minc")]
         [Display(Name = "Цена от")]
         public int MinCost { get; set; }
 
-        [JsonProperty("maxc")]
         [Display(Name = "Цена до")]
         public int MaxCost { get; set; }
 
-        [JsonProperty("oid")]
         [Display(Name = "ID объекта")]
         public int SelectedObjectId { get; set; }
 
-        [JsonProperty("a")]
         [Display(Name="Архивные записи")]
         public bool IsArchived { get; set; }
 

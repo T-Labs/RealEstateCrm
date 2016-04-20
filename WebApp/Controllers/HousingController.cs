@@ -72,12 +72,9 @@ namespace WebApp.Controllers
                 Filters = new HousingIndexFilterModel
                 {
                     IsArchived = isArchive ?? false,
-                    HousingTypeList = new DropDownViewModel(houseType ?? 0, _context.TypesHousing.ToSelectList(true)),
-                    City = new DropDownViewModel(cityId ?? 0, _context.Cities.ToSelectList(true))
-                    {
-                        Disabled = User.IsInRole(RoleNames.Employee)
-                    },
-                    District = new DropDownViewModel(districtId ?? 0, _context.Districts.ToSelectList(true))
+                    HousingTypeId = houseType ?? 0,
+                    CityId = cityId ?? 0,
+                    DistrictId = districtId ?? 0
                 },
                 TotalPages = totalPages,
                 CurrentPage = page
@@ -121,9 +118,9 @@ namespace WebApp.Controllers
             return RedirectToAction("Index", new
             {
                 page,
-                houseType = intOrNull(filters.HousingTypeList.Id),
-                cityId = intOrNull(filters.City?.Id),
-                districtId = intOrNull(filters.District?.Id),
+                houseType = intOrNull(filters.HousingTypeId),
+                cityId = intOrNull(filters.CityId),
+                districtId = intOrNull(filters.DistrictId),
                 minCost = intOrNull(filters.MinCost),
                 maxCost = intOrNull(filters.MaxCost),
                 objectId = intOrNull(filters.SelectedObjectId),

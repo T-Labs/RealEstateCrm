@@ -87,6 +87,9 @@ namespace WebApp.ViewModels
         [Display(Name = "Партнерство")]
         public bool IsPartnerShip { get; set; }
 
+        [Display(Name = "Тип жилья")]
+        public string HouseType { get; set; }
+
         public List<HousingCallViewModel> Calls { get; set; }
 
         public HousingEditModel()
@@ -123,30 +126,14 @@ namespace WebApp.ViewModels
                 Room = housing?.Room,
                 IsArchived = housing.IsArchive,
                 IsPartnerShip = housing.PartherShip,
-               /* HouseType = new DropDownViewModel
-                {
-                    Id = housing.TypesHousingId,
-                    Items = typesHousings.Select(x => new SelectListItem {Value = x.Id.ToString(), Text = x.Name })
-                },*/
+                HouseType = housing.TypesHousing?.Name ?? "Не указано",
                 HouseTypeId = housing.TypesHousingId,
                 CityId = housing.CityId,
                 DistrictId = housing.DistrictId,
                 StreetId = housing.StreetId
                 //Calls = housing.Calls.Select(HousingCallViewModel.Create).ToList()
             };
-
-           /* item.City = new DropDownViewModel(housing?.CityId ?? 0, allCities)
-            {
-                Disabled = user.IsInRole(RoleNames.Employee)
-            };*/
-           // item.Street = new DropDownViewModel(housing?.StreetId ?? 0, housing?.City?.Streets?.ToSelectList());
-
-           /* item.District = new DropDownViewModel()
-            {
-                Id = housing?.DistrictId ?? 0,
-                Items = housing?.City?.Districts?.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }) ?? new List<SelectListItem>()
-            };
-            */
+            
             var addressParts = new List<string>();
             if (housing.City != null)
             {

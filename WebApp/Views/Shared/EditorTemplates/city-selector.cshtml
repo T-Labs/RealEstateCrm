@@ -1,6 +1,10 @@
 ﻿@model int
+@inject ApplicationDbContext dbContext
 
-
+@{
+    var cityList = dbContext.Cities.ToList();
+    bool isEmployee = User.IsInRole(WebApp.RoleNames.Employee);
+}
 <div class="field">
     <label>
         <label>@Html.LabelFor(x => x)
@@ -10,5 +14,15 @@
             }
         </label>
     </label>
-    <city-list id="@Html.IdFor(x => x)" name="@Html.IdFor(x => x)" city-id="@Model" disabled='@ViewData["disabled"] == "disabled"'></city-list>
+    @if (isEmployee)
+    {
+        <select asp-for="@Model" asp-items="@(new SelectList(cityList, "Id", "Name", Model))" disabled='disabled' class="ui fluid dropdown"></select>
+    }
+    else
+    {
+        <select asp-for="@Model" asp-items="@(new SelectList(cityList, "Id", "Name", Model))" class="ui fluid dropdown">
+            <option value="">Все города</option>
+        </select>
+    }
+    
 </div>

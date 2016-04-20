@@ -206,5 +206,18 @@ namespace WebApp.Controllers
                 results = query.Select(x => new SearchResultItem { title= x.Name, description = x.City.Name })
             });
         }
+
+
+
+        private DropDownViewModel GetCityModel(int cityId)
+        {
+            var isEmployee = User.IsInRole(RoleNames.Employee);
+            var cityList = _context.Cities.ToSelectList(true);
+            var city = new DropDownViewModel(cityId, cityList)
+            {
+                Disabled = isEmployee
+            };
+            return city;
+        }
     }
 }

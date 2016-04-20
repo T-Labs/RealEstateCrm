@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using WebApp.Models;
 
 namespace WebApp.Entities
 {
+    [DebuggerDisplay("Id:{Id}, Name: {Name}")]
     public class City
     {
         public int Id { get; set; }

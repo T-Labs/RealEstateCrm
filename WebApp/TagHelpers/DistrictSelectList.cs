@@ -27,7 +27,7 @@ namespace WebApp.TagHelpers
             var items = new StringBuilder();
             var list = DbContext.Districts.Where(x => x.CityId == CityId).OrderBy(x => x.Name).ToList();
 
-            items.Append("<option value=\"\"Все районы</option>");
+            items.Append("<option value=\"\">Все районы</option>");
             foreach (var item in list)
             {
                 if (item.Id == DistrictId)

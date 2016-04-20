@@ -72,6 +72,10 @@ namespace WebApp
                 {
                     result &= x.IsArchive == filter.IsArchived.Value;
                 }
+                else
+                {
+                    result &= x.IsArchive == false;
+                }
                 return result;
             };
 

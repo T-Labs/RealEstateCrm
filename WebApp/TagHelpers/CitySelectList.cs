@@ -35,7 +35,7 @@ namespace WebApp.TagHelpers
             var items = new StringBuilder();
             var cityList = DbContext.Cities.OrderBy(x => x.Name).ToList();
 
-            items.Append("<option value=\"\"Все города</option>");
+            items.Append("<option value=\"\">Все города</option>");
             foreach (var city in cityList)
             {
                 if (city.Id == CityId)

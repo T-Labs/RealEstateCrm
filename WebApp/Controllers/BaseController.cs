@@ -39,16 +39,5 @@ namespace WebApp.Controllers
             TempData["CrmErrorMessage"] = message;
         }
 
-
-        protected DropDownViewModel GetCityModel(int cityId)
-        {
-            var isEmployee = User.IsInRole(RoleNames.Employee);
-            var cityList = _context.Cities.ToSelectList(true);
-            var city = new DropDownViewModel(cityId, cityList)
-            {
-                Disabled = isEmployee
-            };
-            return city;
-        }
     }
 }
