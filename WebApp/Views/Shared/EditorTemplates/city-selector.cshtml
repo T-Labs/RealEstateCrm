@@ -10,5 +10,5 @@
             }
         </label>
     </label>
-    <city-list id="@Html.IdFor(x => x)" name="@Html.IdFor(x => x)" city-id="@Model" disabled="false"></city-list>
+    <city-list id="@Html.IdFor(x => x)" name="@Html.IdFor(x => x)" city-id="@Model" disabled='@ViewData["disabled"] == "disabled"'></city-list>
 </div>

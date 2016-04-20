@@ -35,7 +35,6 @@ else
         </div>
         @Html.EditorFor(x => x.Comment, "textarea")
         <div class="two fields">
-            @*  @Html.EditorFor(x => x.HouseType, "dropdown")*@
             <div class="field">
                 <label>@Html.LabelFor(x => x.HouseTypeId)</label>
                 <housiong-type-list house-type-id="@Model.HouseTypeId" id="@Html.IdFor(x => x.HouseTypeId)" name="@Html.IdFor(x => x.HouseTypeId)"></housiong-type-list>
@@ -44,9 +43,24 @@ else
              @Html.EditorFor(x => x.Cost) 
         </div>
         <div class="three fields">
-            @Html.EditorFor(x => x.CityId, "city-selector")
-            @Html.EditorFor(x => x.District, "dropdown")
-            @Html.EditorFor(x => x.Street, "dropdown")
+            <div class="field">
+                @Html.LabelFor(x => x.CityId)
+                <city-list id="@Html.IdFor(x => x.CityId)" name="@Html.IdFor(x => x.CityId)" city-id="@Model.CityId" disabled="@User.IsInRole(WebApp.RoleNames.Employee)"></city-list>
+                
+            </div>
+
+            <div class="field">
+                @Html.LabelFor(x => x.DistrictId)
+                <district-list city-id="@Model.CityId" district-id="@Model.DistrictId" id="@Html.IdFor(x => x.DistrictId)" name="@Html.IdFor(x => x.DistrictId)"></district-list>
+            </div>
+
+
+            <div class="field">
+                @Html.LabelFor(x => x.StreetId)
+                <street-list city-id="@Model.CityId" street-id="@Model.StreetId" id="@Html.IdFor(x => x.StreetId)" name="@Html.IdFor(x => x.StreetId)"></street-list>
+            </div>
+
+            @Html.EditorFor(x => x.CityId, new { @disabled="disabled"})
         </div>
 
         <div class="fields">
@@ -89,7 +103,7 @@ else
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (msg) {
-                        var district = $("#District_Id");
+                        var district = $("#DistrictId");
                         district.dropdown('clear');
                         var options = district.get(0).options;
                         options.length = 0;
@@ -111,7 +125,7 @@ else
                     dataType: "json",
                     success: function (response) {
                       
-                        var streets = $("#Street_Id");
+                        var streets = $("#StreetId");
                          streets.dropdown('clear');
 
                         var options = streets.get(0).options;

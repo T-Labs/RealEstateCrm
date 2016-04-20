@@ -14,7 +14,7 @@ namespace WebApp.ViewModels
     public class HousingEditModel
     {
         [Display(Name = "ID объекта")]
-        public int EditId { get; private set; }
+        public int EditId { get; set; }
         
         [Display(Name = "Фамилия")]
         public string FirstName { get; set; }
@@ -40,13 +40,13 @@ namespace WebApp.ViewModels
         [UIHint("dropdown")]
         [Required]
         [Display(Name = "Район")]
-        public DropDownViewModel District { get; set; }
+        public int DistrictId { get; set; }
 
         [UIHint("dropdown")]
         [Required]
         [Display(Name = "Улица")]
-        public DropDownViewModel Street { get; set; }
-
+        public int StreetId { get; set; }
+        
         [Required]
         [Display(Name = "Номер дома")]
         public string HouseNumber { get; set; }
@@ -69,11 +69,7 @@ namespace WebApp.ViewModels
         [UIHint("phone")]
         [Display(Name = "Телефон 3 для связи")]
         public string Phone3 { get; set; }
-
-       /* [UIHint("dropdown")]
-        [Display(Name =  "Тип жилья")]
-        public DropDownViewModel HouseType { get; set; }*/
-
+  
         [Display(Name = "Тип жилья")]
         public int HouseTypeId { get; set; }
 
@@ -133,7 +129,9 @@ namespace WebApp.ViewModels
                     Items = typesHousings.Select(x => new SelectListItem {Value = x.Id.ToString(), Text = x.Name })
                 },*/
                 HouseTypeId = housing.TypesHousingId,
-                CityId = housing.CityId
+                CityId = housing.CityId,
+                DistrictId = housing.DistrictId,
+                StreetId = housing.StreetId
                 //Calls = housing.Calls.Select(HousingCallViewModel.Create).ToList()
             };
 
@@ -141,14 +139,14 @@ namespace WebApp.ViewModels
             {
                 Disabled = user.IsInRole(RoleNames.Employee)
             };*/
-            item.Street = new DropDownViewModel(housing?.StreetId ?? 0, housing?.City?.Streets?.ToSelectList());
+           // item.Street = new DropDownViewModel(housing?.StreetId ?? 0, housing?.City?.Streets?.ToSelectList());
 
-            item.District = new DropDownViewModel()
+           /* item.District = new DropDownViewModel()
             {
                 Id = housing?.DistrictId ?? 0,
                 Items = housing?.City?.Districts?.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }) ?? new List<SelectListItem>()
             };
-
+            */
             var addressParts = new List<string>();
             if (housing.City != null)
             {
@@ -183,8 +181,8 @@ namespace WebApp.ViewModels
             item.Sum = Cost;
             item.Comment = Comment;
             item.CityId = CityId;
-            item.DistrictId = District.Id;
-            item.StreetId = Street.Id;
+            item.DistrictId = DistrictId;
+            item.StreetId = StreetId;
             item.House = HouseNumber;
             item.Building = HouseBuilding;
             item.Room = Room;

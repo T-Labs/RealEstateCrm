@@ -6,29 +6,31 @@ using WebApp.Models;
 
 namespace WebApp.TagHelpers
 {
-    [HtmlTargetElement("housiong-type-list", Attributes = "house-type-id")]
-    public class HousingTypeSelectListListTagHelper : TagHelper
+    [HtmlTargetElement("street-list", Attributes = "city-id")]
+    public class StreetSelectListTagHelper : TagHelper
     {
-        public int HouseTypeId { get; set; }
+        public int CityId { get; set; }
+
+        public int StreetId { get; set; }
 
         private ApplicationDbContext DbContext;
 
-        public HousingTypeSelectListListTagHelper([FromServices] ApplicationDbContext dbContext)
+        public StreetSelectListTagHelper([FromServices] ApplicationDbContext dbContext)
         {
             DbContext = dbContext;
         }
 
-        public override void Process(TagHelperContext context, TagHelperOutput output){
-
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
             output.TagName = "select";
 
             var items = new StringBuilder();
-            var list = DbContext.TypesHousing.OrderBy(x => x.Name).ToList();
+            var list = DbContext.Streets.Where(x => x.CityId == CityId).OrderBy(x => x.Name).ToList();
 
-            items.Append("<option value=\"\"Все типы жилья</option>");
+            items.Append("<option value=\"Все улицы\"</option>");
             foreach (var item in list)
             {
-                if (item.Id == HouseTypeId)
+                if (item.Id == StreetId)
                 {
                     items.Append($"<option value=\"{item.Id}\" selected=\"true\">{item.Name}</option>");
                 }
