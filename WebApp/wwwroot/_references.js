@@ -20,3 +20,4 @@
 /// <reference path="scripts/App.js" />
 /// <reference path="scripts/housing.js" />
 /// <reference path="scripts/Tools.js" />
+/// <reference path="scripts/utils.js" />

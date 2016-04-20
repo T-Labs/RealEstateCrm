@@ -9,8 +9,6 @@ using WebApp.Entities;
 using WebApp.Models;
 using WebApp.ViewModels;
 using WebApp.ViewModels.Home;
-using Microsoft.AspNet.Http.Internal;
-using Microsoft.Data.Entity;
 
 namespace WebApp.Controllers
 {
@@ -62,8 +60,6 @@ namespace WebApp.Controllers
                         Text = x.Name,
                         Selected = houseTypeIdArray.Contains(x.Id)
                     }).ToList()
-                    //new MultiSelectList(_context.TypesHousing, "Id", "Name", houseTypeIdArray.Select(x => x.ToString()))
-                    //new DropDownViewModel(houseType ?? 0, _context.TypesHousing.ToSelectList(true))
                 }
             };
 

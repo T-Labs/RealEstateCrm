@@ -1,8 +1,8 @@
-﻿'use strict';
+'use strict';
 var Utils = (function () {
-    function App() {
+    function Utils() {
     }
-    App.loadDistrictSelectByCityId = function (cityId, districtControlId) {
+    Utils.loadDistrictSelectByCityId = function (cityId, districtControlId) {
         $.ajax({
             type: "GET",
             url: "/api/rent/districtByCity?cityId=" + cityId,
@@ -23,7 +23,7 @@ var Utils = (function () {
             }
         });
     };
-    App.inputNumbersOnly = function (sender, event) {
+    Utils.inputNumbersOnly = function (sender, event) {
         var key;
         if (window.event) {
             key = window.event.keyCode;
@@ -60,6 +60,20 @@ var Utils = (function () {
             }
         }
     };
-    return App;
+    return Utils;
 }());
-//# sourceMappingURL=App.js.map
+var Notify = (function () {
+    function Notify() {
+    }
+    Notify.success = function (message) {
+        $.notify(message, 'success');
+    };
+    Notify.error = function (message) {
+        $.notify(message, 'error');
+    };
+    Notify.info = function (message) {
+        $.notify(message, 'info');
+    };
+    return Notify;
+}());
+//# sourceMappingURL=Utils.js.map

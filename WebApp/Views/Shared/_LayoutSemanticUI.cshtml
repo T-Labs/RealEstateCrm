@@ -35,25 +35,21 @@
                 <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
                         asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                         asp-fallback-test="window.jQuery">
-
                 </script>
                 <script src="~/lib/jquery-ui/jquery-ui.js"></script>
                 <script src="~/lib/notifyjs/dist/notify.js"></script>
                 <script src="~/lib/pnotify/dist/pnotify.js"></script>
                 <script src="~/lib/semantic-ui/dist/semantic.js"></script>
-                <script src="~/Scripts/App.js"></script>
-                <script src="~/Scripts/Tools.js"></script>
-
-                
+                <script src="~/Scripts/Utils.js"></script>
         </environment>
     </head>
     <body>
     <div class="ui fixed menu" id="topMenu">
         <div class="ui container">
-            <a href="#" class="header item">
+            <a asp-controller="Home" asp-action="Index" class="header item">
                 RealEstate CRM
             </a>
-            <a href="#" class="item">Домашняя</a>
+            <a asp-controller="Home" asp-action="Index" class="item">Домашняя</a>
             <a class="item" asp-controller="Employee" asp-action="Index">Сотрудники</a>
             <a class="item" asp-controller="Housing" asp-action="Index">Объекты</a>
             <a class="item" asp-controller="BlackList" asp-action="Index">Черный список</a>

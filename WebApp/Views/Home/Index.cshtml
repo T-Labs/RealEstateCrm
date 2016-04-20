@@ -16,11 +16,11 @@
                     <div class="ui center aligned">
                         <div class="field">
                             <label>Город</label>
-                            <city-list city-id="@Model.Filter.CityId" name="cityId" id="filter_cityId" class="filter_cityId"></city-list>
+                            <city-list city-id="@Model.Filter.CityId" disabled="false" name="cityId" id="filter_cityId" class="filter_cityId"></city-list>
                         </div>
                         <div class="field" id="filter_district_container" style="display: none">
                             <label>Район</label>
-                            <city-list city-id="@Model.Filter.CityId" name="districtId" id="filter_district"></city-list>
+                            <district-list city-id="@Model.Filter.CityId" name="districtId" id="filter_district"></district-list>
                         </div>
                         <div class="field">
                             <label>Тип жилья</label>
@@ -29,11 +29,11 @@
                         </div>
                         <div class="field">
                             <label>Цена, от</label>
-                            <input type="text" name="priceFrom" onkeypress="App.inputNumbersOnly(this, event);"/>
+                            <input type="text" name="priceFrom" onkeypress="Utils.inputNumbersOnly(this, event);"/>
                         </div>
                         <div class="field">
                             <label>Цена, до</label>
-                            <input type="text" name="priceFrom" onkeypress="App.inputNumbersOnly(this, event);"/>
+                            <input type="text" name="priceFrom" onkeypress="Utils.inputNumbersOnly(this, event);"/>
                         </div>
                             <input type="submit" value="Поиск" class="ui primary button fluid" />
                         </div>
@@ -44,7 +44,6 @@
                             $(function () {
                                 $('.filter_cityId')
                                   .dropdown({
-                                    
                                       onChange: function (value, text, $selectedItem) {
                                           // custom action
                                           var filter_district_container = $('#filter_district_container');
@@ -54,16 +53,9 @@
                                               filter_district_container.val('');
                                               filter_district_container.hide();
                                           }
-                                          App.loadDistrictSelectByCityId(value, '#filter_district');
+                                          Utils.loadDistrictSelectByCityId(value, '#filter_district');
                                       }
-                                  })
-                                ;
-                                   /* $('#filter_cityId').change(function (e) {
-                                        var cityId = $(this).val();
-                                        var district = $('#filter_district');
-                                        district.removeAttr('disabled');
-                                        App.loadDistrictSelectByCityId(cityId, '#filter_district');
-                                    });*/
+                                  });
                                 });
                         </script>
 

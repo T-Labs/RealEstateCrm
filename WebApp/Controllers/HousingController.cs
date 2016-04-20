@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
-using Newtonsoft.Json;
 using WebApp.ViewModels;
-using WebApp;
 using WebApp.Entities;
 using WebApp.Models;
 
@@ -268,7 +264,6 @@ namespace WebApp.Controllers
             housing.Calls.Add(new HousingCall
             {
                 User = CurrentUser,
-               // Housing = housing,
                 Status = status,
                 StatusType = ctype
             });

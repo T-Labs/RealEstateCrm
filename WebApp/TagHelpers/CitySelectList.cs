@@ -6,12 +6,10 @@ using WebApp.Models;
 
 namespace WebApp.TagHelpers
 {
-    [HtmlTargetElement("city-list", Attributes = "city-id, name, disabled")]
+    [HtmlTargetElement("city-list", Attributes = "city-id")]
     public class CitySelectListTagHelper : TagHelper
     {
         public int CityId { get; set; }
-        public string Name { get; set; }
-
         public bool Disabled { get; set; }
 
         private ApplicationDbContext DbContext;
@@ -49,8 +47,6 @@ namespace WebApp.TagHelpers
             }
         
             output.Content.SetHtmlContent(items.ToString());
-         
-            output.Attributes["name"] = Name;
             output.Attributes.Add("class", "ui fluid dropdown");
         }
     }
