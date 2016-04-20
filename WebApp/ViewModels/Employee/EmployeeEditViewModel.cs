@@ -53,17 +53,17 @@ namespace WebApp.ViewModels
         [Display(Name = "Создание и редактирование пользователей")]
         public bool IsManageUsers { get; set; }
 
-        [UIHint("dropdown")]
+        [UIHint("city-selector")]
         [Display(Name = "Город")]
-        public DropDownViewModel City { get; set; }
+        public int CityId { get; set; }
 
         public EmployeeEditViewModel()
         {
         }
 
-        public EmployeeEditViewModel(int cityId, List<City> cityList)
+        public EmployeeEditViewModel(int cityId)
         {
-            City = new DropDownViewModel(cityId, cityList.ToSelectList());
+            CityId = cityId;
         }
 
         public List<string> GetSelectedRoles()
@@ -95,7 +95,7 @@ namespace WebApp.ViewModels
                 FIO = user.FIO,
                 Email = user.Email,
                 OpenPassword = user.OpenPassword,
-                City = new DropDownViewModel(user.CityId ?? 0, cityList.ToSelectList()),
+                CityId = user.CityId ?? 0,
                 IsCreateCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.CreateCustomer) != null,
                 IsEditCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.EditCustomer) != null,
                 IsDeleteCustomer = user.Roles.SingleOrDefault(x => roleMap[x.RoleId].Name == RoleNames.DeleteCustomer) != null,

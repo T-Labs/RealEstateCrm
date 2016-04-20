@@ -13,8 +13,7 @@ namespace WebApp.ViewModels
         public string Name { get; set; }
 
         [Display(Name = "Город")]
-        [UIHint("dropdown")]
-
-        public DropDownViewModel City { get; set; }
+        [UIHint("city-selector")]
+        public int CityId { get; set; }
     }
 }

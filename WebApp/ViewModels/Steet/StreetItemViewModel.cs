@@ -17,18 +17,17 @@ namespace WebApp.ViewModels
         public string Name { get; set; }
 
         [Display(Name = "Город")]
-        [UIHint("dropdown")]
+        [UIHint("city-selector")]
+        public int CityId { get; set; }
 
-        public DropDownViewModel City { get; set; }
 
-
-        public static StreetItemViewModel Create(Street street, DropDownViewModel cityList)
+        public static StreetItemViewModel Create(Street street)
         {
             var item = new StreetItemViewModel
             {
                 Id = street.Id,
                 Name = street.Name,
-                City = cityList
+                CityId = street.CityId
             };
 
             return item;

@@ -7,7 +7,7 @@
 <form class="ui form segment" asp-action="Filter">
     <div class="two fields">
         @Html.EditorFor(x => Model.Filter.Name, "string-search")
-        @Html.EditorFor(x => Model.Filter.City)
+        @Html.EditorFor(x => Model.Filter.CityId)
 
     </div>
     <input type="submit" value="Применить фильтр" class="ui primary button"/>

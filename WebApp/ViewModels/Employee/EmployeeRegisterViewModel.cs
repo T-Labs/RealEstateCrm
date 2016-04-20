@@ -33,7 +33,7 @@ namespace WebApp.ViewModels
         {
         }
 
-        public EmployeeRegisterViewModel(int cityId, List<City> cityList) : base(cityId, cityList)
+        public EmployeeRegisterViewModel(int cityId) : base(cityId)
         {
         }
 

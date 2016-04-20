@@ -47,7 +47,7 @@ namespace WebApp.Controllers
             var dbItems = query.PagedResult(page, 20, x => x.Name, false, out totalRows, out totalPages);
 
             var cityList = _context.Cities.ToSelectList(true);
-            var items = dbItems.ToList().Select(x => StreetItemViewModel.Create(x, GetCityModel(x.CityId)));
+            var items = dbItems.ToList().Select(x => StreetItemViewModel.Create(x));
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;
@@ -59,7 +59,7 @@ namespace WebApp.Controllers
                 Filter = new StreetFilterModel
                 {
                     Name = name,
-                    City = GetCityModel(cityId)
+                    CityId = cityId
                 }
             };
             return View(model);
@@ -72,7 +72,7 @@ namespace WebApp.Controllers
             {
                 page = page,
                 name = filter.Name,
-                cityId = filter.City.Id
+                cityId = filter.CityId
             });
         }
         // GET: Streets/Details/5
@@ -98,7 +98,7 @@ namespace WebApp.Controllers
             var model = new StreetItemViewModel()
             {
                  Name = "",
-                 City = GetCityModel(0)
+                 CityId = 0
             };
             return View("Save", model);
         }
@@ -110,18 +110,18 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existingStreet = _context.Streets.FirstOrDefault(x => x.CityId == model.City.Id && x.Name.ToLower() == model.Name.ToLower());
+                var existingStreet = _context.Streets.FirstOrDefault(x => x.CityId == model.CityId && x.Name.ToLower() == model.Name.ToLower());
                 if (existingStreet != null)
                 {
                     ErrorMessage("Улица с таким именем уже существует!");
-                    model.City = GetCityModel(model.City.Id);
+                    model.CityId = model.CityId;
                     return View("Save", model);
                 }
 
                 var street = new Street
                 {
                     Name = model.Name,
-                    CityId = model.City.Id
+                    CityId = model.CityId
                 };
                 _context.Streets.Add(street);
                 _context.SaveChanges();
@@ -147,7 +147,7 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
             
-            var model = StreetItemViewModel.Create(street, GetCityModel(street.CityId));
+            var model = StreetItemViewModel.Create(street);
             return View("Save", model);
         }
 
@@ -160,7 +160,7 @@ namespace WebApp.Controllers
             {
                 Street street = _context.Streets.Include(x => x.City).Single(m => m.Id == model.Id);
                 street.Name = model.Name;
-                street.CityId = model.City.Id;
+                street.CityId = model.CityId;
                 _context.Update(street);
                 _context.SaveChanges();
 
@@ -205,19 +205,6 @@ namespace WebApp.Controllers
                 success = true,
                 results = query.Select(x => new SearchResultItem { title= x.Name, description = x.City.Name })
             });
-        }
-
-
-
-        private DropDownViewModel GetCityModel(int cityId)
-        {
-            var isEmployee = User.IsInRole(RoleNames.Employee);
-            var cityList = _context.Cities.ToSelectList(true);
-            var city = new DropDownViewModel(cityId, cityList)
-            {
-                Disabled = isEmployee
-            };
-            return city;
         }
     }
 }

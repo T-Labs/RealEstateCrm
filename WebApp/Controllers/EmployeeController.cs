@@ -42,7 +42,7 @@ namespace WebApp.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            var model = new EmployeeRegisterViewModel(0, _context.Cities.ToList());
+            var model = new EmployeeRegisterViewModel(0);
             return View(model);
         }
 
@@ -129,7 +129,7 @@ namespace WebApp.Controllers
             {
                 ApplicationUser user = _context.ApplicationUser.GetById(editId);
                 user.FIO = model.FIO;
-                user.CityId = model.City.Id;
+                user.CityId = model.CityId;
 
                 var selectedRoles = model.GetSelectedRoles();
                 foreach (var roleName in RoleNames.PermissionRoles)

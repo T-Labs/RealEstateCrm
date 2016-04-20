@@ -1,9 +1,4 @@
-﻿@using WebApp.ViewModels
-@model WebApp.ViewModels.DropDownViewModel
-@{
-    var items = Model.Items;
-    var disabled = Model.Disabled ? "disabled" : string.Empty;
-}
+﻿@model SelectList
 
 <div class="field">
     <label>
@@ -14,5 +9,5 @@
             }
         </label>
     </label>
-    @Html.DropDownListFor(x => x.Id, items , new {@class = "ui fluid dropdown " + disabled })
+    @Html.DropDownListFor(x => x, Model , new {@class = "ui fluid dropdown " + ViewData["disabled"] })
 </div>
