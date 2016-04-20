@@ -42,7 +42,7 @@ else
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.City)</td>
+                <td>@Html.DisplayFor(modelItem => item.CityId)</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Вы уверены что хотите удалить запись?');">Удалить</a>

@@ -66,9 +66,10 @@ namespace WebApp.WebApi
             if (cityId.HasValue)
             {
                 var city = repo.Cities.Include(x => x.Streets).Single(x => x.Id == cityId);
+                var items = city.Streets.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
                 return new JsonResult(new
                 {
-                    items = city.Streets.ToSelectList()
+                    items = items
                 });
             }
             return new JsonResult(new

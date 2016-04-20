@@ -1,0 +1,8 @@
+﻿@model int
+@inject ApplicationDbContext dbContext
+
+@{
+    var city = dbContext.Cities.FirstOrDefault(x => x.Id == Model);
+    var name = city?.Name ?? "";
+}
+@name

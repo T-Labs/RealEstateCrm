@@ -98,15 +98,12 @@ namespace WebApp.ViewModels
 
         public static HousingEditModel Create(ApplicationDbContext context, Housing housing,  ClaimsPrincipal user)
         {
-            var allCities = context.Cities.Include(x => x.Districts).Include(x => x.Streets).ToSelectList().ToList();
             var typesHousings = context.TypesHousing.ToList();
-            
-            return Create(housing, typesHousings, allCities, user);
+            return Create(housing, typesHousings, user);
         }
 
         public static HousingEditModel Create(Housing housing, 
             List<TypesHousing> typesHousings, 
-            List<SelectListItem> allCities,
             ClaimsPrincipal user)
         {
             var item = new HousingEditModel

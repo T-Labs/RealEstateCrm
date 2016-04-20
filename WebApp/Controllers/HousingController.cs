@@ -33,7 +33,6 @@ namespace WebApp.Controllers
             int? objectId = null, 
             bool? isArchive = null)
         {
-            var allCities = _context.Cities.Include(x => x.Districts).Include(x => x.Streets).ToSelectList().ToList();
             var typesHousings = _context.TypesHousing.ToList();
             
             if (User.IsInRole(RoleNames.Employee))
@@ -61,7 +60,7 @@ namespace WebApp.Controllers
             int totalPages;
             int totalItems;
             var queryResult = query.GetPage(page, out totalItems, out totalPages);
-            var items = queryResult.Select(x => HousingEditModel.Create(x, typesHousings, allCities, User)).ToList();
+            var items = queryResult.Select(x => HousingEditModel.Create(x, typesHousings, User)).ToList();
 
             ViewBag.TotalItems = _context.Housing.Count();
             ViewBag.FilteredItemsCount = totalItems;

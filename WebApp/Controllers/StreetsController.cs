@@ -45,8 +45,7 @@ namespace WebApp.Controllers
 
 
             var dbItems = query.PagedResult(page, 20, x => x.Name, false, out totalRows, out totalPages);
-
-            var cityList = _context.Cities.ToSelectList(true);
+            
             var items = dbItems.ToList().Select(x => StreetItemViewModel.Create(x));
 
             ViewBag.CurrentPage = page;

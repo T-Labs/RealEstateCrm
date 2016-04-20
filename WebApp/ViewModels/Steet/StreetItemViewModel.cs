@@ -19,8 +19,7 @@ namespace WebApp.ViewModels
         [Display(Name = "Город")]
         [UIHint("city-selector")]
         public int CityId { get; set; }
-
-
+        
         public static StreetItemViewModel Create(Street street)
         {
             var item = new StreetItemViewModel

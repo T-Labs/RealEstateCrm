@@ -10,7 +10,7 @@
     <div asp-validation-summary="ValidationSummary.All" class="ui negative message" hide-if="@ViewContext.ModelState.IsValid"></div>
 
     <input type="hidden" asp-for="Id"/>
-    @Html.EditorFor(x => x.City)
+    @Html.EditorFor(x => x.CityId)
     @Html.EditorFor(x => x.Name)
 
     <div class="ui buttons">
