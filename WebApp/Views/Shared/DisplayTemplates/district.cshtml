@@ -1,0 +1,8 @@
+﻿@model int
+@inject WebApp.Services.AddressService AddressService
+
+@{
+    var city = AddressService.CachedDistrictList().FirstOrDefault(x => x.Id == Model);
+    var name = city?.Name ?? "";
+}
+@name

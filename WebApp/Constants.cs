@@ -49,5 +49,6 @@ namespace WebApp
     public static class CacheKeys
     {
         public static readonly string City = typeof (City).FullName;
+        public static readonly string District = typeof(District).FullName;
     }
 }

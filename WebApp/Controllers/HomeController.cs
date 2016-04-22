@@ -25,7 +25,7 @@ namespace WebApp.Controllers
             }
         }
 
-        public IActionResult Index(int? page, string houseTypeId, int? cityId, int? priceFrom, int? priceTo)
+        public IActionResult Index(int? page, string houseTypeId, int? cityId, int? priceFrom, int? priceTo, int? districtId)
         {
             var houseTypeIdArray = string.IsNullOrEmpty(houseTypeId) ? new int[] {} : houseTypeId.Split(',').Select(x => Convert.ToInt32(x)).ToArray();
             var filterData = new HousingExtensions.FilterData
@@ -34,7 +34,8 @@ namespace WebApp.Controllers
                 Page = page,
                 PriceFrom = priceFrom,
                 PriceTo = priceTo,
-                HouseTypeId = houseTypeIdArray
+                HouseTypeId = houseTypeIdArray,
+                DistrictId = districtId
             };
 
             IQueryable<Housing> query = _context.Housing
@@ -57,6 +58,8 @@ namespace WebApp.Controllers
                     CityId = cityId ?? 0,
                     MinCost = priceFrom,
                     MaxCost = priceTo,
+                    DistrictId = districtId ?? 0,
+                    HousingTypeListIds = houseTypeIdArray.ToList(),
                     HousingTypeList = _context.TypesHousing.ToList().Select(x => new SelectListItem()
                     {
                         Value = x.Id.ToString(),
@@ -70,7 +73,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Filter(HomePageViewModel model, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo)
+        public IActionResult Filter(HomePageViewModel model, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo, int? districtId)
         {
             var housingTypeString = houseTypeId.Aggregate(string.Empty, (current, item) => current + $"{item},");
 
@@ -78,7 +81,11 @@ namespace WebApp.Controllers
                 new
                 {
                     page,
-                    houseTypeId = housingTypeString.TrimEnd(','), cityId, priceFrom, priceTo
+                    houseTypeId = housingTypeString.TrimEnd(','),
+                    cityId,
+                    priceFrom,
+                    priceTo,
+                    districtId
                 });
         }
 

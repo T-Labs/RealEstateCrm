@@ -38,7 +38,7 @@ namespace WebApp.ViewModels
                 District = building.District.Name,
                 DistrictId = building.DistrictId,
                 CityId = building.CityId,
-                Phone = isAuth ? building.Phones.FirstOrDefault()?.Number ?? string.Empty : string.Empty,
+                Phone = isAuth ? (building.Phones.FirstOrDefault()?.Number ?? string.Empty) : (string.Empty),
                 HouseTypeId = building.TypesHousing.Id,
                 HouseType = building.TypesHousing.Name,
                 Price = (int)building.Sum,

@@ -38,5 +38,19 @@ namespace WebApp.Services
 
             return list;
         }
+
+        public List<District> CachedDistrictList()
+        {
+            List<District> list;
+            if (!Cache.TryGetValue(CacheKeys.District, out list))
+            {
+                list = DbContext.Districts.OrderBy(x => x.Name).ToList();
+
+                Cache.Set(CacheKeys.District, list, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(2)));
+                _logger.LogInformation($"{CacheKeys.District} updated from source.");
+            }
+
+            return list;
+        }
     }
 }

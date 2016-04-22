@@ -16,8 +16,8 @@ namespace WebApp
             public int? CityId { get; set; }
             public int? PriceFrom { get; set; }
             public int? PriceTo { get; set; }
-
             public bool? IsArchived { get; set; }
+            public int? DistrictId { get; set; }
         }
 
         public static Housing GetFullById(this DbSet<Housing> housings, int id)
@@ -48,6 +48,11 @@ namespace WebApp
                 if (filter.CityId.HasValue)
                 {
                     result &= x.CityId == filter.CityId.Value;
+                }
+
+                if (filter.DistrictId.HasValue)
+                {
+                    result &= x.DistrictId == filter.DistrictId.Value;
                 }
 
                 if (filter.HouseTypeId.Length > 0)

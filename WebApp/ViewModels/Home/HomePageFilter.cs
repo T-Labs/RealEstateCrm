@@ -14,7 +14,8 @@ namespace WebApp.ViewModels.Home
         [Display(Name = "Вид жилья")]
         public List<SelectListItem> HousingTypeList { get; set; }
 
-       
+        public List<int> HousingTypeListIds { get; set; } = new List<int>();
+
         [Display(Name = "Город")]
         public int CityId { get; set; }
 
