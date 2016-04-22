@@ -52,8 +52,11 @@ namespace WebApp.Controllers
                 Items = items.Select(x => HousingViewModel.Create(x, isAuth)).ToList(),
                 CurrentPage = page ?? 1,
                 TotalPages = totalPages,
-                Filter = new HomePageFilter()
+                Filter = new HomePageFilter
                 {
+                    CityId = cityId ?? 0,
+                    MinCost = priceFrom,
+                    MaxCost = priceTo,
                     HousingTypeList = _context.TypesHousing.ToList().Select(x => new SelectListItem()
                     {
                         Value = x.Id.ToString(),

@@ -20,13 +20,13 @@ namespace WebApp.ViewModels.Home
 
         [UIHint("dropdown")]
         [Display(Name = "Район")]
-        public List<SelectListItem> District { get; set; }
+        public int DistrictId { get; set; }
 
         [Display(Name = "Цена от")]
-        public int MinCost { get; set; }
+        public int? MinCost { get; set; }
 
         [Display(Name = "Цена до")]
-        public int MaxCost { get; set; }
+        public int? MaxCost { get; set; }
 
     }
 }

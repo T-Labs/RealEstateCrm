@@ -16,7 +16,7 @@
     </label>
     @if (isEmployee)
     {
-        <select asp-for="@Model" asp-items="@(new SelectList(cityList, "Id", "Name", Model))" disabled='disabled' class="ui fluid dropdown"></select>
+        <select asp-for="@Model" asp-items="@(new SelectList(cityList, "Id", "Name", Model))" disabled='disabled' class="ui fluid dropdown disabled"></select>
     }
     else
     {

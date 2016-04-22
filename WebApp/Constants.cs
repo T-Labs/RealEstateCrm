@@ -1,4 +1,6 @@
-﻿namespace WebApp
+﻿using WebApp.Entities;
+
+namespace WebApp
 {
     public static class RoleNames
     {
@@ -42,5 +44,10 @@
         public const string DeleteCustomer = "DeleteCustomer";
 
         public const string ManageUser = "ManageUser";
+    }
+
+    public static class CacheKeys
+    {
+        public static readonly string City = typeof (City).FullName;
     }
 }

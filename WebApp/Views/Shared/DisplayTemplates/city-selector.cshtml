@@ -1,8 +1,8 @@
 ﻿@model int
-@inject ApplicationDbContext dbContext
+@inject WebApp.Services.AddressService AddressService
 
 @{
-    var city = dbContext.Cities.FirstOrDefault(x => x.Id == Model);
+    var city = AddressService.CachedCityList().FirstOrDefault(x => x.Id == Model);
     var name = city?.Name ?? "";
 }
 @name

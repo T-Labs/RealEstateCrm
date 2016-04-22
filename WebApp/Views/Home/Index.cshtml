@@ -18,9 +18,9 @@
                             <label>Город</label>
                             <city-list city-id="@Model.Filter.CityId" disabled="false" name="cityId" id="filter_cityId" class="filter_cityId"></city-list>
                         </div>
-                        <div class="field" id="filter_district_container" style="display: none">
+                        <div class="field" id="filter_district_container">
                             <label>Район</label>
-                            <district-list city-id="@Model.Filter.CityId" name="districtId" id="filter_district"></district-list>
+                            <district-list city-id="@Model.Filter.DistrictId" name="filter_DistrictId" id="filter_DistrictId"></district-list>
                         </div>
                         <div class="field">
                             <label>Тип жилья</label>
@@ -46,14 +46,14 @@
                                   .dropdown({
                                       onChange: function (value, text, $selectedItem) {
                                           // custom action
-                                          var filter_district_container = $('#filter_district_container');
+                                        /*  var filter_district_container = $('#filter_district_container');
                                           if (value && value.length > 0) {
                                               filter_district_container.show();
                                           } else {
                                               filter_district_container.val('');
                                               filter_district_container.hide();
-                                          }
-                                          Utils.loadDistrictSelectByCityId(value, '#filter_district');
+                                          }*/
+                                          Utils.loadDistrictSelectByCityId(value, '#filter_DistrictId');
                                       }
                                   });
                                 });

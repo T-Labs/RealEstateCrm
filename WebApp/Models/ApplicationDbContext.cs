@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
+using Microsoft.Extensions.Caching.Memory;
 using WebApp.Entities;
 using WebApp.Models;
 
@@ -13,6 +14,13 @@ namespace WebApp.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
+        private IMemoryCache _cache;
+        public ApplicationDbContext(IMemoryCache cache)
+        {
+            _cache = cache;
+        }
+
         public DbSet<Blacklist> BlackLists { get; set; }
         
 
@@ -93,7 +101,13 @@ namespace WebApp.Models
             {
                 item.Entity.LastEditedAt = DateTime.UtcNow;
             }
-            
+
+
+            if (ChangeTracker.Entries<City>().Any())
+            {
+                _cache.Remove(CacheKeys.City);
+            }
+
             return base.SaveChanges();
         }
     }

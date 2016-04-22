@@ -70,7 +70,7 @@ namespace WebApp
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-
+            services.AddScoped<AddressService>();
             
             services.AddSession(options =>
             {
@@ -110,7 +110,6 @@ namespace WebApp
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
-
             app.UseStaticFiles();
 
             app.UseIdentity();
