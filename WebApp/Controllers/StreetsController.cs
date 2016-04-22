@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
@@ -20,7 +21,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Streets
-        public IActionResult Index(int page = 1, string name = "", int cityId = 0)
+        public IActionResult Index(int page = 1, string name = "", int cityId = 0, char? letter = null)
         {
             int totalRows;
             int totalPages;
@@ -43,6 +44,11 @@ namespace WebApp.Controllers
                 query = query.Where(x => x.Name.Contains(name));
             }
 
+            if (letter.HasValue)
+            {
+                query = query.Where(x => x.Name.Length > 1 && Char.ToUpper(x.Name[0]) == Char.ToUpper(letter.Value));
+            }
+
 
             var dbItems = query.PagedResult(page, 20, x => x.Name, false, out totalRows, out totalPages);
             
@@ -50,6 +56,7 @@ namespace WebApp.Controllers
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;
+            ViewBag.Letter = letter;
 
 
             var model = new SteetMainModel

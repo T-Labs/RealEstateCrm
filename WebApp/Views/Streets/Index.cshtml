@@ -10,8 +10,14 @@
         @Html.EditorFor(x => Model.Filter.CityId)
 
     </div>
+    <div class="fields">
+        <div class="field">
+            <label>Первая буква в адресе</label>
+            <alphabet-pager letter="@ViewBag.Letter" link-url="@Context.Request.Path" query-params="@Context.Request.Query" class="mini"></alphabet-pager>
+        </div>
+    </div>
     <input type="submit" value="Применить фильтр" class="ui primary button"/>
-    <a asp-action="Index" asp-route-id="1" class="ui button">Сброс</a>
+    <a asp-action="Index" class="ui button">Сброс</a>
 </form>
 
 
@@ -28,6 +34,7 @@ else
 {
 
     <pager total-pages="@ViewBag.TotalPages" current-page='@ViewBag.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
+   
     <table class="ui single line table">
         <thead>
         <tr>
@@ -53,7 +60,6 @@ else
     </table>
 }
 <pager total-pages="@ViewBag.TotalPages" current-page='@ViewBag.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
-
 @section scripts {
     <script type="text/javascript">
         $(function() {
