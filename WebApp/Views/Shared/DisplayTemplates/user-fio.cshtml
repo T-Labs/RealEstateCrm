@@ -1,0 +1,19 @@
+﻿@using System.Threading.Tasks
+@using Microsoft.Extensions.Caching.Memory
+@model string
+@inject ApplicationDbContext DbContext
+@inject IMemoryCache Cache
+
+@{
+    List<ApplicationUser> users;
+    if (!Cache.TryGetValue(WebApp.CacheKeys.User, out users))
+    {
+        users = DbContext.ApplicationUser.ToList();
+        Cache.Set(CacheKeys.City, users, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30)));
+    }
+
+    var user = users.FirstOrDefault(x => x.Id == Model);
+    var name = user?.FIO ?? "";
+}
+
+@name

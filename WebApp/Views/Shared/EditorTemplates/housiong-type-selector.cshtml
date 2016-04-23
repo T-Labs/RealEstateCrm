@@ -13,7 +13,7 @@
             }
         </label>
     </label>
-    <select asp-for="@Model" asp-items="@(new SelectList(cityList, "Id", "Name", Model))" disabled='@ViewData["disabled"]' class="ui fluid dropdown">
+    <select asp-for="@Model" asp-items="@(new SelectList(cityList, "Id", "Name", Model))" disabled='@ViewData["disabled"]' class="ui fluid dropdown ">
         <option value="">Тип жилья</option>
     </select>
 </div>

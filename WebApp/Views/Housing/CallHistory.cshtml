@@ -15,7 +15,7 @@
         <tr>
             <td>@call.Date.ToString()</td>
             <td>@call.Status</td>
-            <td>@call.EmployeeName</td>
+            <td>@Html.DisplayFor(x => call.EmployeeId, "user-fio")</td>
         </tr>
     }
     </tbody>

@@ -127,8 +127,8 @@ namespace WebApp.ViewModels
                 HouseTypeId = housing.TypesHousingId,
                 CityId = housing.CityId,
                 DistrictId = housing.DistrictId,
-                StreetId = housing.StreetId
-                //Calls = housing.Calls.Select(HousingCallViewModel.Create).ToList()
+                StreetId = housing.StreetId,
+                Calls = housing.Calls.Select(HousingCallViewModel.Create).ToList()
             };
             
             var addressParts = new List<string>();

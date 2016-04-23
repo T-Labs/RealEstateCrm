@@ -10,8 +10,9 @@
     </h2>
 
     <div class="ui grid">
-        <div class="row">
-            <div class="four wide column">
+
+        <div class="four wide column">
+            <div class="ui sticky"  id="sticky" style="width: 400px; left: 0px;top:50px">
                 <form class="ui form segment" asp-action="Filter">
                     <div class="ui center aligned">
                         <div class="field">
@@ -24,7 +25,7 @@
                         </div>
                         <div class="field">
                             <label>Тип жилья</label>
-                            <select asp-for="@Model.Filter.HousingTypeListIds" asp-items="@Model.Filter.HousingTypeList" name="houseTypeId" 
+                            <select asp-for="@Model.Filter.HousingTypeListIds" asp-items="@Model.Filter.HousingTypeList" name="houseTypeId"
                                     class="ui fluid dropdown selection multiple" multiple="multiple">
                             </select>
                         </div>
@@ -34,81 +35,81 @@
                         </div>
                         <div class="field">
                             <label>Цена, до</label>
-                            <input type="text" name="priceTo" value="@Model.Filter.MaxCost"  onkeypress="Utils.inputNumbersOnly(this, event);"/>
+                            <input type="text" name="priceTo" value="@Model.Filter.MaxCost" onkeypress="Utils.inputNumbersOnly(this, event);"/>
                         </div>
                         <input type="submit" value="Поиск" class="ui primary button fluid"/>
-                        <a  class="ui button fluid" asp-controller="Home" asp-action="Index">Сбросить</a>
-                        </div>
+                        <a class="ui button fluid" asp-controller="Home" asp-action="Index">Сбросить</a>
+                    </div>
 
 
-                  
-                        <script type="text/javascript">
-                            $(function () {
-                                $('.filter_cityId')
-                                  .dropdown({
-                                      onChange: function (value, text, $selectedItem) {
-                                          // custom action
-                                        /*  var filter_district_container = $('#filter_district_container');
-                                          if (value && value.length > 0) {
-                                              filter_district_container.show();
-                                          } else {
-                                              filter_district_container.val('');
-                                              filter_district_container.hide();
-                                          }*/
-                                          Utils.loadDistrictSelectByCityId(value, '#filter_DistrictId');
-                                      }
-                                  });
+
+                    <script type="text/javascript">
+                        $(function() {
+                            $('.filter_cityId')
+                                .dropdown({
+                                    onChange: function(value, text, $selectedItem) {
+
+                                        Utils.loadDistrictSelectByCityId(value, '#filter_DistrictId');
+                                    }
                                 });
-                        </script>
+                        });
+                    </script>
 
                 </form>
-            </div>
-            <div class="twelve wide column">
-                <div class="ui container">
+                </div>
+        </div>
+        <div class="twelve wide column">
+            <div class="ui container">
 
-                    @foreach (var item in Model.Items)
-                    {
-                        <div class="ui three column stackable grid segment">
-                            <div class="four wide column">
-                                <div class="ui">
-                                    <h3><i class="home icon"></i>@item.HouseType</h3>
-                                </div>
-                            </div>
-                            <div class="four wide column">
-                                <div class="ui ">
-                                    <h3><i class="ruble icon"></i>@item.Price</h3>
-                                </div>
-                            </div>
-                            <div class="eight wide column">
-                                <div class="ui right aligned">
-                                    <i class="marker icon"></i> @($"{item.CityName} {item.District} {item.Street}") (<district district-id="@item.DistrictId"></district>)
-                                </div>
-                            </div>
-                            <div class="ten wide column">
-                                <div class="ui"><i class="write icon"></i> <span>@item.Description</span></div>
-                            </div>
-                            <div class="six wide column">
-                                <div class="ui">
-                                    <i class="phone icon"></i>
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        <span>@item.Phone</span>
-                                    }
-                                    else
-                                    {
-                                        <span>Номер телефона виден только зарегистрированному пользователю</span>
-                                    }
-
-                                </div>
+                @foreach (var item in Model.Items)
+                {
+                    <div class="ui three column stackable grid segment">
+                        <div class="four wide column">
+                            <div class="ui">
+                                <h3><i class="home icon"></i>@item.HouseType</h3>
                             </div>
                         </div>
-                    }
-                    <pager total-pages="@Model.TotalPages" current-page='@Model.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
+                        <div class="four wide column">
+                            <div class="ui ">
+                                <h3><i class="ruble icon"></i>@item.Price</h3>
+                            </div>
+                        </div>
+                        <div class="eight wide column">
+                            <div class="ui right aligned">
+                                <i class="marker icon"></i> @($"{item.CityName} {item.District} {item.Street}") (<district district-id="@item.DistrictId"></district>)
+                            </div>
+                        </div>
+                        <div class="ten wide column">
+                            <div class="ui"><i class="write icon"></i> <span>@item.Description</span></div>
+                        </div>
+                        <div class="six wide column">
+                            <div class="ui">
+                                <i class="phone icon"></i>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <span>@item.Phone</span>
+                                }
+                                else
+                                {
+                                    <span>Номер телефона виден только зарегистрированному пользователю</span>
+                                }
 
-                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <pager total-pages="@Model.TotalPages" current-page='@Model.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
+
             </div>
         </div>
     </div>
-
-
 </div>
+
+
+@section scripts{
+    <script type="text/javascript">
+    $(function(){
+        $('#sticky').sticky();
+    });    
+    </script>
+}

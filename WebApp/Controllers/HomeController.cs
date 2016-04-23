@@ -73,7 +73,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Filter(HomePageViewModel model, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo, int? districtId)
+        public IActionResult Filter(HomePageFilter model, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo, int? districtId)
         {
             var housingTypeString = houseTypeId.Aggregate(string.Empty, (current, item) => current + $"{item},");
 
@@ -85,7 +85,7 @@ namespace WebApp.Controllers
                     cityId,
                     priceFrom,
                     priceTo,
-                    districtId
+                    districtId = districtId.HasValue && districtId.Value > 0 ? districtId : null
                 });
         }
 

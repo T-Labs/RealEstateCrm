@@ -10,7 +10,7 @@ namespace WebApp.ViewModels
     {
         public int Id { get; set; }
 
-        public string EmployeeName { get; set; }
+        public string EmployeeId { get; set; }
         public string Status { get; set; }
         public DateTime Date { get; set; }
 
@@ -19,7 +19,7 @@ namespace WebApp.ViewModels
             var item = new HousingCallViewModel
             {
                 Id = call.Id,
-                EmployeeName = call.User.FIO,
+                EmployeeId = call.ApplicationUserId,
                 Status = call.StatusType.ToLocalizedString(),
                 Date = call.Date
             };

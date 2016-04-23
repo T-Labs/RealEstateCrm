@@ -108,6 +108,11 @@ namespace WebApp.Models
                 _cache.Remove(CacheKeys.City);
             }
 
+            if (ChangeTracker.Entries<ApplicationUser>().Any())
+            {
+                _cache.Remove(CacheKeys.User);
+            }
+
             return base.SaveChanges();
         }
     }

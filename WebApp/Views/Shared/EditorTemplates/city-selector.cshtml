@@ -20,7 +20,7 @@
     }
     else
     {
-        <select asp-for="@Model" asp-items="@(new SelectList(cityList, "Id", "Name", Model))" class="ui fluid dropdown">
+        <select asp-for="@Model" asp-items="@(new SelectList(cityList, "Id", "Name", Model))" class="ui fluid dropdown @ViewData["class"]">
             <option value="">Все города</option>
         </select>
     }

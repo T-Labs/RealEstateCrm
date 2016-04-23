@@ -32,7 +32,7 @@ namespace WebApp.Services
             {
                 list = DbContext.Cities.OrderBy(x => x.Name).ToList();
 
-                Cache.Set(CacheKeys.City, list, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(2)));
+                Cache.Set(CacheKeys.City, list, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
                 _logger.LogInformation($"{CacheKeys.City} updated from source.");
             }
 
@@ -46,7 +46,7 @@ namespace WebApp.Services
             {
                 list = DbContext.Districts.OrderBy(x => x.Name).ToList();
 
-                Cache.Set(CacheKeys.District, list, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(2)));
+                Cache.Set(CacheKeys.District, list, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
                 _logger.LogInformation($"{CacheKeys.District} updated from source.");
             }
 

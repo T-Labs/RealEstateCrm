@@ -14,6 +14,9 @@ var Utils = (function () {
                 district.dropdown('clear');
                 var options = district.get(0).options;
                 options.length = 0;
+                var all = new Option('Все районы', '-1');
+                all.selected = true;
+                options.add(all);
                 $.each(msg, function (index, item) {
                     options.add(new Option(item.Text, item.Value));
                 });

@@ -24,7 +24,7 @@
 <form class="ui form segment" asp-action="Filter">
     <div class="three fields">
         @Html.EditorFor(x => x.Filters.HousingTypeId)
-        @Html.EditorFor(x => x.Filters.CityId)
+        @Html.EditorFor(x => x.Filters.CityId, new { @class="ui-ignore"})
         <div class="field">
             @Html.LabelFor(x => x.Filters.DistrictId)
             <district-list city-id="@Model.Filters.CityId" district-id="@Model.Filters.DistrictId" id="@Html.IdFor(x => x.Filters.DistrictId)" name="@Html.IdFor(x => x.Filters.DistrictId)"></district-list>
@@ -40,6 +40,16 @@
     @Html.EditorFor(x => x.Filters.IsArchived, "checkbox")
     <input type="submit" value="Применить фильтр" class="ui primary button"/>
     <a asp-action="ResetFilter" class="ui button">Сброс</a>
+
+    <script type="text/javascript">
+        $(function() {
+            $('#Filters_CityId').dropdown({
+                onChange: function(value, text, $selectedItem) {
+                    Utils.loadDistrictSelectByCityId(value, '#Filters_DistrictId');
+                }
+            });
+        });
+    </script>
 </form>
 
 <h4 class="ui horizontal divider header">
@@ -86,7 +96,9 @@
             </div>
             <div class="two wide column right aligned">
                 <div class="row column two">
-                    <a onclick='@($"showModal('#item{item.EditId}', '{item.EditId}', this);return false;")' class="ui button tiny">Подробности</a>
+                    <div>
+                        <a onclick='@($"showModal('#item{item.EditId}', '{item.EditId}', this);return false;")' class="ui button fluid tiny">Подробности</a>
+                    </div>
                     <div class="ui icon buttons">
 
                         <a show-if="@userHasEdit" asp-action="Edit" asp-route-id="@item.EditId" class="ui circular icon button basic  blue  show-popup" data-title="Редактирование"><i class="edit icon"></i></a>
@@ -100,20 +112,21 @@
                             <a show-if="@userHasEdit" asp-action="ToArchive" asp-route-id="@item.EditId" class="ui button teal tiny basic  show-popup" data-title="В архив"><i class="archive icon"></i></a>
                         }
                         <a asp-action="Delete" show-if="@userHasDelete" asp-route-id="@item.EditId" class="ui button red tiny basic  show-popup" onclick="return confirm('Вы уверены что хотите удалить запись?');" data-title="Удалить"><i class="trash icon"></i></a>
-                    
-                    
-                    <div class="ui teal floating dropdown button tiny show-popup" id="callDropDown" data-title="Прозвон">
-                      <div class="text"><i class="phone icon"></i></div>
-                      <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'Verified')");'><i class="checkmark icon"></i> Проверено</a>
-                            <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'DontAnswer')");'><i class="frown icon"></i> Не отвечает</a>
-                            <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'NotAvailable')");'><i class="warning circle icon"></i> Недоступен</a>
-                            <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'CorrectedWithoutCall')");'><i class="write icon"></i> Корректировка без прозвона</a>
-                        </div>
+
+
+                        <div class="ui teal floating dropdown button tiny show-popup" id="callDropDown" data-title="Прозвон">
+                            <div class="text"><i class="phone icon"></i>
+                            </div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'Verified')");'><i class="checkmark icon"></i> Проверено</a>
+                                <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'DontAnswer')");'><i class="frown icon"></i> Не отвечает</a>
+                                <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'NotAvailable')");'><i class="warning circle icon"></i> Недоступен</a>
+                                <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'CorrectedWithoutCall')");'><i class="write icon"></i> Корректировка без прозвона</a>
+                            </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -144,40 +157,42 @@
             function showModal(id, itemId, element) {
                 // $('#loading').modal('show');
                 $(element).addClass('loading');
-                  $.ajax({
-                        type: "POST",
-                        url: '/Housing/DetailsDialog',
-                        data: {
-                            id: itemId
-                        },
+                $.ajax({
+                    type: "POST",
+                    url: '/Housing/DetailsDialog',
+                    data: {
+                        id: itemId
+                    },
 
-                        success: (response) => {
-                             $(element).removeClass('loading');
-                            $('#modalContainer').html(response);
-                                var dialog = $(id);
-                                dialog.modal({
-                                    closable: false
-                                }).modal('show');
+                    success: (response) => {
+                        $(element).removeClass('loading');
+                        $('#modalContainer').html(response);
+                        var dialog = $(id);
+                        dialog.modal({
+                            closable: false
+                        }).modal('show');
 
-                        },
-                        error: (response) => {
-                            alert('error');
-                             $(element).removeClass('loading');
-                        }
-                    });
-             
+                    },
+                    error: (response) => {
+                        alert('error');
+                        $(element).removeClass('loading');
+                    }
+                });
+
             }
 
             $(function() {
+
+             
                 $('.housing-items .ui.accordion').accordion();
-                
+
 
                 $('#callDropDown')
-                      .dropdown({
+                    .dropdown({
                         action: 'hide'
-                      });
+                    });
 
-                  $('.show-popup').popup({ position: 'top center' });
+                $('.show-popup').popup({ position: 'top center' });
             });
         </script>
     }

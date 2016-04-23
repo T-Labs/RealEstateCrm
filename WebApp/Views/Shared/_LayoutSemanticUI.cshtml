@@ -6,6 +6,7 @@
         <title>@ViewData["Title"] - WebApp</title>
 
         <environment names="Development">
+            <link rel="stylesheet" href="~/css/site.css"/>
             <link rel="stylesheet" href="~/lib/semantic-ui/dist/semantic.css"/>
             <link rel="stylesheet" type="text/css" href="~/lib/semantic-ui/dist/components/reset.css">
             <link rel="stylesheet" type="text/css" href="~/lib/semantic-ui/dist/components/site.css">
@@ -26,21 +27,27 @@
 
 
             <link href="~/lib/pnotify/dist/pnotify.css" media="all" rel="stylesheet" type="text/css"/>
-             <link href="~/lib/pnotify/dist/pnotify.brighttheme.css" media="all" rel="stylesheet" type="text/css" />
+            <link href="~/lib/pnotify/dist/pnotify.brighttheme.css" media="all" rel="stylesheet" type="text/css"/>
             <style>
                 .main.container {
                     margin-top: 4em;
                 }
             </style>
-                <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
-                        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                        asp-fallback-test="window.jQuery">
-                </script>
-                <script src="~/lib/jquery-ui/jquery-ui.js"></script>
-                <script src="~/lib/notifyjs/dist/notify.js"></script>
-                <script src="~/lib/pnotify/dist/pnotify.js"></script>
-                <script src="~/lib/semantic-ui/dist/semantic.js"></script>
-                <script src="~/Scripts/Utils.js"></script>
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery">
+
+            
+            </script>
+
+            <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+            <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+            <script src="~/lib/notifyjs/dist/notify.js"></script>
+            <script src="~/lib/pnotify/dist/pnotify.js"></script>
+            <script src="~/lib/semantic-ui/dist/semantic.js"></script>
+            <script src="~/Scripts/Utils.js"></script>
         </environment>
     </head>
     <body>
@@ -49,7 +56,6 @@
             <a asp-controller="Home" asp-action="Index" class="header item">
                 RealEstate CRM
             </a>
-            <a asp-controller="Home" asp-action="Index" class="item">Домашняя</a>
             <a class="item" asp-controller="Employee" asp-action="Index">Сотрудники</a>
             <a class="item" asp-controller="Housing" asp-action="Index">Объекты</a>
             <a class="item" asp-controller="BlackList" asp-action="Index">Черный список</a>
@@ -59,17 +65,8 @@
                 <div class="menu right">
                     <a class="item" asp-controller="Employee" asp-action="Index">Сотрудники</a>
                     <a class="item" asp-controller="Housing" asp-action="Index">Объекты</a>
-                    <div class="divider"></div>
-                    <div class="header">Header Item</div>
-                    <div class="item">
-                        <i class="dropdown icon"></i>
-                        Sub Menu
-                        <div class="menu">
-                            <a class="item" href="#">Link Item</a>
-                            <a class="item" href="#">Link Item</a>
-                        </div>
-                    </div>
-                    <a class="item" href="#">Link Item</a>
+                    <a class="item" asp-controller="BlackList" asp-action="Index">Черный список</a>
+                    <a class="item" asp-controller="Streets" asp-action="Index">Список улиц</a>
                 </div>
             </div>
             <div class="menu right">
@@ -139,14 +136,21 @@
             <environment names="Development">
 
                 <script>
-                    $('.ui.dropdown').dropdown();
-                    $('.ui.checkbox').checkbox();
+                    $('.ui.dropdown').not('.ui-ignore').dropdown();
+                    $('.ui.checkbox').not('.ui-ignore').checkbox();
 
                     $(document).ready(function () {
                         $(".selectDateInput").datepicker({
                             "dateFormat": "dd.mm.yy",
                             changeMonth: true
                         });
+
+                      /*  $("form").submit(function(event) {
+                            //$('.input-validation-error').parents('div.field').eq(0).addClass('ui input error');
+                            //$('.field-validation-error').addClass('ui label pointing red');
+
+                            //$('.field-validation-valid').removeClass('ui label  pointing red');
+                        });*/
                     });
                 </script>
             </environment>
