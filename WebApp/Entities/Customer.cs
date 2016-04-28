@@ -13,6 +13,13 @@ namespace WebApp.Entities
         Female
     }
 
+    public enum CustomerStatus
+    {
+        Invalid = 0,
+        Advertising,
+        Contract
+    }
+
     public class Customer 
     {
         public int Id { get; set; }
@@ -29,7 +36,7 @@ namespace WebApp.Entities
 
         public string Resource { get; set; }
 
-        public int Status { get; set; }
+        public CustomerStatus Status { get; set; }
 
         public int MinSum { get; set; }
 
@@ -47,7 +54,7 @@ namespace WebApp.Entities
 
         public DateTime DateContract { get; set; }
 
-        public bool IsSite { get; set; }
+        public bool IsSiteAccess { get; set; }
 
         public int CityId { get; set; }
 

@@ -16,7 +16,7 @@ namespace WebApp.Controllers
     public class HomeController : BaseController
     {
         public HomeController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager) 
-            : base(dbContext, null)
+            : base(dbContext)
         {
             if (!InitTestData.DatabaseInit)
             {

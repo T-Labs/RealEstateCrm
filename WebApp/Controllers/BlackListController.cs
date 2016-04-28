@@ -13,7 +13,7 @@ namespace WebApp.Controllers
     [Authorize(AuthPolicy.Employees)]
     public class BlackListController : BaseController
     {
-        public BlackListController(ApplicationDbContext context) : base(context, null)
+        public BlackListController(ApplicationDbContext context) : base(context)
         {
         }
 

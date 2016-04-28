@@ -15,7 +15,7 @@ namespace WebApp.Controllers
     [Authorize(AuthPolicy.Employees)]
     public class StreetsController : BaseController
     {
-        public StreetsController(ApplicationDbContext context) : base(context, null)
+        public StreetsController(ApplicationDbContext context) : base(context)
         {
              
         }

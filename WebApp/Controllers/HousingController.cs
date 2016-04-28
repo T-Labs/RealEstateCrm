@@ -14,7 +14,7 @@ namespace WebApp.Controllers
     public class HousingController : BaseController
     {
         private IAuthorizationService AuthService { get; set; }
-        public HousingController(ApplicationDbContext context, IAuthorizationService auth) : base(context, null)
+        public HousingController(ApplicationDbContext context, IAuthorizationService auth) : base(context)
         {
             AuthService = auth;
         }

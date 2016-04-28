@@ -1,0 +1,124 @@
+@model IEnumerable<WebApp.Entities.Customer>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ContractSum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateClosed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateContract)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateIn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateMeeting)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsSiteAccess)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaxSum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MidleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MinSum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReheshSum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Resource)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+    
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContractSum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateClosed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateContract)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateIn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateMeeting)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsSiteAccess)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaxSum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MidleName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MinSum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReheshSum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Resource)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+        </td>
+    </tr>
+}
+</table>
+</body>
+</html>

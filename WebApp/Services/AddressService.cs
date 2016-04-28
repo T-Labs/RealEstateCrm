@@ -39,12 +39,17 @@ namespace WebApp.Services
             return list;
         }
 
-        public List<District> CachedDistrictList()
+        public List<District> CachedDistrictList(int? cityId=null)
         {
             List<District> list;
             if (!Cache.TryGetValue(CacheKeys.District, out list))
             {
-                list = DbContext.Districts.OrderBy(x => x.Name).ToList();
+                IQueryable<District> query = DbContext.Districts;
+                if (cityId.HasValue)
+                {
+                    query = query.Where(x => x.CityId == cityId.Value);
+                }
+                list = query.OrderBy(x => x.Name).ToList();
 
                 Cache.Set(CacheKeys.District, list, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
                 _logger.LogInformation($"{CacheKeys.District} updated from source.");

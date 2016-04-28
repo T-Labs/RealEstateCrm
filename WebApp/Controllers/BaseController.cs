@@ -23,7 +23,7 @@ namespace WebApp.Controllers
 
         //       protected IdentityRole CurrentRole { get; private set; }
 
-        protected BaseController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        protected BaseController(ApplicationDbContext context)
         {
             _context = context;
         }

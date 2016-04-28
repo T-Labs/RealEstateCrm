@@ -1,0 +1,82 @@
+﻿@model WebApp.ViewModels.CustomerEditModel
+@inject WebApp.Services.AddressService AddressService
+@{
+    var multyDistrictList = new MultiSelectList(AddressService.CachedDistrictList(1), "Id", "Name", Model.HousingTypeListIds);
+
+}
+
+<form asp-action="Edit" class="ui form">
+    <div class="form-horizontal">
+        <h4>Клиент</h4>
+        <hr />
+        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="EditId" />
+        <div class="fields">
+            @Html.EditorFor(x => x.FirstName)
+            @Html.EditorFor(x => x.MidleName)
+            @Html.EditorFor(x => x.LastName)
+        </div>
+
+        <div class="fields">
+            @Html.EditorFor(x => x.CityId)
+            <div class="field" id="filter_district_container">
+                <label>Район</label>
+                <select asp-for="@Model.HousingTypeListIds" asp-items="@multyDistrictList"
+                        class="ui fluid dropdown selection multiple" multiple="multiple"></select>
+
+            </div>
+        </div>
+        <div class="field">
+            <label>Тип жилья</label>
+      
+        </div>
+
+        <div class="field">
+            <label asp-for="ContractSum"></label>
+            <div>
+                <input asp-for="ContractSum" type="number" onclick="Utils.inputNumbersOnly(this, event);" />
+                <span asp-validation-for="ContractSum" class="text-danger" />
+            </div>
+        </div>
+
+       
+        <div class="form-group">
+            <label asp-for="MaxSum" ></label>
+            <div class="col-md-10">
+                <input asp-for="MaxSum" type="number" onclick="Utils.inputNumbersOnly(this, event);"/>
+                <span asp-validation-for="MaxSum" class="text-danger" />
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="MinSum" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MinSum"  type="number"  onclick="Utils.inputNumbersOnly(this, event);"/>
+                <span asp-validation-for="MinSum" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ReheshSum"></label>
+            <div class="col-md-10">
+                <input asp-for="ReheshSum" type="number" onclick="Utils.inputNumbersOnly(this, event);"/>
+                <span asp-validation-for="ReheshSum" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
