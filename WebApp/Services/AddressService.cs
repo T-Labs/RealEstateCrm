@@ -57,5 +57,22 @@ namespace WebApp.Services
 
             return list;
         }
+
+
+        public List<TypesHousing> CachedHousingTypeList(int? cityId = null)
+        {
+            List<TypesHousing> list;
+            if (!Cache.TryGetValue(CacheKeys.HousingType, out list))
+            {
+                IQueryable<TypesHousing> query = DbContext.TypesHousing;
+                
+                list = query.OrderBy(x => x.Name).ToList();
+
+                Cache.Set(CacheKeys.HousingType, list, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+                _logger.LogInformation($"{CacheKeys.HousingType} updated from source.");
+            }
+
+            return list;
+        }
     }
 }

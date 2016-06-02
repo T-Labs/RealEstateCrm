@@ -52,5 +52,6 @@ namespace WebApp
         public static readonly string City = typeof (City).FullName;
         public static readonly string District = typeof(District).FullName;
         public static readonly string User = typeof(ApplicationUser).FullName;
+        public static readonly string HousingType = typeof(TypesHousing).FullName;
     }
 }

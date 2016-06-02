@@ -33,7 +33,7 @@ namespace WebApp.ViewModels
         public List<int> DistrictList { get; set; }
         
         [Required]
-        [Display(Name = "Вид жилья")]
+        [Display(Name = "Типы жилья")]
         public List<int> HousingTypeListIds { get; set; } = new List<int>();
 
         [Display(Name = "Статус")]
@@ -55,5 +55,29 @@ namespace WebApp.ViewModels
         
         [Display(Name = "Решех")]
         public int ReheshSum { get; set; }
+
+        [Display(Name="Пол")]
+        public int Gender { get; set; }
+
+        [UIHint("checkbox")]
+        [Display(Name="Доступ на сайт")]
+        public bool IsSiteAccess { get; set; }
+
+        [UIHint("phone")]
+        [Required]
+        [Display(Name = "Телефон 1 для связи")]
+        public string Phone1 { get; set; }
+
+        [UIHint("phone")]
+        [Display(Name = "Телефон 2 для связи")]
+        public string Phone2 { get; set; }
+
+        [UIHint("phone")]
+        [Display(Name = "Телефон 3 для связи")]
+        public string Phone3 { get; set; }
+
+        [UIHint("checkbox")]
+        [Display(Name = "В архиве")]
+        public bool IsArchive { get; set; }
     }
 }
