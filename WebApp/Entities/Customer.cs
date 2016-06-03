@@ -32,7 +32,9 @@ namespace WebApp.Entities
 
         public Gender? Gender { get; set; }
 
-        public List<CustomerPhone> Phones { get; set; }
+        public List<CustomerPhone> Phones { get; set; } = new List<CustomerPhone>();
+
+        public List<TypesHousingToCustomer> TypesHousingToCustomers { get; set; } = new List<TypesHousingToCustomer>();
 
         public string Resource { get; set; }
 
@@ -60,11 +62,9 @@ namespace WebApp.Entities
 
         public virtual City Cities { get; set; }
 
-        public int SmsId { get; set; }
+        public virtual List<Sms> Smses { get; set; }
 
-        public virtual Sms Smses { get; set; }
-
-        public List<DistrictToСlient> DistrictToСlients { get; set; }
+        public List<DistrictToСlient> DistrictToClients { get; set; } = new List<DistrictToСlient>();
 
         public string ApplicationUserId { get; set; }
 
@@ -75,5 +75,7 @@ namespace WebApp.Entities
 
         [ForeignKey("CustomerUserId")]
         public ApplicationUser CustomerAccount { get; set; }
+
+        public bool IsArchive { get; set; }
     }
 }

@@ -54,7 +54,7 @@ namespace WebApp.Models
 
             builder.Entity<DistrictToСlient>()
                 .HasOne(pt => pt.Clients)
-                .WithMany(p => p.DistrictToСlients)
+                .WithMany(p => p.DistrictToClients)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasForeignKey(p => p.ClientId);
 
@@ -86,6 +86,21 @@ namespace WebApp.Models
 
             builder.Entity<HousingCall>();
             builder.Entity<CustomerCall>();
+
+            builder.Entity<TypesHousingToCustomer>()
+                .HasKey(t => new { t.ClientId, t.TypesHousingId });
+
+            builder.Entity<TypesHousingToCustomer>()
+                .HasOne(pt => pt.Clients)
+                .WithMany(p => p.TypesHousingToCustomers)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasForeignKey(p => p.ClientId);
+
+            builder.Entity<TypesHousingToCustomer>()
+                .HasOne(pt => pt.TypesHousing)
+                .WithMany(p => p.TypesHousingToCustomers)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasForeignKey(p => p.TypesHousingId);
         }
 
         public override int SaveChanges()

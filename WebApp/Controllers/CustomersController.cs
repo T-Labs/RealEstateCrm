@@ -47,22 +47,27 @@ namespace WebApp.Controllers
             return View("Save", model);
         }
 
-        // POST: Customer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Customer customer)
+        public IActionResult Create(CustomerEditModel model)
         {
             if (ModelState.IsValid)
             {
+                var customer = new Customer();
+                model.UpdateEntity(customer);
                 _context.Clients.Add(customer);
                 _context.SaveChanges();
+
+                model.UpdateDistricts(customer);
+                model.UpdateHousingTypes(customer);
+                _context.SaveChanges();
+
                 return RedirectToAction("Index");
             }
            
-            return View(customer);
+            return View("Save",model);
         }
 
-        // GET: Customer/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -70,32 +75,42 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
 
-            Customer customer = _context.Clients.Single(m => m.Id == id);
+            Customer customer = _context.Clients
+                .Include(x => x.DistrictToClients)
+                .Include(x => x.TypesHousingToCustomers)
+                .Include(x => x.Phones)
+                .Single(m => m.Id == id);
+
             if (customer == null)
             {
                 return HttpNotFound();
             }
-            
-            var model = new CustomerEditModel();
+
+            var model = CustomerEditModel.Create(customer);
             return View("Save", model);
         }
 
-        // POST: Customer/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Customer customer)
+        public IActionResult Edit(CustomerEditModel model)
         {
             if (ModelState.IsValid)
             {
+                var customer = _context.Clients
+                    .Include(x => x.DistrictToClients)
+                    .Include(x => x.TypesHousingToCustomers)
+                    .Include(x => x.Phones)
+                    .Single(x => x.Id == model.EditId);
+
+                model.UpdateEntity(customer);
+                model.UpdateDistricts(customer);
+                model.UpdateHousingTypes(customer);
                 _context.Update(customer);
+                
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "Cities", customer.CityId);
-            ViewData["CustomerUserId"] = new SelectList(_context.ApplicationUser, "Id", "CustomerAccount", customer.CustomerUserId);
-            ViewData["SmsId"] = new SelectList(_context.Smses, "Id", "Smses", customer.SmsId);
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUser, "Id", "User", customer.ApplicationUserId);
-            return View(customer);
+            return View("Save", model);
         }
 
         // GET: Customer/Delete/5

@@ -10,5 +10,7 @@ namespace WebApp.Entities
         public int Id { get; set; }
 
         public string  Name { get; set; }
+
+        public List<TypesHousingToCustomer> TypesHousingToCustomers { get; set; }
     }
 }

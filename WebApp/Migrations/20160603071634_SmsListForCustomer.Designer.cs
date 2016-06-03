@@ -8,9 +8,10 @@ using WebApp.Models;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160603071634_SmsListForCustomer")]
+    partial class SmsListForCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -148,8 +149,6 @@ namespace WebApp.Migrations
                     b.Property<string>("FirstName");
 
                     b.Property<int?>("Gender");
-
-                    b.Property<bool>("IsArchive");
 
                     b.Property<bool>("IsSiteAccess");
 
@@ -337,15 +336,6 @@ namespace WebApp.Migrations
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
-                });
-
-            modelBuilder.Entity("WebApp.Entities.TypesHousingToCustomer", b =>
-                {
-                    b.Property<int>("ClientId");
-
-                    b.Property<int>("TypesHousingId");
-
-                    b.HasKey("ClientId", "TypesHousingId");
                 });
 
             modelBuilder.Entity("WebApp.Models.ApplicationUser", b =>
@@ -549,17 +539,6 @@ namespace WebApp.Migrations
                     b.HasOne("WebApp.Entities.City")
                         .WithMany()
                         .HasForeignKey("CityId");
-                });
-
-            modelBuilder.Entity("WebApp.Entities.TypesHousingToCustomer", b =>
-                {
-                    b.HasOne("WebApp.Entities.Customer")
-                        .WithMany()
-                        .HasForeignKey("ClientId");
-
-                    b.HasOne("WebApp.Entities.TypesHousing")
-                        .WithMany()
-                        .HasForeignKey("TypesHousingId");
                 });
 
             modelBuilder.Entity("WebApp.Models.ApplicationUser", b =>
