@@ -6,6 +6,8 @@ using WebApp.Entities;
 using WebApp.Models;
 using Microsoft.AspNet.Authorization;
 using WebApp.ViewModels;
+using System;
+using Newtonsoft.Json;
 
 namespace WebApp.Controllers
 {
@@ -15,12 +17,95 @@ namespace WebApp.Controllers
         public CustomersController(ApplicationDbContext context) : base(context)
         {
         }
-
-        // GET: Customer
-        public IActionResult Index()
+                
+        public IActionResult Index(string filter, int page = 1)
         {
-            var applicationDbContext = _context.Clients.Include(c => c.Cities).Include(c => c.CustomerAccount).Include(c => c.Smses).Include(c => c.User);
-            return View(applicationDbContext.ToList());
+
+            var filtedObj = new CustomerIndexFilterModel();
+            if (!string.IsNullOrEmpty(filter))
+            {
+                filtedObj = JsonConvert.DeserializeObject<CustomerIndexFilterModel>(filter);
+            }
+
+            if (User.IsInRole(RoleNames.Employee))
+            {
+                filtedObj.CityId = CurrentUser?.City?.Id;
+            }
+
+            var typesHousings = _context.TypesHousing.ToList();
+
+            var filterData = new CustomersExtension.FilterData()
+            {
+                CityId = filtedObj.CityId,
+                PriceTo = filtedObj.MinCost,
+                PriceFrom = filtedObj.MaxCost,
+                Page = page,
+                //IsArchived = filtedObj.IsArchive,
+                IsSiteAccessOnly = filtedObj.IsSiteAccessOnly
+            };
+
+            if (filtedObj.DistrictId.HasValue)
+            {
+                filterData.DistrictIds = new int[] { filtedObj.DistrictId.Value };
+            }
+
+            if (filtedObj.HousingTypeId.HasValue)
+            {
+                filterData.HouseTypeIds = new int[] { filtedObj.HousingTypeId.Value };
+            }
+
+            var applicationDbContext = _context.Clients
+                .Include(c => c.City)
+                .Include(c => c.CustomerAccount)
+                .Include(c => c.Smses)
+                .Include(c => c.User)
+                .Include(c => c.TypesHousingToCustomers)
+                .Include(x=> x.DistrictToClients)
+                .Include(x => x.Phones);
+
+            var query = applicationDbContext.Where(x => CustomersExtension.Filter(filterData)(x));
+
+            int totalPages;
+            int totalRows;
+            var dbItems = query.PagedResult(page, 20, x => x.User, false, out totalRows, out totalPages).ToList();
+            
+            ViewBag.TotalItems = _context.Clients.Count();
+            ViewBag.FilteredItemsCount = totalRows;
+
+            var model = new CustomerIndexModel
+            {
+                Items = dbItems.Select(x => CustomerEditModel.Create(x)).ToList(),
+                Filters = filtedObj,
+                TotalPages = totalPages,
+                CurrentPage = page
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Filter(CustomerIndexModel model, int page = 1)
+        {
+            var filters = model.Filters;
+            if (filters == null)
+            {
+                return RedirectToAction("Index", new { page });
+            }
+            
+            return RedirectToAction("Index", new
+            {
+                page,
+                filter = JsonConvert.SerializeObject(filters, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                })
+            });
+        }
+
+
+        public IActionResult ResetFilter(int? page = 1)
+        {
+            return RedirectToAction("Index", new { page });
         }
 
         // GET: Customer/Details/5
@@ -40,7 +125,7 @@ namespace WebApp.Controllers
             return View(customer);
         }
 
-        // GET: Customer/Create
+        [Authorize(AuthPolicy.CreateCustomer)]
         public IActionResult Create()
         {
             var model = new CustomerEditModel();
@@ -49,6 +134,7 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(AuthPolicy.CreateCustomer)]
         public IActionResult Create(CustomerEditModel model)
         {
             if (ModelState.IsValid)
@@ -68,6 +154,7 @@ namespace WebApp.Controllers
             return View("Save",model);
         }
 
+        [Authorize(AuthPolicy.EditCustomer)]
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -92,6 +179,7 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(AuthPolicy.EditCustomer)]
         public IActionResult Edit(CustomerEditModel model)
         {
             if (ModelState.IsValid)
@@ -113,7 +201,8 @@ namespace WebApp.Controllers
             return View("Save", model);
         }
 
-        // GET: Customer/Delete/5
+
+        [Authorize(AuthPolicy.DeleteCustomer)]
         [ActionName("Delete")]
         public IActionResult Delete(int? id)
         {
@@ -130,10 +219,10 @@ namespace WebApp.Controllers
 
             return View(customer);
         }
-
-        // POST: Customer/Delete/5
+                
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(AuthPolicy.DeleteCustomer)]
         public IActionResult DeleteConfirmed(int id)
         {
             Customer customer = _context.Clients.Single(m => m.Id == id);

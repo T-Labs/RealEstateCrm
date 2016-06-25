@@ -6,11 +6,11 @@
 
 @{
     ViewData["Title"] = "Список объектов";
-    @inject IAuthorizationService _auth;
+    
 }
 
  @{
-   
+    @inject IAuthorizationService _auth;
     bool userHasCreate = await _auth.AuthorizeAsync(User, AuthPolicy.CreateHousing);
     bool userHasEdit = await _auth.AuthorizeAsync(User, AuthPolicy.EditHousing);
     bool userHasDelete = await _auth.AuthorizeAsync(User, AuthPolicy.DeleteHousing);

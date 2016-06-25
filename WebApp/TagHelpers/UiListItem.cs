@@ -36,8 +36,8 @@ namespace WebApp.TagHelpers
             
             html.Append($"<i class='{Icon} icon'></i>");
             html.Append($"<div class='content'>{Content}</div>");
-            
 
+            var childContent = output.GetChildContentAsync();
             output.Content.SetHtmlContent(html.ToString());
         }
     }

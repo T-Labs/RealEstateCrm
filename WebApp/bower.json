@@ -6,9 +6,9 @@
     "jquery": "2.1.4",
     "jquery-validation": "1.14.0",
     "jquery-validation-unobtrusive": "3.2.4",
-    "semantic-ui": "~2.1.8",
     "jquery-ui": "1.11.4",
     "notifyjs": "~0.4.0",
-    "pnotify": "~3.0.0"
+    "pnotify": "~3.0.0",
+    "semantic": "2.1.8"
   }
 }

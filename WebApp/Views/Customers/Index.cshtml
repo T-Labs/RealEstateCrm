@@ -1,110 +1,159 @@
-@model IEnumerable<WebApp.Entities.Customer>
+﻿@using Microsoft.AspNet.Authorization
+@model WebApp.ViewModels.CustomerIndexModel
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ContractSum)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateClosed)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateContract)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateIn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateMeeting)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsSiteAccess)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MaxSum)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MidleName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MinSum)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReheshSum)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Resource)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
-    </tr>
-    
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ContractSum)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateClosed)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateContract)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateIn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateMeeting)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsSiteAccess)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MaxSum)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MidleName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MinSum)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReheshSum)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Resource)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-        </td>
-    </tr>
+@{
+    ViewData["Title"] = "Клиенты";
 }
-</table>
+
+ @{
+    @inject IAuthorizationService _auth;    
+    bool userHasCreate = await _auth.AuthorizeAsync(User, AuthPolicy.CreateCustomer);
+    bool userHasEdit = await _auth.AuthorizeAsync(User, AuthPolicy.EditCustomer);
+    bool userHasDelete = await _auth.AuthorizeAsync(User, AuthPolicy.DeleteCustomer);
+}
+
+<p show-if="@userHasCreate">
+    <a asp-action="Create" class="ui button blue">Добавить нового клиента</a>
+</p>
+
+<form class="ui form segment" asp-action="Filter">
+    <div class="three fields">
+        @Html.EditorFor(x => x.Filters.HousingTypeId)
+        @Html.EditorFor(x => x.Filters.CityId, new { @class="ui-ignore"})
+        <div class="field">
+            @Html.LabelFor(x => x.Filters.DistrictId)
+            <district-list city-id="@Model.Filters.CityId ?? 0" district-id="@Model.Filters.DistrictId ?? 0" id="@Html.IdFor(x => x.Filters.DistrictId)" name="@Html.IdFor(x => x.Filters.DistrictId)"></district-list>
+        </div>
+    </div>
+
+    <div class="three fields">
+        @Html.EditorFor(x => x.Filters.MinCost, "int")
+        @Html.EditorFor(x => x.Filters.MaxCost, "int")
+        @Html.EditorFor(x => x.Filters.SelectedObjectId, "int")
+    </div>
+
+    @Html.EditorFor(x => x.Filters.IsSiteAccessOnly, "checkbox")
+    <input type="submit" value="Применить фильтр" class="ui primary button"/>
+    <a asp-action="ResetFilter" class="ui button">Сброс</a>
+
+    <script type="text/javascript">
+        $(function() {
+            $('#Filters_CityId').dropdown({
+                onChange: function(value, text, $selectedItem) {
+                    Utils.loadDistrictSelectByCityId(value, '#Filters_DistrictId');
+                }
+            });
+        });
+    </script>
+</form>
+
+@if (!Model.Items.Any())
+{
+    <div class="ui negative message">
+        <div class="header">
+            Список склиентов пуст
+        </div>
+        <p>Чтобы добавить нового клиента нажмите <a asp-action="Create">на ссылку</a>
+        </p>
+    </div>  
+}
+else
+{
+
+<h4 class="ui horizontal divider header">
+    <i class="tag icon"></i>
+    Всего объектов в базе: @ViewBag.TotalItems Найдено: @ViewBag.FilteredItemsCount
+</h4>
+
+<pager total-pages="@Model.TotalPages" current-page='@Model.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
+
+    <div class="customer-items">
+        <div class="ui divided items"> 
+            @foreach (var item in Model.Items)
+                {    
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">
+                                <h3><i class="user icon"></i>@($"{item.FirstName} {item.MidleName} {item.LastName}")
+                                @if (item.IsSiteAccess)
+                                {
+                                    <label class="ui label blue">Доступ на сайт есть</label>
+                                }
+                                else
+                                { 
+                                    <label class="ui label red">Доступа на сайт нет</label>
+                                }
+                                </h3>
+                            </div>
+                             @*<div class="meta">
+                                <i class="phone icon"></i><span class="cinema">Union Square 14</span>
+                              </div>*@
+                            <div class="description">
+                                <div class="ui list">
+                                    <ui-list-item icon="marker" content="@item.CityName" class="show-popup" data-title="Город"></ui-list-item>                                        
+                                    <div class="item show-popup" data-title="Районы">
+                                        <i class='marker icon'></i>
+                                        <div class='content'>
+                                            @foreach (var districtId in item.DistrictList)
+                                            {
+                                                <district district-id="@districtId" class="ui label"></district>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="item show-popup" data-title="Типы жилья">
+                                        <i class='marker icon'></i>
+                                        <div class='content'>
+                                            @foreach (var housingId in item.HousingTypeListIds)
+                                            {
+                                                <housing-label housing-type-id="@housingId" class="ui label"></housing-label>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="item show-popup" data-title="Стоимость от"> 
+                                        <i class='ruble icon'></i><div class='content'>Стоимость от @item.MinSum</div>
+                                    </div>
+                                    <div class="item show-popup" data-title="Стоимость до"> 
+                                        <i class='ruble icon'></i><div class='content'>Стоимость до @item.MaxSum</div>
+                                    </div>
+                                    <div class="item show-popup" data-title="Сумма контракта"> 
+                                        <i class='ruble icon'></i><div class='content'>Сумма контракта @item.ContractSum</div>
+                                    </div>
+                                    <div class="item show-popup" data-title="Рехеш">
+                                        <i class='add user  icon'></i><i class='ruble icon'></i><div class='content'>Рехеш @item.ReheshSum</div>
+                                    </div>
+                                    <div class="item">
+                                        <i class='phone icon'></i>
+                                        <div class='content'>
+                                                <span class="ui label" show-if="@item.Phone1.IsSet()">@item.Phone1</span>
+                                                <span class="ui label" show-if="@item.Phone2.IsSet()">@item.Phone2</span>
+                                                <span class="ui label" show-if="@item.Phone3.IsSet()">@item.Phone3</span>    
+                                        </div>
+                                    </div>                                                                        
+                                    <ui-list-item icon="calendar" content="@item.DateMeeting.ToString()" class="show-popup" data-title="Дата встречи"></ui-list-item>
+                                </div>
+
+                            </div>
+                            <div class="extra content">                                
+                                <div class="ui icon buttons">
+                                    <a show-if="@userHasEdit" asp-action="Edit" asp-route-id="@item.EditId" class="ui circular icon button basic blue show-popup" data-title="Редактирование"><i class="edit icon"></i></a>
+                                    <a asp-action="Delete" show-if="@userHasDelete" asp-route-id="@item.EditId" class="ui button red tiny basic show-popup" onclick="return confirm('Вы уверены что хотите удалить запись?');" data-title="Удалить"><i class="trash icon"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }    
+        </div>
+    </div>  
+}
+
+
+@section scripts
+{        
+    <script type="text/javascript">
+
+        $(function() {        
+            $('.show-popup').popup({ position: 'left center' });
+        });
+    </script>
+}

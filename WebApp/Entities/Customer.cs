@@ -60,7 +60,7 @@ namespace WebApp.Entities
 
         public int CityId { get; set; }
 
-        public virtual City Cities { get; set; }
+        public virtual City City { get; set; }
 
         public virtual List<Sms> Smses { get; set; }
 

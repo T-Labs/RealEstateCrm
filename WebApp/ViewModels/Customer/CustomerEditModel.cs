@@ -29,6 +29,8 @@ namespace WebApp.ViewModels
         [Display(Name = "Город")]
         public int CityId { get; set; }
 
+        public string CityName { get; set; }
+
         [Required]
         [Display(Name = "Районы")]
         public List<int> DistrictList { get; set; }
@@ -80,6 +82,9 @@ namespace WebApp.ViewModels
         [UIHint("checkbox")]
         [Display(Name = "В архиве")]
         public bool IsArchive { get; set; }
+        
+        [Display(Name = "Полный адрес")]
+        public string FullAddress { get; set; }
 
         public void UpdateEntity(Customer customer)
         {
@@ -178,6 +183,7 @@ namespace WebApp.ViewModels
                 EditId = c.Id,
                 Gender = c.Gender.HasValue ? (int)c.Gender : (-1),
                 CityId = c.CityId,
+                CityName = c.City?.Name ?? string.Empty,
                 ContractSum = c.ContractSum,
                 FirstName = c.FirstName,
                 MidleName = c.MidleName,
@@ -195,6 +201,7 @@ namespace WebApp.ViewModels
                 DistrictList = c.DistrictToClients.Select(x => x.DistrictId).ToList(),
                 HousingTypeListIds = c.TypesHousingToCustomers.Select(x => x.TypesHousingId).ToList()
             };
+            
             return item;
         }
     }
