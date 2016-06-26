@@ -9,11 +9,14 @@ using Microsoft.Extensions.Logging;
 using WebApp.Services;
 using WebApp.Models;
 using WebApp.ViewModels.Account;
+using Microsoft.Data.Entity;
+using WebApp.Entities;
+using System;
 
 namespace WebApp.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -26,7 +29,8 @@ namespace WebApp.Controllers
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            ApplicationDbContext context) : base(context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -83,6 +87,68 @@ namespace WebApp.Controllers
             return View(model);
         }
 
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CustomerLogin(CustomerLoginViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                string phone;
+                if (!Utils.NormalizePhoneNumber(model.Phone, out phone))
+                {
+                    ModelState.AddModelError("", "Номер телефона указан не верно");
+                }
+                else
+                {
+                    Func<Customer, bool> findCustomer = (c) => 
+                    {
+                        if (c.Phones.Any(x => !string.IsNullOrEmpty(x.Number))) 
+                        {
+                            foreach(var p in c.Phones)
+                            {
+                                string normilized;
+                                if (Utils.NormalizePhoneNumber(p.Number, out normilized) && phone.Equals(normilized))
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    };
+
+                    Customer customer = _context.Clients.Include(x => x.Phones).SingleOrDefault(x => findCustomer(x));
+
+                    if (customer == null)
+                    {
+                        ModelState.AddModelError("", "Клиент с таким номером телефона не найден");
+                    }
+                    else
+                    {
+                        var customerUser = CustomerUser.CreateInstance();
+                        customerUser.CustomerId = customer.Id;
+                        customerUser.LoginTime = DateTime.Now;
+                        customerUser.Phone = model.Phone;
+
+                        base.CustomerUser = customerUser;
+
+                        return RedirectToLocal(returnUrl);
+                    }
+                }
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> CustomerLogin(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
         //
         // GET: /Account/Register
         [HttpGet]
@@ -129,6 +195,16 @@ namespace WebApp.Controllers
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
+            _logger.LogInformation(4, "User logged out.");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CustomerLogOff()
+        {
+            CustomerUser = null;
             _logger.LogInformation(4, "User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
@@ -460,5 +536,7 @@ namespace WebApp.Controllers
         }
 
         #endregion
+
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿@using System.Security.Claims
+@using Microsoft.AspNet.Http;
 
 @if (User.IsSignedIn())
 {
@@ -7,8 +8,22 @@
           <button type="submit" class="ui button blue inverted"><i class="sign out icon"></i>Выйти</button>
       </form>
 }
+else if (CustomerUser.FromSession(Context.Session) != null) { 
+    <form asp-controller="Account" asp-action="CustomerLogOff" method="post" id="logoutCustomerForm" class="">          
+         <button type="submit" class="ui button blue inverted"><i class="sign out icon"></i>Выйти</button>
+     </form>
+}
 else
 {
-    <a asp-controller="Account" asp-action="Register">Регистрация</a>
-    <a asp-controller="Account" asp-action="Login">Войти</a>
+    @*<a asp-controller="Account" asp-action="Register">Регистрация</a>
+    <a asp-controller="Account" asp-action="Login">Войти</a>*@
+
+    <div class="ui simple dropdown item">
+        Войти как  <i class="dropdown icon"></i>
+        <div class="menu right">                    
+            <a class="item" asp-controller="Account" asp-action="Login">Сотрудник</a>
+            <a class="item" asp-controller="Account" asp-action="CustomerLogin">Клиент</a>
+        </div>
+    </div>
 }
+

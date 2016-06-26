@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WebApp.Models;
 
@@ -21,6 +22,29 @@ namespace WebApp
         public static string ToLocalizedString(this bool b)
         {
             return b ? "Да" : "Нет";
+        }
+                
+        public static bool NormalizePhoneNumber(string phone, out string normalized)
+        {
+            Regex rgx = new Regex("[^0-9]");
+            var numbers = rgx.Replace(phone, "");
+            // 81234567890 11
+            // 71234567890 11
+            // +71234567890 12
+            if (numbers.Length == 11 && (numbers[0] == '7' || numbers[0] == '8'))
+            {
+                normalized =  numbers.Substring(1);
+                return true;
+            }
+            else if (numbers.Length == 12 && numbers.StartsWith("+7"))
+            {                
+                normalized = numbers.Substring(2);
+                return true;
+
+            }
+
+            normalized = "";
+            return false;
         }
     }
 

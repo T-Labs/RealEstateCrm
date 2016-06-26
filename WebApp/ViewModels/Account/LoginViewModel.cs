@@ -19,4 +19,13 @@ namespace WebApp.ViewModels.Account
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
+
+    public class CustomerLoginViewModel
+    {
+        [Required]        
+        public string Phone { get; set; }
+
+        [Required]        
+        public string SmsCode { get; set; }        
+    }
 }

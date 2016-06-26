@@ -4,11 +4,13 @@ using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc.Rendering;
 using WebApp.Models;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.WebEncoders;
 using WebApp.ViewModels;
+using Newtonsoft.Json;
 
 namespace WebApp.Controllers
 {
@@ -21,7 +23,13 @@ namespace WebApp.Controllers
             get { return _context.Users.Include(x => x.City).Include(x => x.City.Districts).FirstOrDefault(x => x.Id == User.GetUserId()); }
         }
 
-        //       protected IdentityRole CurrentRole { get; private set; }
+        protected CustomerUser CustomerUser
+        {
+            get { return CustomerUser.FromSession(HttpContext.Session); }
+            set { value.ToSession(HttpContext.Session); }
+        }
+        
+        protected bool IsCustomer => CustomerUser != null;
 
         protected BaseController(ApplicationDbContext context)
         {

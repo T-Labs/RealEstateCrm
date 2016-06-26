@@ -13,8 +13,13 @@ namespace WebApp.ViewModels.Home
         [UIHint("dropdown-multiple")]
         [Display(Name = "Вид жилья")]
         public List<SelectListItem> HousingTypeList { get; set; }
-
+        
         public List<int> HousingTypeListIds { get; set; } = new List<int>();
+
+
+        public List<SelectListItem> DistrictList { get; set; }
+
+        public List<int> DistrictListIds { get; set; }
 
         [Display(Name = "Город")]
         public int CityId { get; set; }

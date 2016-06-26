@@ -9,6 +9,7 @@ using WebApp.Entities;
 using WebApp.Models;
 using WebApp.ViewModels;
 using WebApp.ViewModels.Home;
+using Microsoft.Data.Entity;
 
 namespace WebApp.Controllers
 {
@@ -48,25 +49,50 @@ namespace WebApp.Controllers
           
             bool isAuth = User.Identity.IsAuthenticated;
 
+            var filters = new HomePageFilter
+            {
+                CityId = cityId ?? 0,
+                MinCost = priceFrom,
+                MaxCost = priceTo,
+                DistrictId = districtId ?? 0,
+                HousingTypeListIds = houseTypeIdArray.ToList(),
+                HousingTypeList = _context.TypesHousing.ToList().Select(x => new SelectListItem()
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name,
+                    Selected = houseTypeIdArray.Contains(x.Id)
+                }).ToList()
+            };
+
+            if (IsCustomer)
+            {
+                var customer = _context.Clients.Include(x => x.TypesHousingToCustomers).Include(x => x.DistrictToClients).FirstOrDefault(x => x.Id == CustomerUser.CustomerId);
+                if (customer != null)
+                {
+                    filters.CityId = customer.CityId;
+                    filters.HousingTypeListIds = customer.TypesHousingToCustomers.Select(x => x.TypesHousingId).ToList();
+
+                    var districtIds = customer.DistrictToClients.Select(x => x.DistrictId).ToList();
+                    filters.DistrictListIds = districtIds;
+                    filters.DistrictList = _context.Districts.ToList().Select(x => new SelectListItem()
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.Name,
+                        Selected = districtIds.Contains(x.Id)
+                    }).ToList();
+                }
+                else
+                {
+                    return new HttpNotFoundObjectResult("Customer not found");
+                }
+            }
+
             var model = new HomePageViewModel
             {
                 Items = items.Select(x => HousingViewModel.Create(x, isAuth)).ToList(),
                 CurrentPage = page ?? 1,
                 TotalPages = totalPages,
-                Filter = new HomePageFilter
-                {
-                    CityId = cityId ?? 0,
-                    MinCost = priceFrom,
-                    MaxCost = priceTo,
-                    DistrictId = districtId ?? 0,
-                    HousingTypeListIds = houseTypeIdArray.ToList(),
-                    HousingTypeList = _context.TypesHousing.ToList().Select(x => new SelectListItem()
-                    {
-                        Value = x.Id.ToString(),
-                        Text = x.Name,
-                        Selected = houseTypeIdArray.Contains(x.Id)
-                    }).ToList()
-                }
+                Filter = filters
             };
 
             return View(model);

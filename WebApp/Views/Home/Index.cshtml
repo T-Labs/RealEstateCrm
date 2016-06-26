@@ -1,6 +1,7 @@
 ﻿@model WebApp.ViewModels.Home.HomePageViewModel
 @{
     ViewData["Title"] = "Главная";
+    bool isCustomer = CustomerUser.FromSession(this.Context.Session) != null;
 }
 
 <div class="ui container">
@@ -17,15 +18,22 @@
                     <div class="ui center aligned">
                         <div class="field">
                             <label>Город</label>
-                            <city-list city-id="@Model.Filter.CityId" disabled="false" name="cityId" id="filter_cityId" class="filter_cityId"></city-list>
+                            <city-list city-id="@Model.Filter.CityId" disabled="@isCustomer" name="cityId" id="filter_cityId" class="filter_cityId"></city-list>
                         </div>
                         <div class="field" id="filter_district_container">
                             <label>Район</label>
-                            <district-list city-id="@Model.Filter.CityId" district-id="@Model.Filter.DistrictId" name="districtId" id="filter_DistrictId"></district-list>
+                            @if (isCustomer)
+                            {
+                                <select asp-for="@Model.Filter.DistrictListIds" asp-items="@Model.Filter.DistrictList" class="ui fluid dropdown selection multiple" multiple="multiple"></select>
+                            }
+                            else
+                            {
+                                <district-list city-id="@Model.Filter.CityId" district-id="@Model.Filter.DistrictId" name="districtId" id="filter_DistrictId"></district-list>
+                            }
                         </div>
                         <div class="field">
                             <label>Тип жилья</label>
-                            <select asp-for="@Model.Filter.HousingTypeListIds" asp-items="@Model.Filter.HousingTypeList" name="houseTypeId"
+                            <select disabled="@isCustomer" asp-for="@Model.Filter.HousingTypeListIds" asp-items="@Model.Filter.HousingTypeList" name="houseTypeId"
                                     class="ui fluid dropdown selection multiple" multiple="multiple">
                             </select>
                         </div>
