@@ -36,7 +36,7 @@ namespace WebApp.Controllers
                 cityId = CurrentUser?.City?.Id;
             }
 
-            var filterData = new HousingExtensions.FilterData()
+            var filterData = new HousingExtensions.FilterParams()
             {
                 CityId = cityId,
                 PriceTo = minCost,

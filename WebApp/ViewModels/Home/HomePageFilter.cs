@@ -9,24 +9,14 @@ using Newtonsoft.Json;
 namespace WebApp.ViewModels.Home
 {
     public class HomePageFilter
-    {
-        [UIHint("dropdown-multiple")]
-        [Display(Name = "Вид жилья")]
-        public List<SelectListItem> HousingTypeList { get; set; }
-        
+    {        
         public List<int> HousingTypeListIds { get; set; } = new List<int>();
 
-
-        public List<SelectListItem> DistrictList { get; set; }
-
-        public List<int> DistrictListIds { get; set; }
+        public List<int> DistrictListIds { get; set; } = new List<int>();
 
         [Display(Name = "Город")]
         public int CityId { get; set; }
-
-        [UIHint("dropdown")]
-        [Display(Name = "Район")]
-        public int DistrictId { get; set; }
+              
 
         [Display(Name = "Цена от")]
         public int? MinCost { get; set; }
@@ -34,5 +24,17 @@ namespace WebApp.ViewModels.Home
         [Display(Name = "Цена до")]
         public int? MaxCost { get; set; }
 
+        public HomePageFilter()
+        {
+        }
+
+        public HomePageFilter(HousingExtensions.FilterParams param)
+        {
+            HousingTypeListIds = param.HouseTypeId.ToList();
+            DistrictListIds = param.DistrictId.ToList();
+            CityId = param.CityId ?? 0;
+            MinCost = param.PriceFrom;
+            MaxCost = param.PriceTo;
+        }
     }
 }

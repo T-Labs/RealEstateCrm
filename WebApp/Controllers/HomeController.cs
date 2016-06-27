@@ -26,42 +26,19 @@ namespace WebApp.Controllers
             }
         }
 
-        public IActionResult Index(int? page, string houseTypeId, int? cityId, int? priceFrom, int? priceTo, int? districtId)
+        public IActionResult Index(int? page, string houseTypeId, int? cityId, int? priceFrom, int? priceTo, string districtId)
         {
             var houseTypeIdArray = string.IsNullOrEmpty(houseTypeId) ? new int[] {} : houseTypeId.Split(',').Select(x => Convert.ToInt32(x)).ToArray();
-            var filterData = new HousingExtensions.FilterData
+            var districtIdArray = string.IsNullOrEmpty(districtId) ? new int[] { } : districtId.Split(',').Select(x => Convert.ToInt32(x)).ToArray();
+
+            var filterParams = new HousingExtensions.FilterParams
             {
                 CityId = cityId,
                 Page = page,
                 PriceFrom = priceFrom,
                 PriceTo = priceTo,
                 HouseTypeId = houseTypeIdArray,
-                DistrictId = districtId
-            };
-
-            IQueryable<Housing> query = _context.Housing
-                .IncludeAll()
-                .Where(x => HousingExtensions.Filter(filterData)(x));
-
-            int totalItems;
-            int totalPages;
-            var items = query.PagedResult(page ?? 1, 20, x => x.CreatedAt, false, out totalItems, out totalPages).ToList();
-          
-            bool isAuth = User.Identity.IsAuthenticated;
-
-            var filters = new HomePageFilter
-            {
-                CityId = cityId ?? 0,
-                MinCost = priceFrom,
-                MaxCost = priceTo,
-                DistrictId = districtId ?? 0,
-                HousingTypeListIds = houseTypeIdArray.ToList(),
-                HousingTypeList = _context.TypesHousing.ToList().Select(x => new SelectListItem()
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.Name,
-                    Selected = houseTypeIdArray.Contains(x.Id)
-                }).ToList()
+                DistrictId = districtIdArray
             };
 
             if (IsCustomer)
@@ -69,17 +46,11 @@ namespace WebApp.Controllers
                 var customer = _context.Clients.Include(x => x.TypesHousingToCustomers).Include(x => x.DistrictToClients).FirstOrDefault(x => x.Id == CustomerUser.CustomerId);
                 if (customer != null)
                 {
-                    filters.CityId = customer.CityId;
-                    filters.HousingTypeListIds = customer.TypesHousingToCustomers.Select(x => x.TypesHousingId).ToList();
+                    filterParams.CityId = customer.CityId;
+                    filterParams.HouseTypeId = customer.TypesHousingToCustomers.Select(x => x.TypesHousingId).ToArray();
 
-                    var districtIds = customer.DistrictToClients.Select(x => x.DistrictId).ToList();
-                    filters.DistrictListIds = districtIds;
-                    filters.DistrictList = _context.Districts.ToList().Select(x => new SelectListItem()
-                    {
-                        Value = x.Id.ToString(),
-                        Text = x.Name,
-                        Selected = districtIds.Contains(x.Id)
-                    }).ToList();
+                    var districtIds = customer.DistrictToClients.Select(x => x.DistrictId).ToArray();
+                    filterParams.DistrictId = districtIds;
                 }
                 else
                 {
@@ -87,21 +58,33 @@ namespace WebApp.Controllers
                 }
             }
 
+            IQueryable<Housing> query = _context.Housing
+                .IncludeAll()
+                .Where(x => HousingExtensions.Filter(filterParams)(x));
+
+            int totalItems;
+            int totalPages;
+            var items = query.PagedResult(page ?? 1, 20, x => x.CreatedAt, false, out totalItems, out totalPages).ToList();
+          
+            bool isAuth = User.Identity.IsAuthenticated;
+            
+
             var model = new HomePageViewModel
             {
                 Items = items.Select(x => HousingViewModel.Create(x, isAuth)).ToList(),
                 CurrentPage = page ?? 1,
                 TotalPages = totalPages,
-                Filter = filters
+                Filter = new HomePageFilter(filterParams)
             };
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Filter(HomePageFilter model, int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo, int? districtId)
+        public IActionResult Filter(int? page, int[] houseTypeId, int? cityId, int? priceFrom, int? priceTo, int[] districtId)
         {
             var housingTypeString = houseTypeId.Aggregate(string.Empty, (current, item) => current + $"{item},");
+            var districtIdString = districtId.Aggregate(string.Empty, (current, item) => current + $"{item},");
 
             return RedirectToAction(nameof(Index),
                 new
@@ -111,7 +94,7 @@ namespace WebApp.Controllers
                     cityId,
                     priceFrom,
                     priceTo,
-                    districtId = districtId.HasValue && districtId.Value > 0 ? districtId : null
+                    districtId = districtIdString.TrimEnd(',')
                 });
         }
 

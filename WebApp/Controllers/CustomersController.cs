@@ -34,7 +34,7 @@ namespace WebApp.Controllers
 
             var typesHousings = _context.TypesHousing.ToList();
 
-            var filterData = new CustomersExtension.FilterData()
+            var filterData = new CustomersExtension.FilterParams
             {
                 CityId = filtedObj.CityId,
                 PriceTo = filtedObj.MinCost,

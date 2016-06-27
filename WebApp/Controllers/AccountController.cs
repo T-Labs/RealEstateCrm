@@ -5,6 +5,7 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Logging;
 using WebApp.Services;
 using WebApp.Models;
@@ -119,22 +120,41 @@ namespace WebApp.Controllers
                         return false;
                     };
 
-                    Customer customer = _context.Clients.Include(x => x.Phones).SingleOrDefault(x => findCustomer(x));
+                    Customer dbCustomer = _context.Clients.Include(x => x.Phones).SingleOrDefault(x => findCustomer(x));
 
-                    if (customer == null)
+                    if (dbCustomer == null)
                     {
                         ModelState.AddModelError("", "Клиент с таким номером телефона не найден");
                     }
                     else
                     {
-                        var customerUser = CustomerUser.CreateInstance();
-                        customerUser.CustomerId = customer.Id;
-                        customerUser.LoginTime = DateTime.Now;
-                        customerUser.Phone = model.Phone;
+                        var verifyCode = HttpContext.Session.GetString("CustomerSmsCode");
+                        var verifyCodeTimeStampString = HttpContext.Session.GetString("CustomerSmsTimestamp");
+                        DateTime verifyCodeTimeStamp;
 
-                        base.CustomerUser = customerUser;
+                        if (!DateTime.TryParse(verifyCodeTimeStampString, out verifyCodeTimeStamp) || verifyCodeTimeStamp.AddMinutes(5) <= DateTime.Now)
+                        {
+                            ModelState.AddModelError("", "Истек срок ожидания кода из смс, запросите новый код");
+                        }
+                        else
+                        {
+                            if (verifyCode.Equals(model.SmsCode))
+                            {
+                                var customerUser = CustomerUser.CreateInstance();
+                                customerUser.CustomerId = dbCustomer.Id;
+                                customerUser.LoginTime = DateTime.Now;
+                                customerUser.Phone = model.Phone;
+                                customerUser.CustomerName = dbCustomer.MidleName + " " +  dbCustomer.LastName;
 
-                        return RedirectToLocal(returnUrl);
+                                base.CustomerUser = customerUser;
+
+                                return RedirectToLocal(returnUrl);
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Код из смс введен не верно или истек срок ожидания, запросите новый код");
+                            }
+                        }
                     }
                 }
             }
@@ -149,6 +169,16 @@ namespace WebApp.Controllers
             return View();
         }
 
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<JsonResult> SendSmsCode()
+        {
+            var code = new Random().Next(1000, 9999);
+            HttpContext.Session.SetString("CustomerSmsCode", code.ToString());
+            HttpContext.Session.SetString("CustomerSmsTimestamp", DateTime.Now.ToString());
+            return new JsonResult(new { code });
+        }
         //
         // GET: /Account/Register
         [HttpGet]

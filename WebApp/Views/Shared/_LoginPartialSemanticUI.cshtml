@@ -1,6 +1,8 @@
 ﻿@using System.Security.Claims
-@using Microsoft.AspNet.Http;
 
+@{ 
+    var customer = CustomerUser.FromSession(Context.Session);
+}
 @if (User.IsSignedIn())
 {
       <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="">
@@ -8,8 +10,9 @@
           <button type="submit" class="ui button blue inverted"><i class="sign out icon"></i>Выйти</button>
       </form>
 }
-else if (CustomerUser.FromSession(Context.Session) != null) { 
-    <form asp-controller="Account" asp-action="CustomerLogOff" method="post" id="logoutCustomerForm" class="">          
+else if (customer != null) { 
+    <form asp-controller="Account" asp-action="CustomerLogOff" method="post" id="logoutCustomerForm" class="">     
+        <span>Привет @customer.CustomerName</span>     
          <button type="submit" class="ui button blue inverted"><i class="sign out icon"></i>Выйти</button>
      </form>
 }

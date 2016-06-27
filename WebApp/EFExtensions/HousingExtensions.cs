@@ -9,7 +9,7 @@ namespace WebApp
 {
     public static class HousingExtensions
     {
-        public class FilterData
+        public class FilterParams
         {
             public int? Page { get; set; }
             public int[] HouseTypeId { get; set; } = new int[] { };
@@ -17,7 +17,7 @@ namespace WebApp
             public int? PriceFrom { get; set; }
             public int? PriceTo { get; set; }
             public bool? IsArchived { get; set; }
-            public int? DistrictId { get; set; }
+            public int[] DistrictId { get; set; } = new int[] { };
         }
 
         public static Housing GetFullById(this DbSet<Housing> housings, int id)
@@ -40,7 +40,7 @@ namespace WebApp
         }
 
 
-        public static Func<Housing, bool> Filter(FilterData filter)
+        public static Func<Housing, bool> Filter(FilterParams filter)
         {
             Func<Housing, bool> func = (x) =>
             {
@@ -50,9 +50,9 @@ namespace WebApp
                     result &= x.CityId == filter.CityId.Value;
                 }
 
-                if (filter.DistrictId.HasValue)
+                if (filter.DistrictId.Length > 0)
                 {
-                    result &= x.DistrictId == filter.DistrictId.Value;
+                    result &= filter.DistrictId.Contains(x.DistrictId);
                 }
 
                 if (filter.HouseTypeId.Length > 0)

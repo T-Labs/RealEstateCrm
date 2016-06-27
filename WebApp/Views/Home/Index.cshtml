@@ -3,6 +3,11 @@
     ViewData["Title"] = "Главная";
     bool isCustomer = CustomerUser.FromSession(this.Context.Session) != null;
 }
+@inject WebApp.Services.AddressService AddressService
+@{
+    var multyDistrictList = new MultiSelectList(AddressService.CachedDistrictList(1), "Id", "Name", Model.Filter.DistrictListIds);
+    var multyHouseTypeList = new MultiSelectList(AddressService.CachedHousingTypeList(1), "Id", "Name", Model.Filter.HousingTypeListIds);
+}
 
 <div class="ui container">
     <h2 class="ui center aligned icon header">
@@ -21,19 +26,12 @@
                             <city-list city-id="@Model.Filter.CityId" disabled="@isCustomer" name="cityId" id="filter_cityId" class="filter_cityId"></city-list>
                         </div>
                         <div class="field" id="filter_district_container">
-                            <label>Район</label>
-                            @if (isCustomer)
-                            {
-                                <select asp-for="@Model.Filter.DistrictListIds" asp-items="@Model.Filter.DistrictList" class="ui fluid dropdown selection multiple" multiple="multiple"></select>
-                            }
-                            else
-                            {
-                                <district-list city-id="@Model.Filter.CityId" district-id="@Model.Filter.DistrictId" name="districtId" id="filter_DistrictId"></district-list>
-                            }
+                            <label>Район</label>                           
+                            <select disabled="@isCustomer" asp-for="@Model.Filter.DistrictListIds" asp-items="@multyDistrictList" class="ui fluid dropdown selection multiple" multiple="multiple" name="districtId" id="filter_DistrictId"></select>                        
                         </div>
                         <div class="field">
                             <label>Тип жилья</label>
-                            <select disabled="@isCustomer" asp-for="@Model.Filter.HousingTypeListIds" asp-items="@Model.Filter.HousingTypeList" name="houseTypeId"
+                            <select disabled="@isCustomer" asp-for="@Model.Filter.HousingTypeListIds" asp-items="@multyHouseTypeList" name="houseTypeId"
                                     class="ui fluid dropdown selection multiple" multiple="multiple">
                             </select>
                         </div>
@@ -69,6 +67,11 @@
         <div class="twelve wide column">
             <div class="ui container">
 
+                @if (Model.Items.Count == 0)
+                {
+                    <div class="ui message success">По Вашему запросу ничего не найдено</div>
+
+                }
                 @foreach (var item in Model.Items)
                 {
                     <div class="ui three column stackable grid segment">
@@ -93,7 +96,7 @@
                         <div class="six wide column">
                             <div class="ui">
                                 <i class="phone icon"></i>
-                                @if (User.Identity.IsAuthenticated)
+                                @if (User.Identity.IsAuthenticated || isCustomer)
                                 {
                                     <span>@item.Phone</span>
                                 }

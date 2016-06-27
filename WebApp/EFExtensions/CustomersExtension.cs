@@ -8,7 +8,7 @@ namespace WebApp
 {
     public class CustomersExtension
     {
-        public class FilterData
+        public class FilterParams
         {
             public int? Page { get; set; }
             public int[] HouseTypeIds { get; set; } = new int[] { };
@@ -21,7 +21,7 @@ namespace WebApp
         }
 
 
-        public static Func<Customer, bool> Filter(FilterData filter)
+        public static Func<Customer, bool> Filter(FilterParams filter)
         {
             Func<Customer, bool> func = (x) =>
             {

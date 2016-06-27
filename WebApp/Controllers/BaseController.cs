@@ -26,7 +26,7 @@ namespace WebApp.Controllers
         protected CustomerUser CustomerUser
         {
             get { return CustomerUser.FromSession(HttpContext.Session); }
-            set { value.ToSession(HttpContext.Session); }
+            set { CustomerUser.ToSession(value, HttpContext.Session); }
         }
         
         protected bool IsCustomer => CustomerUser != null;

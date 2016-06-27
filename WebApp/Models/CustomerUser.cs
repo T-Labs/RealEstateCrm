@@ -18,6 +18,7 @@ namespace WebApp.Models
         public int CustomerId { get; set; }
         public DateTime LoginTime { get; set; }
         public string Phone { get; set; }
+        public string CustomerName { get; set; }
 
         public static CustomerUser CreateInstance()
         {
@@ -36,9 +37,9 @@ namespace WebApp.Models
             return data;
         }
 
-        public void ToSession(ISession session)
+        public static void ToSession(CustomerUser user, ISession session)
         {
-            session.SetString(typeof(CustomerUser).FullName, JsonConvert.SerializeObject(this));
+            session.SetString(typeof(CustomerUser).FullName, JsonConvert.SerializeObject(user));
         }
     }
 }

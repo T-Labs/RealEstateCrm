@@ -24,7 +24,7 @@
                     </div>
                     <div class="field">
                         <div class="ui left icon input">                                
-                            <button value="Получить код по смс" type="button" class="ui button"><i class="mail icon"></i>Получить код по смс</button>
+                            <button value="Получить код по смс" type="button" class="ui button" id="sendSms"><i class="mail icon" ></i>Получить код по смс</button>
                         </div>
                     </div>
                 </div>
@@ -42,4 +42,23 @@
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }    
+
+    <script type="text/javascript">
+        $(function(){
+
+            $('#sendSms').click(function (e){
+                $.ajax({
+                    type: "POST",
+                    url: '/Account/SendSmsCode',
+                    success: (response) => {
+                        alert('Смс код: ' + response.code);
+                    },
+                    error: (response) => {
+                        alert('error');
+                    }
+                })
+            });
+        });
+    </script>
+
 }
