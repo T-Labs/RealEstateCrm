@@ -1,0 +1,34 @@
+﻿@using System.Security.Claims
+@using System.Threading.Tasks
+@using WebApp.Models
+
+@{ 
+    var customer = CustomerUser.FromSession(Context.Session);
+}
+@if (User.Identity.IsAuthenticated)
+{
+      <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="">
+          <a asp-controller="Manage" asp-action="Index" title="Manage">Привет @User.Identity.Name!</a>
+          <button type="submit" class="ui button blue inverted"><i class="sign out icon"></i>Выйти</button>
+      </form>
+}
+else if (customer != null) { 
+    <form asp-controller="Account" asp-action="CustomerLogOff" method="post" id="logoutCustomerForm" class="">     
+        <span>Привет @customer.CustomerName</span>     
+         <button type="submit" class="ui button blue inverted"><i class="sign out icon"></i>Выйти</button>
+     </form>
+}
+else
+{
+    @*<a asp-controller="Account" asp-action="Register">Регистрация</a>
+    <a asp-controller="Account" asp-action="Login">Войти</a>*@
+
+    <div class="ui simple dropdown item">
+        Войти как  <i class="dropdown icon"></i>
+        <div class="menu right">                    
+            <a class="item" asp-controller="Account" asp-action="Login">Сотрудник</a>
+            <a class="item" asp-controller="Account" asp-action="CustomerLogin">Клиент</a>
+        </div>
+    </div>
+}
+
