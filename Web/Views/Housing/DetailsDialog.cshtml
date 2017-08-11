@@ -1,0 +1,35 @@
+﻿@model WebApp.ViewModels.HousingEditModel
+@{
+    ViewBag.IsDialog = true;
+}
+
+<div class="ui modal" id='@($"item{Model.EditId}")' item-id="@Model.EditId">
+    <i class="close icon"></i>
+    <div class="header">
+         @if (Model.IsArchived)
+        {
+            <div class="ui top attached red label">В архиве</div>
+        }
+        else
+        {
+            <div class="ui top left attached label">Актуальные</div>
+        }<div>Подробности</div>
+    </div>
+    <div class="content">
+        <div class="description">
+            <div>
+                <a class="ui button" asp-action="Details" asp-route-id="@Model.EditId" target="_blank">Открыть в новой вкладке</a>
+            </div>
+            @{
+                await Html.RenderPartialAsync("Details", Model);
+            }
+        </div>
+    </div>
+    <div class="actions">
+    <div class="ui positive right labeled icon button">
+       Закрыть
+        <i class="checkmark icon"></i>
+    </div>
+    </div>
+</div>
+

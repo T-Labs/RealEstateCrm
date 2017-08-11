@@ -1,0 +1,148 @@
+﻿@using WebApp.ViewModels
+@model WebApp.ViewModels.HousingEditModel
+
+@{
+    ViewData["Title"] = "Редактирование объекта";
+    bool isEditMode = Model.EditId > 0;
+    var action = isEditMode ? "Edit" : "Create";
+}
+
+@if (isEditMode)
+{
+   <h2>Редактирование</h2>
+}
+else
+{
+   <h2>Добавления</h2>
+}
+
+<form asp-action='@action' class="ui form">
+    <div class="form-horizontal">
+        <h4>Housing</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="@Model.EditId"/>
+
+        <div class="four fields">
+            @Html.EditorFor(x => x.FirstName)
+            @Html.EditorFor(x => x.MidleName)
+            @Html.EditorFor(x => x.LastName)
+            @Html.EditorFor(x => x.IsPartnerShip)
+        </div>
+         <div class="three fields">
+            @Html.EditorFor(x => x.Phone1)
+            @Html.EditorFor(x => x.Phone2)
+            @Html.EditorFor(x => x.Phone3)
+        </div>
+        @Html.EditorFor(x => x.Comment, "textarea")
+        <div class="two fields">
+            <div class="field">
+                <label>@Html.LabelFor(x => x.HouseTypeId)</label>
+                <housiong-type-list house-type-id="@Model.HouseTypeId" id="@Html.IdFor(x => x.HouseTypeId)" name="@Html.IdFor(x => x.HouseTypeId)"></housiong-type-list>
+            </div>
+            
+             @Html.EditorFor(x => x.Cost) 
+        </div>
+        <div class="three fields">
+            <div class="field">
+                @Html.LabelFor(x => x.CityId)
+                <city-list id="@Html.IdFor(x => x.CityId)" name="@Html.IdFor(x => x.CityId)" city-id="@Model.CityId" disabled="@User.IsInRole(WebApp.RoleNames.Employee)"></city-list>
+                
+            </div>
+
+            <div class="field">
+                @Html.LabelFor(x => x.DistrictId)
+                <district-list city-id="@Model.CityId" district-id="@Model.DistrictId" id="@Html.IdFor(x => x.DistrictId)" name="@Html.IdFor(x => x.DistrictId)"></district-list>
+            </div>
+
+
+            <div class="field">
+                @Html.LabelFor(x => x.StreetId)
+                <street-list city-id="@Model.CityId" street-id="@Model.StreetId" id="@Html.IdFor(x => x.StreetId)" name="@Html.IdFor(x => x.StreetId)"></street-list>
+            </div>
+
+            @Html.EditorFor(x => x.CityId, new { @disabled="disabled"})
+        </div>
+
+        <div class="fields">
+            @Html.EditorFor(x => x.HouseNumber)
+            @Html.EditorFor(x => x.HouseBuilding)
+            @Html.EditorFor(x => x.Room)
+        </div>
+        <div class="fields">
+            @Html.EditorFor(x => x.EndDate, "DateTime")
+            @Html.EditorFor(x => x.IsArchived, "checkbox")
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @if (isEditMode) {
+                     <input type="submit" value="Сохранить" class="ui primary button"/>
+                } else {
+                     <input type="submit" value="Добавить" class="ui primary button"/>
+                }
+
+                  <a asp-action="Index" class="ui button red" onclick="return confirm('Вы уверены что хотите удалить объект?');">Удалить</a>
+                <a asp-action="Index" class="ui button">Вернуться к списку</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    
+    <script type="text/javascript">
+        $(function() {
+            $('#CityId').change(function (e) {
+                var cityId = $(this).val();
+                
+             
+                $.ajax({
+                    type: "GET",
+                    url: "/api/rent/districtByCity?cityId=" + cityId,
+                    data: {},
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        var district = $("#DistrictId");
+                        district.dropdown('clear');
+                        var options = district.get(0).options;
+                        options.length = 0;
+
+                        $.each(msg, function(index, item) {
+                            options.add(new Option(item.Text, item.Value));
+                        });
+                    },
+                    error: function() {
+                        alert("Ошибка при загрузке списка районов");
+                    }
+                });
+
+                 $.ajax({
+                    type: "GET",
+                    url: "/api/rent/streetsByCity?cityId=" + cityId,
+                    data: {},
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                      
+                        var streets = $("#StreetId");
+                         streets.dropdown('clear');
+
+                        var options = streets.get(0).options;
+                        options.length = 0;
+
+                        $.each(response.items, function(index, item) {
+                            options.add(new Option(item.Text, item.Value));
+                        });
+                    },
+                    error: function() {
+                        alert("Ошибка при загрузке списка улиц");
+                    }
+                });
+                //
+            });
+        });
+    </script>
+
+}

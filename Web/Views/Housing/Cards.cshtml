@@ -1,0 +1,174 @@
+﻿@using System.Web
+@using Microsoft.AspNetCore.Http.Extensions
+@using WebApp.ViewModels
+@model WebApp.ViewModels.HousingIndexModel
+@using Microsoft.AspNetCore.Authorization
+
+@{
+    ViewData["Title"] = "Список объектов";
+    @inject IAuthorizationService _auth;
+}
+
+@{
+    bool userHasCreate = await _auth.AuthorizeAsync(User, AuthPolicy.CreateHousing);
+    bool userHasEdit = await _auth.AuthorizeAsync(User, AuthPolicy.EditHousing);
+    bool userHasDelete = await _auth.AuthorizeAsync(User, AuthPolicy.DeleteHousing);
+}
+    <h2>Список объектов</h2>
+
+<p show-if="@userHasCreate">
+    <a asp-action="Create" class="ui button blue">Добавить новый объект</a>
+</p>
+
+<form class="ui form segment" asp-action="Filter">
+    <div class="three fields">
+        @Html.EditorFor(x => x.Filters.HousingTypeId)
+        @Html.EditorFor(x => x.Filters.CityId)
+        @Html.EditorFor(x => x.Filters.DistrictId)
+    </div>
+
+    <div class="three fields">
+        @Html.EditorFor(x => x.Filters.MinCost, "int")
+        @Html.EditorFor(x => x.Filters.MaxCost, "int")
+        @Html.EditorFor(x => x.Filters.SelectedObjectId, "int")
+    </div>
+
+    @Html.EditorFor(x => x.Filters.IsArchived, "checkbox")
+    <input type="submit" value="Применить фильтр" class="ui primary button"/>
+    <a asp-action="ResetFilter" class="ui button">Сброс</a>
+</form>
+
+<h4 class="ui horizontal divider header">
+    <i class="tag icon"></i>
+    Всего объектов в базе: @ViewBag.TotalItems Найдено: @ViewBag.FilteredItemsCount
+</h4>
+
+
+    <pager total-pages="@Model.TotalPages" current-page='@Model.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
+    <div class="ui three stackable cards"> 
+@foreach (var item in Model.Items)
+{
+    var archiveColorClass = item.IsArchived ? "secondary" : "";
+    <div class="card">
+          @if (item.IsArchived)
+        {
+            <div class="ui top left attached red label">В архиве</div>
+        }
+        else
+        {
+            <div class="ui top left attached label">Актуальные</div>
+        }
+        <div class="content  @archiveColorClass">
+            <div class="header">
+                <h3><i class="home icon"></i>@Html.DisplayFor(x => item.HouseType)</h3>
+            </div>
+            <div class="description">
+                <div class="ui list">
+                    <ui-list-item icon="user" content="@($"{item.FirstName} {item.MidleName} {item.LastName}")" class="show-popup" data-title="Арендодатель"></ui-list-item>
+                    <ui-list-item icon="marker" content="@item.FullAddress" class="show-popup" data-title="Адрес"></ui-list-item>
+                    <ui-list-item icon="ruble" content="@item.Cost" class="show-popup" data-title="Цена"></ui-list-item>
+                    <ui-list-item icon="write" content="@item.Comment" class="show-popup" data-title="Описание"></ui-list-item>
+                    <ui-list-item icon="phone" content="@item.Phone1" show-if="@item.Phone1.IsSet()" class="show-popup" data-title="Телефон для связи 1"></ui-list-item>
+                    <ui-list-item icon="phone" content="@item.Phone2" show-if="@item.Phone2.IsSet()" class="show-popup" data-title="Телефон для связи 2"></ui-list-item>
+                    <ui-list-item icon="phone" content="@item.Phone3" show-if="@item.Phone3.IsSet()" class="show-popup" data-title="Телефон для связи 3"></ui-list-item>
+                    <ui-list-item icon="calendar" content="@item.EndDate.ToString()" class="show-popup" data-title="Дата освобождения объекта"></ui-list-item>
+                </div>
+
+            </div>
+            <div class="extra content">
+                <a onclick='@($"showModal('#item{item.EditId}', '{item.EditId}');return false;")' class="ui button tiny">Подробности</a>
+                <div class="ui icon buttons">
+
+                    <a show-if="@userHasEdit" asp-action="Edit" asp-route-id="@item.EditId" class="ui circular icon button basic  blue" title="Редактирование"><i class="edit icon"></i></a>
+
+                    @if (item.IsArchived)
+                    {
+                        <a show-if="@userHasEdit" asp-action="FromArchive" asp-route-id="@item.EditId" class="ui button teal tiny basic" title="Из архива"><i class="archive icon"></i></a>
+                    }
+                    else
+                    {
+                        <a show-if="@userHasEdit" asp-action="ToArchive" asp-route-id="@item.EditId" class="ui button teal tiny basic" title="В архив"><i class="archive icon"></i></a>
+                    }
+                    <a asp-action="Delete" show-if="@userHasDelete" asp-route-id="@item.EditId" class="ui button red tiny basic" onclick="return confirm('Вы уверены что хотите удалить запись?');" title="Удалить"><i class="trash icon"></i></a>
+                </div>
+
+                <div class="ui teal floating dropdown button tiny" id="callDropDown">
+                    <div class="text"><i class="phone icon"></i>
+                    </div>
+                    <div class="menu">
+                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, '{HousingCallType.Verified.ToString()}')");'><i class="checkmark icon"></i> Проверено</a>
+                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, '{HousingCallType.DontAnswer.ToString()}')");'><i class="frown icon"></i> Не отвечает</a>
+                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, '{HousingCallType.NotAvailable.ToString()}')");'><i class="warning circle icon"></i> Недоступен</a>
+                        <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, '{HousingCallType.CorrectedWithoutCall.ToString()}')");'><i class="write icon"></i> Корректировка без прозвона</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+        <div id="modalContainer" class="ui modal">
+
+        </div>
+
+        <div id="loading" class="ui modal">
+              <div class="ui segment">
+              <div class="ui active dimmer">
+                <div class="ui text loader">Loading</div>
+              </div>
+              <p></p>
+            </div>
+        </div>
+    </div>
+
+    <pager total-pages="@Model.TotalPages" current-page='@Model.CurrentPage' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
+
+    @section scripts
+    {
+        <script src="~/Scripts/housing.js"></script>
+        <script type="text/javascript">
+
+            function showModal(id, itemId) {
+                $('#loading').modal('show');
+                $.ajax({
+                    type: "POST",
+                    url: '/Housing/DetailsDialog',
+                    data: {
+                        id: itemId
+                    },
+
+                    success: (response) => {
+                        $('#modalContainer').html(response);
+                        $('#loading').modal('close');
+                        var dialog = $(id);
+                        dialog.modal({
+                            closable: false,
+                            onDeny: function() {
+                                window.alert('Wait not yet!');
+                                return false;
+                            },
+                            onApprove: function() {
+                                Housiong.addCall(itemId, $(this).find(':checked').val());
+                            }
+                        }).modal('show');
+                    },
+                    error: (response) => {
+                        alert('error');
+                    }
+                });
+
+            }
+
+            $(function() {
+                $('.housing-items .ui.accordion').accordion();
+
+
+                $('#callDropDown')
+                    .dropdown({
+                        action: 'hide'
+                    });
+
+                $('.show-popup').popup({ position: 'left center' });
+            });
+        </script>
+    }

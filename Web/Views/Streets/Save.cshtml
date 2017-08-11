@@ -1,0 +1,20 @@
+﻿@model WebApp.ViewModels.StreetItemViewModel
+@{
+    bool isEditMode = Model.Id > 0;
+    var actionName = isEditMode ? "Edit" : "Create";
+}
+
+
+<form asp-action="@actionName" class="ui form">
+    <h4>Редактирование улицы</h4>
+    <div asp-validation-summary="All" class="ui negative message" hide-if="@ViewContext.ModelState.IsValid"></div>
+
+    <input type="hidden" asp-for="Id"/>
+    @Html.EditorFor(x => x.CityId)
+    @Html.EditorFor(x => x.Name)
+
+    <div class="ui buttons">
+        <button type="submit" class="ui button blue">Сохранить изменения</button>
+    </div>
+    <a asp-action="Index">Вернуться к списку</a>
+</form>

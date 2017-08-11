@@ -1,0 +1,54 @@
+﻿@model WebApp.ViewModels.HousingEditModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+@if (ViewBag.IsDialog == null || !Convert.ToBoolean(ViewBag.IsDialog))
+{
+    <a class="ui button" asp-action="Index">Вернуться к списку</a>
+    <a class="ui button" asp-action="Edit" asp-route-id="@Model.EditId">Редактировать</a>
+}
+
+<table class="ui definition table single compact">
+    <tbody>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.FirstName)</td><td>@Model.FirstName</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.MidleName)</td><td>@Model.MidleName</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.LastName)</td><td>@Model.LastName</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.Phone1)</td><td>@Model.Phone1</td>
+    </tr>
+    <tr hide-if="@string.IsNullOrEmpty(Model.Phone2)">
+        <td class="two wide column">@Html.LabelFor(x => x.Phone2)</td><td>@Model.Phone2</td>
+    </tr>
+    <tr hide-if="@string.IsNullOrEmpty(Model.Phone3)">
+        <td class="two wide column">@Html.LabelFor(x => x.Phone3)</td><td>@Model.Phone3</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.IsPartnerShip)</td><td>@Model.IsPartnerShip.ToLocalizedString()</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.Comment)</td><td>@Model.Comment</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.HouseType)</td><td>@Html.DisplayFor(x => x.HouseType)</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.Cost)</td><td>@Model.Cost</td>
+    </tr>
+    <tr>
+        <td class="two wide column">@Html.LabelFor(x => x.FullAddress)</td><td>@Model.FullAddress</td>
+    </tr>
+    <tr>
+        <td class="two wide column">История прозвонов</td>
+        <td>@{ await Html.RenderPartialAsync("CallHistory", Model); }</td>
+    </tr>
+    </tbody>
+</table>

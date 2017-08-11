@@ -1,0 +1,36 @@
+﻿@using System.Threading.Tasks
+@using WebApp.ViewModels
+@model WebApp.ViewModels.EmployeeRegisterViewModel
+@{
+    ViewData["Title"] = "Регистрация сотрудника";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-controller="Employee" asp-action="Register" method="post" class="ui form" role="form">
+    <h4>Создание новой карточки сотрудника</h4>
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    @Html.EditorFor(x => x.Email)
+    @Html.EditorFor(x => x.Password)
+    @Html.EditorFor(x => x.ConfirmPassword)
+
+    @Html.EditorFor(x => x.FIO)
+
+    @Html.EditorFor(x => x.CityId)
+
+    @Html.EditorFor(x => x.IsCreateHousing)
+    @Html.EditorFor(x => x.IsEditHousing)
+    @Html.EditorFor(x => x.IsDeleteHousiong)
+    @Html.EditorFor(x => x.IsCreateCustomer)
+    @Html.EditorFor(x => x.IsEditCustomer)
+    @Html.EditorFor(x => x.IsDeleteCustomer)
+    @Html.EditorFor(x => x.IsManageUsers)
+
+
+    <div class="ui buttons">
+        <button type="submit" class="ui button blue">Создать карточку</button>
+    </div>
+    <a asp-action="Index" >Вернуться к списку</a>
+    
+</form>

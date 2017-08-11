@@ -1,0 +1,64 @@
+﻿
+@model CustomerLoginViewModel
+
+
+@{
+    ViewData["Title"] = "Войти на сайт как клиент";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<section>                        
+    <form asp-controller="Account" asp-action="CustomerLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="ui large form" role="form">
+    <h4>Используйте Ваш номер телефона для входа</h4>
+    <hr />    
+        <div class="ui stacked segment">                    
+                <div asp-validation-summary="All" ></div>
+                <div class="fields two">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input asp-for="Phone" placeholder="Номер телефона" type="text"/>
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">                                
+                            <button value="Получить код по смс" type="button" class="ui button" id="sendSms"><i class="mail icon" ></i>Получить код по смс</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>                                
+                        <input asp-for="SmsCode" placeholder="Введите код из смс" />
+                        <span asp-validation-for="SmsCode" class="text-danger"></span>                                
+                    </div>
+                </div>                    
+            <button class="ui fluid large teal submit button" type="submit">Войти</button>                                                        
+        </div>
+    </form>    
+</section>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }    
+
+    <script type="text/javascript">
+        $(function(){
+
+            $('#sendSms').click(function (e){
+                $.ajax({
+                    type: "POST",
+                    url: '/Account/SendSmsCode',
+                    success: (response) => {
+                        alert('Смс код: ' + response.code);
+                    },
+                    error: (response) => {
+                        alert('error');
+                    }
+                })
+            });
+        });
+    </script>
+
+}

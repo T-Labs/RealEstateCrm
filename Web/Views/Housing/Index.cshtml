@@ -1,0 +1,197 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@using WebApp.ViewModels
+@model WebApp.ViewModels.HousingIndexModel
+@using Microsoft.AspNetCore.Authorization
+
+@{
+    ViewData["Title"] = "Список объектов";
+    
+}
+
+ @{
+    @inject IAuthorizationService _auth;
+    bool userHasCreate = await _auth.AuthorizeAsync(User, AuthPolicy.CreateHousing);
+    bool userHasEdit = await _auth.AuthorizeAsync(User, AuthPolicy.EditHousing);
+    bool userHasDelete = await _auth.AuthorizeAsync(User, AuthPolicy.DeleteHousing);
+}
+    <h2>Список объектов</h2>
+
+<p show-if="@userHasCreate">
+    <a asp-action="Create" class="ui button blue">Добавить новый объект</a>
+</p>
+
+<form class="ui form segment" asp-action="Filter">
+    <div class="three fields">
+        @Html.EditorFor(x => x.Filters.HousingTypeId)
+        @Html.EditorFor(x => x.Filters.CityId, new { @class="ui-ignore"})
+        <div class="field">
+            @Html.LabelFor(x => x.Filters.DistrictId)
+            <district-list city-id="@Model.Filters.CityId" district-id="@Model.Filters.DistrictId" id="@Html.IdFor(x => x.Filters.DistrictId)" name="@Html.IdFor(x => x.Filters.DistrictId)"></district-list>
+        </div>
+    </div>
+
+    <div class="three fields">
+        @Html.EditorFor(x => x.Filters.MinCost, "int")
+        @Html.EditorFor(x => x.Filters.MaxCost, "int")
+        @Html.EditorFor(x => x.Filters.SelectedObjectId, "int")
+    </div>
+
+    @Html.EditorFor(x => x.Filters.IsArchived, "checkbox")
+    <input type="submit" value="Применить фильтр" class="ui primary button"/>
+    <a asp-action="ResetFilter" class="ui button">Сброс</a>
+
+    <script type="text/javascript">
+        $(function() {
+            $('#Filters_CityId').dropdown({
+                onChange: function(value, text, $selectedItem) {
+                    Utils.loadDistrictSelectByCityId(value, '#Filters_DistrictId');
+                }
+            });
+        });
+    </script>
+</form>
+
+<h4 class="ui horizontal divider header">
+    <i class="tag icon"></i>
+    Всего объектов в базе: @ViewBag.TotalItems Найдено: @ViewBag.FilteredItemsCount
+</h4>
+
+<pager total-pages="@Model.PageInfo.TotalPages" current-page='@Model.PageInfo.PageNumber' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
+    <div class="housing-items"> 
+@foreach (var item in Model.Items)
+{
+    var archiveColorClass = item.IsArchived ? "secondary" : "";
+    <div class="ui segment">
+        @if (item.IsArchived)
+        {
+            <div class="ui top left attached red label">В архиве</div>
+        }
+        else
+        {
+            <div class="ui top left attached label">Актуальные</div>
+        }
+
+        <div class="ui stackable two column grid  @archiveColorClass">
+
+            <div class="thirteen wide column">
+
+                <div class="ui grid">
+                    <div class="four wide column">
+                        <h3><i class="home icon"></i>@Html.DisplayFor(x => item.HouseType)</h3>
+                    </div>
+                    <div class="four wide column">
+                        <h3><i class="ruble icon"></i>@Html.DisplayFor(x => item.Cost)</h3>
+                    </div>
+                    <div class="four wide column">
+                        <i class="marker icon"></i> @Html.DisplayFor(x => item.FullAddress)
+                    </div>
+                    <div class="four wide column">
+                        @Html.DisplayFor(x => item.Phone1)&nbsp;&nbsp;&nbsp;@Html.DisplayFor(x => item.Phone2)&nbsp;&nbsp;&nbsp;@Html.DisplayFor(x => item.Phone3)
+                    </div>
+                    <div class="ten wide column">
+                        <i class="write icon"></i> <span>@Html.DisplayFor(x => item.Comment)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="two wide column right aligned">
+                <div class="row column two">
+                    <div>
+                        <a onclick='@($"showModal('#item{item.EditId}', '{item.EditId}', this);return false;")' class="ui button fluid tiny">Подробности</a>
+                    </div>
+                    <div class="ui icon buttons">
+
+                        <a show-if="@userHasEdit" asp-action="Edit" asp-route-id="@item.EditId" class="ui circular icon button basic  blue  show-popup" data-title="Редактирование"><i class="edit icon"></i></a>
+
+                        @if (item.IsArchived)
+                        {
+                            <a show-if="@userHasEdit" asp-action="FromArchive" asp-route-id="@item.EditId" class="ui button teal tiny basic  show-popup" data-title="Из архива"><i class="archive icon"></i></a>
+                        }
+                        else
+                        {
+                            <a show-if="@userHasEdit" asp-action="ToArchive" asp-route-id="@item.EditId" class="ui button teal tiny basic  show-popup" data-title="В архив"><i class="archive icon"></i></a>
+                        }
+                        <a asp-action="Delete" show-if="@userHasDelete" asp-route-id="@item.EditId" class="ui button red tiny basic  show-popup" onclick="return confirm('Вы уверены что хотите удалить запись?');" data-title="Удалить"><i class="trash icon"></i></a>
+
+
+                        <div class="ui teal floating dropdown button tiny show-popup" id="callDropDown" data-title="Прозвон">
+                            <div class="text"><i class="phone icon"></i>
+                            </div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'Verified')");'><i class="checkmark icon"></i> Проверено</a>
+                                <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'DontAnswer')");'><i class="frown icon"></i> Не отвечает</a>
+                                <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'NotAvailable')");'><i class="warning circle icon"></i> Недоступен</a>
+                                <a class="item" href="javascript:void(0)" onclick='@($"Housiong.addCall({item.EditId}, 'CorrectedWithoutCall')");'><i class="write icon"></i> Корректировка без прозвона</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+        <div id="modalContainer" class="ui modal">
+
+        </div>
+
+        <div id="loading" class="ui modal">
+              <div class="ui segment">
+              <div class="ui active dimmer">
+                <div class="ui text loader">Loading</div>
+              </div>
+              <p></p>
+            </div>
+        </div>
+    </div>
+
+    <pager total-pages="@Model.PageInfo.TotalPages" current-page='@Model.PageInfo.PageNumber' link-url="@Context.Request.Path" query-params="@Context.Request.Query"></pager>
+
+    @section scripts
+    {
+        <script src="~/Scripts/housing.js"></script>
+        <script type="text/javascript">
+
+            function showModal(id, itemId, element) {
+                // $('#loading').modal('show');
+                $(element).addClass('loading');
+                $.ajax({
+                    type: "POST",
+                    url: '/Housing/DetailsDialog',
+                    data: {
+                        id: itemId
+                    },
+
+                    success: (response) => {
+                        $(element).removeClass('loading');
+                        $('#modalContainer').html(response);
+                        var dialog = $(id);
+                        dialog.modal({
+                            closable: false
+                        }).modal('show');
+
+                    },
+                    error: (response) => {
+                        alert('error');
+                        $(element).removeClass('loading');
+                    }
+                });
+
+            }
+
+            $(function() {
+
+             
+                $('.housing-items .ui.accordion').accordion();
+
+
+                $('#callDropDown')
+                    .dropdown({
+                        action: 'hide'
+                    });
+
+                $('.show-popup').popup({ position: 'top center' });
+            });
+        </script>
+    }
